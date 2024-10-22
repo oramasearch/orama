@@ -23,7 +23,7 @@
   "dependencies": {
     "@orama/highlight": "^0.1.5",
     "@orama/orama": "workspace:*",
-    "@orama/react-components": "^0.0.28",
+    "@orama/react-components": "^0.1.7",
     "@orama/plugin-analytics": "workspace:*",
     "@orama/plugin-parsedoc": "workspace:*",
     "@orama/switch": "workspace:*",
