@@ -40,6 +40,14 @@ const head = [
       content: '#000'
     }
   },
+  {
+    tag: 'script',
+    attrs: {
+      async: true,
+      defer: true,
+      src: 'https://buttons.github.io/buttons.js'
+    }
+  }
 ]
 
 export default head

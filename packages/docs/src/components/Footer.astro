@@ -1,0 +1,52 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+
+import EditLink from '@astrojs/starlight/components/EditLink.astro';
+import LastUpdated from '@astrojs/starlight/components/LastUpdated.astro';
+import Pagination from '@astrojs/starlight/components/Pagination.astro';
+---
+
+<footer class="sl-flex">
+	<div class="meta sl-flex">
+		<EditLink {...Astro.props} />
+		<LastUpdated {...Astro.props} />
+	</div>
+	<Pagination {...Astro.props} />
+    <div class="github">
+        <span>Show your support! Star us on GitHub ⭐️</span>
+        <a class="github-button" href="https://github.com/oramasearch/orama" data-color-scheme="no-preference: light; light: light; dark: light;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star oramasearch/orama on GitHub">Star</a>
+    </div>
+</footer>
+
+<style>
+	footer {
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+	.meta {
+		gap: 0.75rem 3rem;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		margin-top: 3rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.meta > :global(p:only-child) {
+		margin-inline-start: auto;
+	}
+
+	.github {
+		align-items: center;
+        justify-content: center;
+		gap: 0.5em;
+		margin: 2rem auto;
+		font-size: var(--sl-text-sm);
+		text-decoration: none;
+        display: flex;
+        flex-direction: column;
+	}
+    .github span {
+        font-size: var(--sl-text-sm);
+        cursor: default;
+    }
+</style>
