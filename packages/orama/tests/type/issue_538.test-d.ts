@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// https://github.com/askorama/orama/issues/538
+// https://github.com/oramasearch/orama/issues/538
 import { expectAssignable } from 'tsd'
 import { create, search } from '../../src/index.ts'
 

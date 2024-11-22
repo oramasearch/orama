@@ -1,6 +1,6 @@
 # Orama plugin for Docusaurus v2
 
-[![Tests](https://github.com/askorama/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/askorama/orama/actions/workflows/turbo.yml)
+[![Tests](https://github.com/oramasearch/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/oramasearch/orama/actions/workflows/turbo.yml)
 
 ## Pre-requisites
 In order guarantee a correct functionality of the plugin, you need to have the `@docusaurus/core` at least in the version `2.4.3`.

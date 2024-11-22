@@ -1,6 +1,6 @@
 # Orama Secure Proxy Plugin
 
-[![Tests](https://github.com/askorama/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/askorama/orama/actions/workflows/turbo.yml)
+[![Tests](https://github.com/oramasearch/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/oramasearch/orama/actions/workflows/turbo.yml)
 
 Orama plugin for generating embeddings and performing vector/hybrid search securely on the front-end.
 

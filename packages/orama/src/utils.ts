@@ -19,7 +19,7 @@ export const isServer = typeof window === 'undefined'
 export const MAX_ARGUMENT_FOR_STACK = 65535
 
 /**
- * This method is needed to used because of issues like: https://github.com/askorama/orama/issues/301
+ * This method is needed to used because of issues like: https://github.com/oramasearch/orama/issues/301
  * that issue is caused because the array that is pushed is huge (>100k)
  *
  * @example

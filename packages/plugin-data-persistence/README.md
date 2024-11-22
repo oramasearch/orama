@@ -1,6 +1,6 @@
 # Data Persistence Plugin
 
-[![Tests](https://github.com/askorama/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/askorama/orama/actions/workflows/turbo.yml)
+[![Tests](https://github.com/oramasearch/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/oramasearch/orama/actions/workflows/turbo.yml)
 
 This plugin aims to provide data persistence capabilities to Orama.
 

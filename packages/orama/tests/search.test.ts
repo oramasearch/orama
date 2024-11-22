@@ -104,7 +104,7 @@ t.test('search method', async (t) => {
       t.equal(result5.count, 2)
       t.equal(result6.count, 4)
 
-      // Long string search (Tests for https://github.com/askorama/orama/issues/159 )
+      // Long string search (Tests for https://github.com/oramasearch/orama/issues/159 )
       const result7 = await search(db, { term: 'They are the best'})
       const result8 = await search(db, { term: 'Foxes are nice animals'})
 

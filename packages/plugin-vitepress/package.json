@@ -7,12 +7,12 @@
   "main": "./dist/index.js",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/askorama/orama/issues"
+    "url": "https://github.com/oramasearch/orama/issues"
   },
-  "homepage": "https://github.com/askorama/orama#readme",
+  "homepage": "https://github.com/oramasearch/orama#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/askorama/orama.git"
+    "url": "git+https://github.com/oramasearch/orama.git"
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",

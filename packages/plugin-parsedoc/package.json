@@ -7,12 +7,12 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/askorama/orama.git"
+    "url": "git+https://github.com/oramasearch/orama.git"
   },
   "bugs": {
-    "url": "https://github.com/askorama/orama/issues"
+    "url": "https://github.com/oramasearch/orama/issues"
   },
-  "homepage": "https://github.com/askorama/orama#readme",
+  "homepage": "https://github.com/oramasearch/orama#readme",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/commonjs.cjs",

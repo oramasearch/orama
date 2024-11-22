@@ -6,10 +6,10 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/askorama/orama"
+    "url": "https://github.com/oramasearch/orama"
   },
   "bugs": {
-    "url": "https://github.com/askorama/orama"
+    "url": "https://github.com/oramasearch/orama"
   },
   "type": "module",
   "sideEffects": false,

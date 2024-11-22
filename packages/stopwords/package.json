@@ -168,10 +168,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/askorama/orama"
+    "url": "https://github.com/oramasearch/orama"
   },
   "bugs": {
-    "url": "https://github.com/askorama/orama"
+    "url": "https://github.com/oramasearch/orama"
   },
   "scripts": {
     "build": "node scripts/build.js",

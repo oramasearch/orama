@@ -5,12 +5,12 @@
   "keywords": ["orama", "docusaurus"],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/askorama/orama/issues"
+    "url": "https://github.com/oramasearch/orama/issues"
   },
   "homepage": "https://docs.orama.com/cloud/data-sources/native-integrations/docusaurus",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/askorama/orama.git"
+    "url": "git+https://github.com/oramasearch/orama.git"
   },
   "sideEffects": false,
   "main": "dist/index.js",

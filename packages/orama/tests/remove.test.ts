@@ -96,7 +96,7 @@ t.test('remove method', (t) => {
     t.equal(r2_gt.hits[0].id, id2)
   })
 
-  // Tests for https://github.com/askorama/orama/issues/52
+  // Tests for https://github.com/oramasearch/orama/issues/52
   t.test('should correctly remove documents via substring search', async (t) => {
     t.plan(1)
 
@@ -271,7 +271,7 @@ t.test('should remove a document and update index field length', async (t) => {
   t.same((db.data.index as Index).avgFieldLength, avgFieldLength)
 })
 
-// Test cases for issue https://github.com/askorama/orama/issues/486
+// Test cases for issue https://github.com/oramasearch/orama/issues/486
 t.test('should correctly remove documents with vector properties', async (t) => {
   t.plan(2)
 

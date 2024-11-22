@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/askorama/orama/refs/heads/main/misc/readme/orama-readme-hero-light.png#gh-light-mode-only" />
+  <img src="https://raw.githubusercontent.com/oramasearch/orama/refs/heads/main/misc/readme/orama-readme-hero-light.png#gh-light-mode-only" />
 </p>
 
 [![Tests](https://github.com/oramasearch/orama/actions/workflows/turbo.yml/badge.svg)](https://github.com/oramasearch/orama/actions/workflows/turbo.yml)
@@ -53,7 +53,7 @@ Read the complete documentation at [https://docs.orama.com](https://docs.orama.c
 # Orama Features
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/askorama/orama/refs/heads/main/misc/readme/features-light.png#gh-light-mode-only" />
+  <img src="https://raw.githubusercontent.com/oramasearch/orama/refs/heads/main/misc/readme/features-light.png#gh-light-mode-only" />
 </p>
 
 # Usage

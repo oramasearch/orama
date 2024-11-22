@@ -57,7 +57,7 @@ export class RadixNode {
 
         // check if _output[w] exists and then add the doc to it
         // always check in own property to prevent access to inherited properties
-        // fix https://github.com/askorama/orama/issues/137
+        // fix https://github.com/oramasearch/orama/issues/137
         if (getOwnProperty(output, w) !== null) {
           if (tolerance) {
             const difference = Math.abs(term.length - w.length)
@@ -74,7 +74,7 @@ export class RadixNode {
 
         // check if _output[w] exists and then add the doc to it
         // always check in own property to prevent access to inherited properties
-        // fix https://github.com/askorama/orama/issues/137
+        // fix https://github.com/oramasearch/orama/issues/137
         if (getOwnProperty(output, w) != null && docIDs.size > 0) {
           const docs = output[w]
           for (const docID of docIDs) {

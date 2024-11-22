@@ -182,7 +182,7 @@ t.test('syncBoundedLevenshtein substrings are ok even if with tolerance pppppp',
   t.end()
 })
 
-// Test cases for https://github.com/askorama/orama/issues/744
+// Test cases for https://github.com/oramasearch/orama/issues/744
 t.test('Issue #744', async (t) => {
   const index = await create({
     schema: {
@@ -239,7 +239,7 @@ t.test('Issue #744', async (t) => {
   t.strictSame(s4.hits.map(h => h.id), ['3', '4', '1', '2'])
 })
 
-// https://github.com/askorama/orama/issues/797
+// https://github.com/oramasearch/orama/issues/797
 t.test('Issue #797', async t => {
   const db = await create({
     schema: {

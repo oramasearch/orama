@@ -264,7 +264,7 @@ const oramaCloudMenu = [
           },
           {
             label: 'Github repository',
-            link: 'https://github.com/askorama/orama'
+            link: 'https://github.com/oramasearch/orama'
           }
         ]
       }

@@ -141,7 +141,7 @@ function insert(sorter: Sorter, prop: string, id: DocumentID, value: SortValue):
   // Because we re-use the same internalId
   // We need to clean-up the data structure before re-inserting
   // to avoid duplicates in the orderedDocs array
-  // See: https://github.com/askorama/orama/issues/629
+  // See: https://github.com/oramasearch/orama/issues/629
   if (s.orderedDocsToRemove.has(internalId)) {
     ensureOrderedDocsAreDeletedByProperty(sorter, prop)
   }

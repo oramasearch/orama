@@ -34,9 +34,9 @@ export default defineConfig({
       favicon: '/favicon.png',
       head: head,
       social: {
-        github: 'https://github.com/askorama/orama',
+        github: 'https://github.com/oramasearch/orama',
         slack: 'https://orama.to/slack',
-        twitter: 'https://x.com/askorama',
+        twitter: 'https://x.com/oramasearch',
       },
       customCss: ['./src/tailwind.css', './src/styles/custom.css'],
       logo: {
@@ -58,7 +58,7 @@ export default defineConfig({
         ...openSourceMenu,
       ],
       editLink: {
-        baseUrl: 'https://github.com/askorama/orama/edit/main/packages/docs'
+        baseUrl: 'https://github.com/oramasearch/orama/edit/main/packages/docs'
       }
     }),
     react(),
