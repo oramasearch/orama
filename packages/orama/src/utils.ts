@@ -338,7 +338,20 @@ export function isPromise(obj: any): obj is Promise<unknown> {
   return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function'
 }
 
+/**
+ * Checks if the provided input is an async function or if the input is an array 
+ * containing at least one async function.
+ *
+ * @param func - A single function or an array of functions to check.
+ *               Non-function values are ignored.
+ * @returns `true` if the input is an async function or an array containing at least 
+ *          one async function, otherwise `false`.
+ */
 export function isAsyncFunction(func: any): boolean {
+  if (Array.isArray(func)) {
+    return func.some(item => isAsyncFunction(item));
+  }
+
   return func?.constructor?.name === 'AsyncFunction'
 }
 

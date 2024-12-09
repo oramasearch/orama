@@ -85,8 +85,8 @@ export function updateMultiple<T extends AnyOrama>(
     isAsyncFunction(orama.beforeUpdate) ||
     isAsyncFunction(orama.afterUpdate) ||
     isAsyncFunction(orama.beforeUpdateMultiple) ||
-    isAsyncFunction(orama.afterUpdateMultiple)
-  isAsyncFunction(orama.beforeRemoveMultiple) ||
+    isAsyncFunction(orama.afterUpdateMultiple) ||
+    isAsyncFunction(orama.beforeRemoveMultiple) ||
     isAsyncFunction(orama.afterRemoveMultiple) ||
     isAsyncFunction(orama.beforeInsertMultiple) ||
     isAsyncFunction(orama.afterInsertMultiple)

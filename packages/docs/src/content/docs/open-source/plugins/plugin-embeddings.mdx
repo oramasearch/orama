@@ -43,7 +43,7 @@ Since this plugin will need to generate embeddings for your documents, the searc
 This plugin will generate text embeddings for you at insert and search time, allowing you to perform vector and hybrid searches on your documents.
 
 ```js
-import { create, search } from '@orama/orama'
+import { create, insert, search } from '@orama/orama'
 import { pluginEmbeddings } from '@orama/plugin-embeddings'
 import '@tensorflow/tfjs-node' // Or any other appropriate TensorflowJS backend
 
@@ -74,11 +74,11 @@ const db = create({
 })
 
 // When using this plugin, document insertion becomes async
-await db.insert({ description: 'The quick brown fox jumps over the lazy dog' })
-await db.insert({ description: "I've seen a lazy dog dreaming of jumping over a quick brown fox" })
+await insert(db, { description: 'The quick brown fox jumps over the lazy dog' })
+await insert(db, { description: "I've seen a lazy dog dreaming of jumping over a quick brown fox" })
 
 // When using this plugin, search becomes async
-const search = await search(db, {
+const results = await search(db, {
   term: 'Dreaming of a quick brown fox',
   mode: 'vector'
 })

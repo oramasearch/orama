@@ -24,6 +24,8 @@ export function insert<T extends AnyOrama>(
   }
 
   const asyncNeeded =
+    isAsyncFunction(orama.beforeInsert) ||
+    isAsyncFunction(orama.afterInsert) ||
     isAsyncFunction(orama.index.beforeInsert) ||
     isAsyncFunction(orama.index.insert) ||
     isAsyncFunction(orama.index.afterInsert)
@@ -402,7 +404,14 @@ export function innerInsertMultiple<T extends AnyOrama>(
   skipHooks?: boolean,
   timeout?: number
 ): Promise<string[]> | string[] {
-  if (isAsyncFunction(runMultipleHook)) {
+  const asyncNeeded =
+    isAsyncFunction(orama.beforeInsert) ||
+    isAsyncFunction(orama.afterInsert) ||
+    isAsyncFunction(orama.index.beforeInsert) ||
+    isAsyncFunction(orama.index.insert) ||
+    isAsyncFunction(orama.index.afterInsert)
+
+  if (asyncNeeded) {
     return innerInsertMultipleAsync(orama, docs, batchSize, language, skipHooks, timeout)
   }
 
