@@ -49,9 +49,9 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
         console.log(`Generating embeddings for properties "${properties.join(', ')}": "${values}"`)
       }
 
-      const embeddings = await model.embed(values)
+      const embeddings = Array.from(await (await model.embed(values)).data())
 
-      params[pluginParams.embeddings.defaultProperty] = (await embeddings.data()) as unknown as number[]
+      params[pluginParams.embeddings.defaultProperty] = embeddings
     },
 
     async beforeSearch<T extends AnyOrama>(_db: AnyOrama, params: SearchParams<T, TypedDocument<any>>) {
@@ -67,7 +67,7 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
         throw new Error('Neither "term" nor "vector" parameters were provided')
       }
 
-      const embeddings = await model.embed(params.term) as unknown as number[]
+      const embeddings = Array.from(await (await model.embed(params.term)).data()) as unknown as number[]
 
       if (!params.vector) {
         params.vector = {

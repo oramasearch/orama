@@ -342,8 +342,8 @@ export function isAsyncFunction(func: any): boolean {
   return func?.constructor?.name === 'AsyncFunction'
 }
 
-
 const withIntersection = 'intersection' in (new Set());
+
 export function setIntersection<V>(...sets: Set<V>[]): Set<V> {
   // Fast path 1
   if (sets.length === 0) {
