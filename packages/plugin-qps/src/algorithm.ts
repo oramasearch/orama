@@ -150,8 +150,8 @@ export function searchString(prop: {
   const boostPerProp = prop.boostPerProp
   const resultMap = prop.resultMap
   const whereFiltersIDs = prop.whereFiltersIDs
-  const tokensLength = stats.tokensLength
-  const tokenQuantums = stats.tokenQuantums
+  const tokensLength = prop.stats.tokensLength
+  const tokenQuantums = prop.stats.tokenQuantums
 
   const findParam = {
     term: '',
