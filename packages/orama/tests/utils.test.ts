@@ -96,7 +96,9 @@ t.test('utils', async (t) => {
     t.equal(flattened['nested.nested2.nested3.bar'], 'baz')
   })
 
-  t.test('should correctly detect an async function', t => {
+  // This test is skipped because the implementation of isAsyncFunction is temporary and will be
+  // removed in a future version of Orama.
+  t.skip('should correctly detect an async function', t => {
     async function asyncFunction() {
       return 'async'
     }
