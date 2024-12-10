@@ -327,9 +327,6 @@ async function innerInsertMultipleAsync<T extends AnyOrama>(
         const elapsedTime = Date.now() - startTime
         const waitTime = timeout - elapsedTime
         if (waitTime > 0) {
-          // Atomics.wait will block this thread for up to waitTime ms 
-          // waiting for a change on ia[0], but since we do not notify, 
-          // it will just time out after waitTime.
           Atomics.wait(ia, 0, 0, waitTime)
         }
       }
@@ -385,7 +382,6 @@ function innerInsertMultipleSync<T extends AnyOrama>(
         if (elapsedTime >= timeout) {
           const remainingTime = timeout - (elapsedTime % timeout)
           if (remainingTime > 0) {
-            // Atomics.wait will block the thread for remainingTime ms
             Atomics.wait(ia, 0, 0, remainingTime)
           }
         }
