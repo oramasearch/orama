@@ -66,6 +66,24 @@ Every plugin should have:
 - A `name` property, which is a string (**mandatory**)
 - Any hook function you want to use (**optional**)
 
+
+:::caution
+When working with `async` hooks remember to always use the `async` keyword modifier.
+
+```js
+async function afterInsertPluginExample() {
+  return {
+    name: "after-insert-plugin",
+    afterInsert: async (orama, id, document) => {
+      console.log("Orama instance: ", orama);
+      console.log("Document id: ", id);
+      console.log("Document inserted: ", document);
+    },
+  };
+}
+```
+:::
+
 ## Plugin hooks
 
 With `v2.0.0-beta.5`, we essentially moved the hooks from the `components` property of the Orama instance to the `plugins` property.
