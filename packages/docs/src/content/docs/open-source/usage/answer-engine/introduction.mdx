@@ -125,7 +125,7 @@ In the example above, the `onStateChange` will be triggered for every new object
 
 Orama provides a comprehensive toolkit for building high-performance RAG (Retrieval-Augmented Generation) pipelines tailored to your document processing needs.
 
-Below is a simple example demonstrating how to set up your application to leverage Orama's database capabilities and Secure Proxy for document-based answer generation.
+Below is a simple example demonstrating how to set up your application to leverage Orama's database capabilities and the [Secure Proxy Plugin](/cloud/orama-ai/orama-secure-proxy) for document-based answer generation.
 
 ```ts copy
 import { create, insert, search, AnswerSession } from "@orama/orama";
@@ -137,7 +137,7 @@ const CONFIG = {
   VECTOR_DIMENSIONS: 1536,
 };
 
-// Sample documents - could be moved to a separate data file
+// Sample documents
 const SAMPLE_DOCS = [
   { description: "John Doe is a programmer, and he has 14 years." },
   { description: "Mitch Smith is a programmer, and he has 32 years." },
