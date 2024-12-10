@@ -25,6 +25,11 @@ function getPropertiesValues(schema: object, properties: string[]) {
     .join('. ')
 }
 
+function normalizeVector(v: number[]): number[] {
+  const norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
+  return v.map(val => val / norm);
+}
+
 export const embeddingsType = 'vector[512]'
 
 export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Promise<OramaPluginAsync> {
@@ -51,7 +56,7 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
 
       const embeddings = Array.from(await (await model.embed(values)).data())
 
-      params[pluginParams.embeddings.defaultProperty] = embeddings
+      params[pluginParams.embeddings.defaultProperty] = normalizeVector(embeddings)
     },
 
     async beforeSearch<T extends AnyOrama>(_db: AnyOrama, params: SearchParams<T, TypedDocument<any>>) {
@@ -64,7 +69,7 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
       }
 
       if (!params.term) {
-        throw new Error('Neither "term" nor "vector" parameters were provided')
+        throw new Error('No "term" or "vector" parameters were provided')
       }
 
       const embeddings = Array.from(await (await model.embed(params.term)).data()) as unknown as number[]
@@ -74,11 +79,15 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
           // eslint-disable-next-line
           // @ts-ignore
           property: params?.vector?.property ?? pluginParams.embeddings.defaultProperty,
-          value: embeddings
+          value: normalizeVector(embeddings)
         }
       }
+ 
+      console.log({
+        vector: normalizeVector(embeddings)
+      })
 
-      params.vector.value = embeddings
+      params.vector.value = normalizeVector(embeddings)
     }
   }
 }

@@ -22,6 +22,7 @@ export function innerVectorSearch<T extends AnyOrama, ResultDocument = TypedDocu
 
   const vectorIndex = orama.data.index.vectorIndexes[vector!.property]
   const vectorSize = vectorIndex.node.size
+
   if (vector?.value.length !== vectorSize) {
     if (vector?.property === undefined || vector?.value.length === undefined) {
       throw createError('INVALID_INPUT_VECTOR', 'undefined', vectorSize, 'undefined')
@@ -121,6 +122,7 @@ export function searchVector<T extends AnyOrama, ResultDocument = TypedDocument<
   }
 
   const asyncNeeded = orama.beforeSearch?.length || orama.afterSearch?.length
+
   if (asyncNeeded) {
     return executeSearchAsync()
   }

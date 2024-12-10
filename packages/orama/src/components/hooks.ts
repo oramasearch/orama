@@ -93,7 +93,6 @@ export function runBeforeSearch<T extends AnyOrama>(
   language: string | undefined
 ): Promise<void> | void {
   const needAsync = hooks.some(isAsyncFunction)
-
   if (needAsync) {
     return (async () => {
       for (const hook of hooks) {

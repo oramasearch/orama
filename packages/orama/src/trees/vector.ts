@@ -90,6 +90,7 @@ export function findSimilarVectors(
     const similarVectors: SimilarVector[] = []
 
     const base = keys ? keys : vectors.keys()
+
     for (const vectorId of base) {
         const entry = vectors.get(vectorId)
         if (!entry) {

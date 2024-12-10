@@ -93,6 +93,7 @@ export function hybridSearch<T extends AnyOrama, ResultDocument = TypedDocument<
   }
 
   const asyncNeeded = orama.beforeSearch?.length || orama.afterSearch?.length
+
   if (asyncNeeded) {
     return executeSearchAsync()
   }
