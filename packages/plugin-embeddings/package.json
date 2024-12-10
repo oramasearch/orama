@@ -47,7 +47,6 @@
   },
   "dependencies": {
     "@orama/orama": "workspace:*",
-    "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
-    "@tensorflow/tfjs-node": "^4.22.0"
+    "@tensorflow-models/universal-sentence-encoder": "^1.3.3"
   }
 }
