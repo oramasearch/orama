@@ -316,16 +316,21 @@ async function innerInsertMultipleAsync<T extends AnyOrama>(
 
   const processAllBatches = async (): Promise<void> => {
     let currentIndex = 0
+    const sab = new SharedArrayBuffer(4)
+    const ia = new Int32Array(sab)
 
     while (currentIndex < docs.length) {
       const startTime = Date.now()
-
       currentIndex = await processNextBatch(currentIndex)
 
       if (timeout > 0) {
         const elapsedTime = Date.now() - startTime
-        if (elapsedTime < timeout) {
-          await new Promise((resolve) => setTimeout(resolve, timeout - elapsedTime))
+        const waitTime = timeout - elapsedTime
+        if (waitTime > 0) {
+          // Atomics.wait will block this thread for up to waitTime ms 
+          // waiting for a change on ia[0], but since we do not notify, 
+          // it will just time out after waitTime.
+          Atomics.wait(ia, 0, 0, waitTime)
         }
       }
     }
@@ -367,6 +372,8 @@ function innerInsertMultipleSync<T extends AnyOrama>(
 
   function processAllBatches() {
     const startTime = Date.now()
+    const sab = new SharedArrayBuffer(4)
+    const ia = new Int32Array(sab)
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
@@ -376,11 +383,10 @@ function innerInsertMultipleSync<T extends AnyOrama>(
       if (timeout > 0) {
         const elapsedTime = Date.now() - startTime
         if (elapsedTime >= timeout) {
-          // Synchronously wait for the remaining time
           const remainingTime = timeout - (elapsedTime % timeout)
-          const endTime = Date.now() + remainingTime
-          while (Date.now() < endTime) {
-            // Do nothing, just wait
+          if (remainingTime > 0) {
+            // Atomics.wait will block the thread for remainingTime ms
+            Atomics.wait(ia, 0, 0, remainingTime)
           }
         }
       }
