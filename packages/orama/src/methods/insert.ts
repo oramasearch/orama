@@ -1,6 +1,6 @@
 import type { AnyOrama, PartialSchemaDeep, SortValue, TypedDocument } from '../types.js'
 import { isArrayType, isGeoPointType, isVectorType } from '../components.js'
-import { isAsyncFunction } from '../utils.js'
+import { isAsyncFunction, sleep } from '../utils.js'
 import { runMultipleHook, runSingleHook } from '../components/hooks.js'
 import { trackInsertion } from '../components/sync-blocking-checker.js'
 import { createError } from '../errors.js'
@@ -316,8 +316,6 @@ async function innerInsertMultipleAsync<T extends AnyOrama>(
 
   const processAllBatches = async (): Promise<void> => {
     let currentIndex = 0
-    const sab = new SharedArrayBuffer(4)
-    const ia = new Int32Array(sab)
 
     while (currentIndex < docs.length) {
       const startTime = Date.now()
@@ -327,7 +325,7 @@ async function innerInsertMultipleAsync<T extends AnyOrama>(
         const elapsedTime = Date.now() - startTime
         const waitTime = timeout - elapsedTime
         if (waitTime > 0) {
-          Atomics.wait(ia, 0, 0, waitTime)
+          sleep(waitTime)
         }
       }
     }
@@ -369,8 +367,6 @@ function innerInsertMultipleSync<T extends AnyOrama>(
 
   function processAllBatches() {
     const startTime = Date.now()
-    const sab = new SharedArrayBuffer(4)
-    const ia = new Int32Array(sab)
 
     // eslint-disable-next-line no-constant-condition
     while (true) {
@@ -382,7 +378,7 @@ function innerInsertMultipleSync<T extends AnyOrama>(
         if (elapsedTime >= timeout) {
           const remainingTime = timeout - (elapsedTime % timeout)
           if (remainingTime > 0) {
-            Atomics.wait(ia, 0, 0, remainingTime)
+            sleep(remainingTime)
           }
         }
       }
@@ -397,6 +393,7 @@ function innerInsertMultipleSync<T extends AnyOrama>(
 
   return ids
 }
+
 
 export function innerInsertMultiple<T extends AnyOrama>(
   orama: T,

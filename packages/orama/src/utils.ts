@@ -442,3 +442,31 @@ export function setUnion<V>(set1: Set<V> | undefined, set2: Set<V>) {
   }
   return new Set([...set1, ...set2]);
 }
+
+// This code is taken from https://github.com/davidmarkclements/atomic-sleep, MIT licensed at the time of commit b8149d3ca276c84a54fa8fa1478f9cc79aabc15a.
+// All credits go to the original author (David Mark Clements, https://github.com/davidmarkclements).
+export function sleep(ms: number) {
+  if (typeof SharedArrayBuffer !== 'undefined' && typeof Atomics !== 'undefined') {
+    const nil = new Int32Array(new SharedArrayBuffer(4))
+    const valid = ms > 0 && ms < Infinity 
+    if (valid === false) {
+      if (typeof ms !== 'number' && typeof ms !== 'bigint') {
+        throw TypeError('sleep: ms must be a number')
+      }
+      throw RangeError('sleep: ms must be a number that is greater than 0 but less than Infinity')
+    }
+
+    Atomics.wait(nil, 0, 0, Number(ms))
+    
+  } else {
+    const valid = ms > 0 && ms < Infinity 
+    if (valid === false) {
+      if (typeof ms !== 'number' && typeof ms !== 'bigint') {
+        throw TypeError('sleep: ms must be a number')
+      }
+      throw RangeError('sleep: ms must be a number that is greater than 0 but less than Infinity')
+    }
+    const target = Date.now() + Number(ms)
+    while (target > Date.now()){ /* empty */ }
+  }
+}
