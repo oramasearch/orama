@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@orama/orama": "workspace:*",
-    "astro": "^2.0.2",
+    "astro": "^4.16.17",
     "html-to-text": "^9.0.3"
   },
   "devDependencies": {
