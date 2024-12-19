@@ -34,7 +34,7 @@
     "@jop-software/astro-cookieconsent": "^3.0.0",
     "@orama/react-components": "^0.0.28",
     "@oramacloud/client": "^1.3.16",
-    "astro": "^4.16.1",
+    "astro": "^4.16.18",
     "astro-og-canvas": "^0.5.3",
     "canvaskit-wasm": "^0.39.1",
     "react": "^18.3.1",
