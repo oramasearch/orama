@@ -6,7 +6,7 @@ This plugin aims to generate an index for Orama from HTML files
 
 # Usage
 
-For the complete usage guide, please refer to the [official plugin documentation](https://docs.oramasearch.com/open-source/plugins/plugin-parsedoc).
+For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-parsedoc).
 
 # License
 

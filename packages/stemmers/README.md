@@ -51,7 +51,7 @@ const db = create({
 })
 ```
 
-Read more in the official docs: [https://docs.oramasearch.com/open-source/text-analysis/stemming](https://docs.oramasearch.com/open-source/text-analysis/stemming).
+Read more in the official docs: [https://docs.orama.com/open-source/text-analysis/stemming](https://docs.orama.com/open-source/text-analysis/stemming).
 
 # License
 
