@@ -335,7 +335,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
    *
    * d: Frequency normalization lower bound. Default value is 0.5.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/BM25-algorithm
+   * Full documentation: https://docs.orama.com/open-source/usage/search/changing-search-algorithm#bm25-best-matching-25
    *
    * @see https://en.wikipedia.org/wiki/Okapi_BM25
    */
@@ -347,7 +347,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
    * The boost is a number that is multiplied to the score of the property.
    * It can be used to give more importance to some properties.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/fields-boosting
+   * Full documentation: https://docs.orama.com/open-source/usage/search/fields-boosting
    *
    * @example
    * // Give more importance to the 'title' property.
@@ -365,7 +365,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
 
   /**
    * Facets configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/facets
+   * Full documentation: https://docs.orama.com/open-source/usage/search/facets
    *
    * A facet is a feature that allows users to narrow down their search results by specific
    * attributes or characteristics, such as category, price, or location.
@@ -388,7 +388,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
 
   /**
    * Distinct configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/introduction#distinct
+   * Full documentation: https://docs.orama.com/open-source/usage/search/introduction#distinct
    *
    * @example
    * const results = await search(db, {
@@ -400,7 +400,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
 
   /**
    * Groups configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/grouping
+   * Full documentation: https://docs.orama.com/open-source/usage/search/grouping
    *
    * @example
    * const results = await search(db, {
@@ -415,7 +415,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
 
   /**
    * Filter the search results.
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/filters
+   * Full documentation: https://docs.orama.com/open-source/usage/search/filters
    *
    * @example
    * // Search for documents that contain 'Headphones' in the 'description' and 'title' fields and
@@ -438,7 +438,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
    * The threshold is a number between 0 and 1 that represents the minimum score of the documents to return.
    * By default, the threshold is 0.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/threshold
+   * Full documentation: https://docs.orama.com/open-source/usage/search/threshold
    *
    * @example
    *
@@ -462,7 +462,7 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
    * Preflight query.
    * Will return just the facets (if needed) and the number of matched documents for the given query.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/preflight
+   * Full documentation: https://docs.orama.com/open-source/usage/search/preflight
    *
    * @example
    *
@@ -545,7 +545,7 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
    *
    * d: Frequency normalization lower bound. Default value is 0.5.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/BM25-algorithm
+   * Full documentation: https://docs.orama.com/open-source/usage/search/changing-search-algorithm#bm25-best-matching-25
    *
    * @see https://en.wikipedia.org/wiki/Okapi_BM25
    */
@@ -578,13 +578,13 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
 
   /**
    * Groups configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/grouping
+   * Full documentation: https://docs.orama.com/open-source/usage/search/grouping
    */
   groupBy?: GroupByParams<T, ResultDocument>
 
   /**
    * Filter the search results.
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/filters
+   * Full documentation: https://docs.orama.com/open-source/usage/search/filters
    */
   where?: Partial<WhereCondition<T['schema']>>
 
@@ -593,7 +593,7 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
    * The threshold is a number between 0 and 1 that represents the minimum score of the documents to return.
    * By default, the threshold is 1. Only applies to the full-text search.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/threshold
+   * Full documentation: https://docs.orama.com/open-source/usage/search/threshold
    */
   threshold?: number
 
@@ -603,13 +603,13 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
    * The boost is a number that is multiplied to the score of the property.
    * It can be used to give more importance to some properties. Only applies to the full-text search.
    *
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/fields-boosting
+   * Full documentation: https://docs.orama.com/open-source/usage/search/fields-boosting
    */
   boost?: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>
 
   /**
    * Facets configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/facets
+   * Full documentation: https://docs.orama.com/open-source/usage/search/facets
    *
    * A facet is a feature that allows users to narrow down their search results by specific
    * attributes or characteristics, such as category, price, or location.
@@ -621,7 +621,7 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
    * Hybrid search weights.
    * By default, Orama will use 0.5 for the full-text search and 0.5 for the vector search, which means that both will have the same importance.
    * You can change the weights to give more importance to the full-text search or the vector search.
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/hybrid-search
+   * Full documentation: https://docs.orama.com/open-source/usage/search/hybrid-search
    */
   hybridWeights?: HybridWeights
 }
@@ -689,19 +689,19 @@ export interface SearchParamsVector<T extends AnyOrama, ResultDocument = TypedDo
 
   /**
    * Filter the search results.
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/filters
+   * Full documentation: https://docs.orama.com/open-source/usage/search/filters
    */
   where?: Partial<WhereCondition<T['schema']>>
 
   /**
    * Facets configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/facets
+   * Full documentation: https://docs.orama.com/open-source/usage/search/facets
    */
   facets?: FacetsParams<T>
 
   /**
    * Groups configuration
-   * Full documentation: https://docs.oramasearch.com/open-source/usage/search/grouping
+   * Full documentation: https://docs.orama.com/open-source/usage/search/grouping
    */
   groupBy?: GroupByParams<T, ResultDocument>
 

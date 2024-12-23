@@ -63,7 +63,7 @@ Available **chat** models:
 
 Mode models coming soon!
 
-For the full configuration guide of this plugin, please follow the [official plugin documentation](https://docs.oramasearch.com/open-source/plugins/plugin-secure-proxy).
+For the full configuration guide of this plugin, please follow the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-secure-proxy).
 
 # License
 
