@@ -25,7 +25,7 @@
     "@orama/orama": "workspace:*",
     "@orama/plugin-match-highlight": "workspace:*",
     "classnames": "^2.5.1",
-    "next": "^14.2.3",
+    "next": "^14.2.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
