@@ -87,6 +87,7 @@ export default function OramaPluginDocusaurus(
               docsInstances.push(docsInstance)
               versions.flatMap(async (version) => {
                 const currentVersion = loadedVersions.find((v: any) => v.versionName === version)
+                if (!currentVersion) return
                 allOramaDocsPromises.push(
                   ...currentVersion.docs.map((data: any) =>
                     generateDocs({
@@ -104,6 +105,7 @@ export default function OramaPluginDocusaurus(
             if (!value) break
             Object.keys(value).forEach(async (instance) => {
               const loadedInstance = value[instance]
+              if (!loadedInstance) return
               allOramaDocsPromises.push(
                 ...loadedInstance.blogPosts.map(({ metadata }: any) => {
                   return generateDocs({
@@ -120,6 +122,7 @@ export default function OramaPluginDocusaurus(
             if (!value) break
             Object.keys(value).forEach(async (instance) => {
               const loadedInstance = value[instance]
+              if (!loadedInstance) return
               allOramaDocsPromises.push(
                 ...loadedInstance.map((data: any) =>
                   generateDocs({
