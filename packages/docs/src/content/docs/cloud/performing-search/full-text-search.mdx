@@ -779,7 +779,7 @@ The enum properties support the following operators:
 | -------- | -------------------------------- | ------------------------------------ |
 | `eq`     | Equal to                         | `genre: { eq: 'drama' }`             |
 | `in`     | Contained in the given array     | `genre: { in: ['drama', 'horror'] }` |
-| `nin`    | Not contained in the given array | `genre: { nin: ['commedy'] }`        |
+| `nin`    | Not contained in the given array | `genre: { nin: ['comedy'] }`        |
 
 ### Filtering by Enum[] properties
 
@@ -788,6 +788,7 @@ The enum properties support the following operators:
 | Operator      | Description                   | Example                                        |
 | ------------- | ----------------------------- | ---------------------------------------------- |
 | `containsAll` | Contains all the given values | `genre: { containsAll: ['comedy', 'action'] }` |
+| `containsAny` | Contains any of the given values | `genre: { containsAny: ['comedy', 'action', 'horror'] }` |
 
 ## Geosearch
 

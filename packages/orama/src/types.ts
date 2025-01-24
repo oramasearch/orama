@@ -196,6 +196,7 @@ export type EnumComparisonOperator = {
 
 export type EnumArrComparisonOperator = {
   containsAll?: (string | number | boolean)[]
+  containsAny?: (string | number | boolean)[]
 }
 
 export type GeosearchDistanceUnit = 'cm' | 'm' | 'km' | 'ft' | 'yd' | 'mi'

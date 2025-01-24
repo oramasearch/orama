@@ -345,6 +345,37 @@ t.test('enum[]', async (t) => {
         })
       }
     })
+    
+    const testsContainsAny = [
+      { values: ['green'], expected: [cGreenBlue, cGreen] },
+      { values: ['blue'], expected: [cGreenBlue, cBlue] },
+      { values: ['white'], expected: [cWhite] },
+      { values: ['unknown'], expected: [] },
+      { values: ['green', 'blue'], expected: [cGreenBlue, cGreen, cBlue] },
+      { values: ['blue', 'green'], expected: [cGreenBlue, cGreen, cBlue] },
+      { values: ['green', 'blue', 'white'], expected: [cGreenBlue, cGreen, cBlue, cWhite] },
+      { values: ['white', 'unknown'], expected: [cWhite] },
+      { values: [], expected: [] }
+    ]
+    t.test('containsAny', async (t) => {
+      for (const { values, expected } of testsContainsAny) {
+        t.test(`"${values}"`, async (t) => {
+          const result = await search(db, {
+            term: '',
+            where: {
+              tags: { containsAny: values }
+            }
+          })
+          t.equal(result.hits.length, expected.length)
+          t.strictSame(
+            result.hits.map((h) => h.id),
+            expected
+          )
+
+          t.end()
+        })
+      }
+    })
 
     t.test("eq operator shouldn't allowed", async (t) => {
       t.throws(

@@ -111,6 +111,15 @@ export class FlatTree {
         })
         return Array.from(intersection) as InternalDocumentID[]
       }
+      case 'containsAny': {
+        const values = operation[operationType]!
+        const idSets = values.map((value) => this.numberToDocumentId.get(value) ?? new Set())
+        if (idSets.length === 0) return []
+        const union = idSets.reduce((prev, curr) => {
+          return new Set([...prev, ...curr])
+        })
+        return Array.from(union) as InternalDocumentID[]
+      }
       default:
         throw new Error('Invalid operation')
     }
