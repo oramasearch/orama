@@ -58,7 +58,6 @@ async function execute(command, args, cwd) {
 }
 
 async function main() {
-  process.env.BUILD_TOKENIZERS = '1'
   await execute('pnpm', 'build')
   // await execute('pnpm', 'test')
 
