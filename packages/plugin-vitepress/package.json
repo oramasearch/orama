@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-vitepress",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Vitepress plugin for local search powered by orama",
   "keywords": [
     "orama",
