@@ -30,7 +30,7 @@
     "url": "https://github.com/oramasearch/orama"
   },
   "scripts": {
-    "build": "node ./scripts/build.mjs",
+    "build": "BUILD_TOKENIZERS=1 node ./scripts/build.mjs",
     "test": "node ./tests/japanese.test.js && node ./tests/japanese.test.js"
   },
   "keywords": [
