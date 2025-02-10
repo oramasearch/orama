@@ -120,3 +120,117 @@ In the example above, the `onStateChange` will be triggered for every new object
   }
 ]
 ```
+
+## RAG implementation
+
+Orama provides a comprehensive toolkit for building high-performance RAG (Retrieval-Augmented Generation) pipelines tailored to your document processing needs.
+
+Below is a simple example demonstrating how to set up your application to leverage Orama's database capabilities and the [Secure Proxy Plugin](/cloud/orama-ai/orama-secure-proxy) for document-based answer generation.
+
+```ts copy
+import { create, insert, search, AnswerSession } from "@orama/orama";
+import { pluginSecureProxy } from "@orama/plugin-secure-proxy";
+
+// Configuration options for better maintainability
+const CONFIG = {
+  API_KEY: process.env.ORAMA_SECURE_PROXY_API_KEY,
+  VECTOR_DIMENSIONS: 1536,
+};
+
+// Sample documents
+const SAMPLE_DOCS = [
+  { description: "John Doe is a programmer, and he has 14 years." },
+  { description: "Mitch Smith is a programmer, and he has 32 years." },
+];
+
+/**
+ * Initialize the Orama database with secure proxy plugin
+ * @returns {Promise<Object>} Configured database instance
+ */
+async function initializeDatabase() {
+  const secureProxy = await pluginSecureProxy({
+    apiKey: CONFIG.API_KEY,
+    embeddings: {
+      model: "openai/text-embedding-ada-002",
+      defaultProperty: "embeddings",
+      onInsert: {
+        generate: true,
+        properties: ["description"],
+        verbose: true,
+      },
+    },
+    chat: {
+      model: "openai/gpt-3.5-turbo",
+    },
+  });
+
+  return create({
+    schema: {
+      description: "string",
+      embeddings: `vector[${CONFIG.VECTOR_DIMENSIONS}]`,
+    },
+    plugins: [secureProxy],
+  });
+}
+
+/**
+ * Populate the database with documents
+ * @param {Object} db - Database instance
+ * @param {Array} documents - Array of documents to insert
+ */
+async function populateDatabase(db, documents) {
+  const insertPromises = documents.map((doc) =>
+    insert(db, { description: doc.description })
+  );
+  await Promise.all(insertPromises);
+}
+
+/**
+ * Perform vector search and generate response
+ * @param {Object} db - Database instance
+ * @param {string} userPrompt - User's question
+ * @returns {Promise<string>} Generated response
+ */
+async function generateResponse(db, userPrompt) {
+  try {
+    const searchResults = await search(db, {
+      mode: "vector",
+      term: userPrompt,
+    });
+
+    const formattedPrompt = `### Context: \n\n${JSON.stringify(
+      searchResults?.hits
+    )}\n\n### Prompt:\n\n${userPrompt}`;
+
+    const session = new AnswerSession(db, {});
+    return await session.ask({ term: formattedPrompt });
+  } catch (error) {
+    console.error("Error generating response:", error);
+    throw error;
+  }
+}
+
+/**
+ * Main execution function
+ */
+async function main() {
+  try {
+    // Initialize database
+    const db = await initializeDatabase();
+
+    // Populate with sample data
+    await populateDatabase(db, SAMPLE_DOCS);
+
+    // Example query
+    const userPrompt = "Who is John Doe?";
+    const response = await generateResponse(db, userPrompt);
+
+    console.log("Response:", response);
+  } catch (error) {
+    console.error("Application error:", error);
+  }
+}
+
+// Execute the application
+main();
+```
