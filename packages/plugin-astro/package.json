@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@orama/orama": "workspace:*",
-    "astro": "^2.0.2",
+    "astro": "^5.0.0",
     "html-to-text": "^9.0.3"
   },
   "devDependencies": {
@@ -55,9 +55,9 @@
     "typescript": "^5.0.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "peerDependencies": {
-    "astro": "^2.0.4"
+    "astro": "^5.0.0"
   }
 }
