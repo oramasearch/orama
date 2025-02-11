@@ -26,7 +26,7 @@ The `Search Button` supports the following options.
 |:------ | ----------- | ------- |
 | **colorScheme** | The selected color scheme. (`dark`,`light`,`system`) | `dark` |
 | **size** | The size of the button. (`small`,`medium`,`large`) | `medium` |
-| **label** | The label of the button. | `Search...` |
+| **themeConfig** | The theme configuration object (`Partial<TThemeOverrides>`) | `{}` |
 
 ## Example
 
@@ -36,7 +36,18 @@ Here is an example of how to use the `Search Button` component in your applicati
 import { OramaSearchButton } from '@orama/react-components';
 
 <OramaSearchButton
-  label="Search something..."
   size="large"
-/>
+  colorScheme="dark"
+  themeConfig={{
+    themeConfig: {
+      colors: {
+        dark: {
+          '--background-color-primary': '#231102'
+        },
+      },
+    },
+  }}
+>
+  Search something...
+</OramaSearchButton>
 ```
