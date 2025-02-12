@@ -387,16 +387,16 @@ export function calculateResultScores(
   bm25Relevance: Required<BM25Params>,
   resultsMap: Map<number, number>,
   boostPerProperty: number,
-  whereFiltersIDs: Set<InternalDocumentID> | undefined
+  whereFiltersIDs: Set<InternalDocumentID> | undefined,
+  keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
 ) {
   const documentIDs = Array.from(ids)
 
-  // Exact fields for TF-IDF
   const avgFieldLength = index.avgFieldLength[prop]
   const fieldLengths = index.fieldLengths[prop]
   const oramaOccurrences = index.tokenOccurrences[prop]
   const oramaFrequencies = index.frequencies[prop]
-
+  
   // oramaOccurrences[term] can be undefined, 0, string, or { [k: string]: number }
   const termOccurrences = typeof oramaOccurrences[term] === 'number' ? oramaOccurrences[term] ?? 0 : 0
 
@@ -407,6 +407,13 @@ export function calculateResultScores(
     if (whereFiltersIDs && !whereFiltersIDs.has(internalId)) {
       continue
     }
+
+    // Track keyword matches per property
+    if (!keywordMatchesMap.has(internalId)) {
+      keywordMatchesMap.set(internalId, new Map())
+    }
+    const propertyMatches = keywordMatchesMap.get(internalId)!
+    propertyMatches.set(prop, (propertyMatches.get(prop) || 0) + 1)
 
     const tf = oramaFrequencies?.[internalId]?.[term] ?? 0
 
@@ -438,12 +445,12 @@ function searchInProperty(
   boostPerProperty: number,
   bm25Relevance: Required<BM25Params>,
   docsCount: number,
-  whereFiltersIDs: Set<InternalDocumentID> | undefined
+  whereFiltersIDs: Set<InternalDocumentID> | undefined,
+  keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
 ) {
   const tokenLength = tokens.length;
   for (let i = 0; i < tokenLength; i++) {
     const term = tokens[i];
-
     const searchResult = tree.find({ term, exact, tolerance })
 
     const termsFound = Object.keys(searchResult)
@@ -461,6 +468,7 @@ function searchInProperty(
         resultsMap,
         boostPerProperty,
         whereFiltersIDs,
+        keywordMatchesMap,
       )
     }
   }
@@ -478,10 +486,15 @@ export function search(
   relevance: Required<BM25Params>,
   docsCount: number,
   whereFiltersIDs: Set<InternalDocumentID> | undefined,
+  threshold = 0,
 ): TokenScore[] {
   const tokens = tokenizer.tokenize(term, language)
+  const keywordsCount = tokens.length || 1
 
+  // Track keyword matches per document and property
+  const keywordMatchesMap = new Map<InternalDocumentID, Map<string, number>>()
   const resultsMap = new Map<number, number>()
+
   for (const prop of propertiesToSearch) {
     if (!(prop in index.indexes)) {
       continue
@@ -514,10 +527,47 @@ export function search(
       relevance,
       docsCount,
       whereFiltersIDs,
+      keywordMatchesMap
     )
   }
 
-  return Array.from(resultsMap)
+  // Convert to array and sort by score
+  const results = Array.from(resultsMap.entries())
+    .map(([id, score]): TokenScore => [id, score])
+    .sort((a, b) => b[1] - a[1])
+
+  if (results.length === 0) {
+    return []
+  }
+
+  // If threshold is 1, return all results
+  if (threshold === 1) {
+    return results
+  }
+
+  // Find documents that have all keywords in at least one property
+  const fullMatches = results.filter(([id]) => {
+    const propertyMatches = keywordMatchesMap.get(id)
+    if (!propertyMatches) return false
+    
+    // Check if any property has all keywords
+    return Array.from(propertyMatches.values()).some(matches => matches === keywordsCount)
+  })
+
+  // If threshold is 0, return only full matches
+  if (threshold === 0) {
+    return fullMatches
+  }
+
+  // If we have full matches and threshold < 1, return full matches plus a percentage of partial matches
+  if (fullMatches.length > 0) {
+    const remainingResults = results.filter(([id]) => !fullMatches.some(([fid]) => fid === id))
+    const additionalResults = Math.ceil(remainingResults.length * threshold)
+    return [...fullMatches, ...remainingResults.slice(0, additionalResults)]
+  }
+
+  // If no full matches, return all results
+  return results
 }
 
 export function searchByWhereClause<T extends AnyOrama>(

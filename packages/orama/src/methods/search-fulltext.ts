@@ -21,7 +21,7 @@ import { prioritizeTokenScores } from '../components/algorithms.js'
 
 export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
-  params: Pick<SearchParamsFullText<T>, 'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance'>,
+  params: Pick<SearchParamsFullText<T>, 'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold'>,
   language: Language | undefined
 ) {
   const { term, properties } = params
@@ -66,7 +66,7 @@ export function innerFullTextSearch<T extends AnyOrama>(
   //   in this case, we need to return all the documents that contains at least one of the given properties
   if (term || properties) {
     const docsCount = count(orama)
-    const searchResults = orama.index.search(
+    uniqueDocsIDs = orama.index.search(
       index,
       term || '',
       orama.tokenizer,
@@ -78,18 +78,10 @@ export function innerFullTextSearch<T extends AnyOrama>(
       applyDefault(params.relevance),
       docsCount,
       whereFiltersIDs,
+      params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
     )
 
-    // Get the number of keywords from the tokenized search term
-    const keywordsCount = term ? orama.tokenizer.tokenize(term, language).length : 1
-    
-    // Apply prioritization to search results
-    uniqueDocsIDs = prioritizeTokenScores(
-      [searchResults],
-      1, // Using default boost of 1 since boost is already applied in the search
-      params.tolerance || 0,
-      keywordsCount
-    )
+
   } else {
     // Tokenizer returns empty array and the search term is empty as well.
     // We return all the documents.
