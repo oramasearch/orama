@@ -17,6 +17,7 @@ import type {
 import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
 import { count } from './docs.js'
 import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
+import { prioritizeTokenScores } from '../components/algorithms.js'
 
 export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
@@ -64,9 +65,8 @@ export function innerFullTextSearch<T extends AnyOrama>(
   // - or we have properties to search
   //   in this case, we need to return all the documents that contains at least one of the given properties
   if (term || properties) {
-
     const docsCount = count(orama)
-    uniqueDocsIDs = orama.index.search(
+    const searchResults = orama.index.search(
       index,
       term || '',
       orama.tokenizer,
@@ -78,6 +78,17 @@ export function innerFullTextSearch<T extends AnyOrama>(
       applyDefault(params.relevance),
       docsCount,
       whereFiltersIDs,
+    )
+
+    // Get the number of keywords from the tokenized search term
+    const keywordsCount = term ? orama.tokenizer.tokenize(term, language).length : 1
+    
+    // Apply prioritization to search results
+    uniqueDocsIDs = prioritizeTokenScores(
+      [searchResults],
+      1, // Using default boost of 1 since boost is already applied in the search
+      params.tolerance || 0,
+      keywordsCount
     )
   } else {
     // Tokenizer returns empty array and the search term is empty as well.
