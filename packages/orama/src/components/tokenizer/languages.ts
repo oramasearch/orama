@@ -2,6 +2,7 @@ export const STEMMERS: Record<string, string> = {
   arabic: 'ar',
   armenian: 'am',
   bulgarian: 'bg',
+  czech: 'cz',
   danish: 'dk',
   dutch: 'nl',
   english: 'en',
@@ -59,7 +60,8 @@ export const SPLITTERS: Record<Language, RegExp> = {
   slovenian: /[^a-z0-9čžšČŽŠ]+/gim,
   bulgarian: /[^a-z0-9а-яА-Я]+/gim,
   tamil: /[^a-z0-9அ-ஹ]+/gim,
-  sanskrit: /[^a-z0-9A-Zāīūṛḷṃṁḥśṣṭḍṇṅñḻḹṝ]+/gim
+  sanskrit: /[^a-z0-9A-Zāīūṛḷṃṁḥśṣṭḍṇṅñḻḹṝ]+/gim,
+  czech: /[^A-Z0-9a-zěščřžýáíéúůóťďĚŠČŘŽÝÁÍÉÓÚŮŤĎ-]+/gim
 }
 
 export const SUPPORTED_LANGUAGES = Object.keys(STEMMERS)
