@@ -1,6 +1,6 @@
 {
   "name": "@orama/tokenizers",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "type": "module",
   "description": "Additional tokenizers for Orama",
   "sideEffects": false,
@@ -19,9 +19,7 @@
   "dependencies": {
     "@orama/orama": "workspace:*"
   },
-  "files": [
-    "build"
-  ],
+  "files": ["build"],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"

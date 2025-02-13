@@ -1,11 +1,8 @@
 {
   "name": "@orama/plugin-docusaurus",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "Docusaurus plugin for local search powered by Orama",
-  "keywords": [
-    "orama",
-    "docusaurus"
-  ],
+  "keywords": ["orama", "docusaurus"],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/oramasearch/orama/issues"

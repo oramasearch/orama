@@ -1,13 +1,8 @@
 {
   "name": "@orama/plugin-vitepress",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "Vitepress plugin for local search powered by orama",
-  "keywords": [
-    "orama",
-    "vite",
-    "vitepress",
-    "vue"
-  ],
+  "keywords": ["orama", "vite", "vitepress", "vue"],
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -21,9 +16,7 @@
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "swc --delete-dir-on-start --extensions .ts -d dist src",
     "postbuild": "tsc -p . --emitDeclarationOnly && cp ./src/Search.vue ./dist/Search.vue",
