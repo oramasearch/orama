@@ -967,7 +967,8 @@ export interface IIndex<I extends AnyIndexStore> {
     resultsMap: Map<number, number>,
     boostPerProperty: number,
     whereFiltersIDs: Set<InternalDocumentID> | undefined,
-  )
+    keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
+  ): void
 
   search<T extends AnyOrama>(
     index: AnyIndexStore,
@@ -981,6 +982,7 @@ export interface IIndex<I extends AnyIndexStore> {
     relevance: Required<BM25Params>,
     docsCount: number,
     whereFiltersIDs: Set<InternalDocumentID> | undefined,
+    threshold?: number
   ): TokenScore[]
 
   searchByWhereClause<T extends AnyOrama>(

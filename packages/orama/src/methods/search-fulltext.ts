@@ -17,10 +17,11 @@ import type {
 import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
 import { count } from './docs.js'
 import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
+import { prioritizeTokenScores } from '../components/algorithms.js'
 
 export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
-  params: Pick<SearchParamsFullText<T>, 'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance'>,
+  params: Pick<SearchParamsFullText<T>, 'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold'>,
   language: Language | undefined
 ) {
   const { term, properties } = params
@@ -64,7 +65,6 @@ export function innerFullTextSearch<T extends AnyOrama>(
   // - or we have properties to search
   //   in this case, we need to return all the documents that contains at least one of the given properties
   if (term || properties) {
-
     const docsCount = count(orama)
     uniqueDocsIDs = orama.index.search(
       index,
@@ -78,7 +78,10 @@ export function innerFullTextSearch<T extends AnyOrama>(
       applyDefault(params.relevance),
       docsCount,
       whereFiltersIDs,
+      params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
     )
+
+
   } else {
     // Tokenizer returns empty array and the search term is empty as well.
     // We return all the documents.
