@@ -7373,8 +7373,8 @@ packages:
     resolution: {integrity: sha512-euTV/2kya290SNkl5m8e/H1na8iDygk74nNtl4E0YZNyYIrEMwE1JwamoroMKGZw2Uz+in/8gH3m1+2YfP0j1w==}
     engines: {node: '>= 16.0.0'}
 
-  /@orama/orama@3.0.5:
-    resolution: {integrity: sha512-0cQT/yzRrGCYemggH9Hz2gs7spdWJOqbKCdIRY/f4YkLEyodLMs0B9UXkikoFfLX3Gf2Pcduktlolv34cw79Yw==}
+  /@orama/orama@3.0.7:
+    resolution: {integrity: sha512-pwF9eB2TD4HCgI0l886RHbYvcX187+agsMsCn4A2KoeinxN4z3Fsz9973owE308wIYwz2bmioNBkpvRW2A5lSw==}
     engines: {node: '>= 16.0.0'}
     dev: false
 
@@ -7527,7 +7527,7 @@ packages:
     resolution: {integrity: sha512-uNPFs4wq/iOPbggCwTkVNbIr64Vfd7ZS/h+cricXVnzXWocjDTfJ3wLL4lr0qiSu41g8z+eCAGBqJ30RO2O4AA==}
     dependencies:
       '@orama/cuid2': 2.2.3
-      '@orama/orama': 3.0.5
+      '@orama/orama': 3.0.7
       lodash: 4.17.21
     dev: false
 

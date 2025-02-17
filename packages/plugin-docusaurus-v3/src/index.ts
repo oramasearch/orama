@@ -4,10 +4,11 @@ import { cp } from 'node:fs/promises'
 import { gzip } from 'pako'
 import { resolve } from 'node:path'
 import { create, insertMultiple, save } from '@orama/orama'
+import { CloudManager } from '@oramacloud/client'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
-import { createSnapshot, deployIndex, DOCS_PRESET_SCHEMA, fetchEndpointConfig } from "./utils.js"
+import {bulkInsert, DOCS_PRESET_SCHEMA, fetchEndpointConfig, loggedOperation} from "./utils.js"
 import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 
 enum DeployType {
@@ -318,16 +319,22 @@ async function deployData({
     }
 }) {
   const { ORAMA_CLOUD_BASE_URL } = process.env
-  const baseUrl = ORAMA_CLOUD_BASE_URL || 'https://cloud.orama.com'
+  const baseUrl = ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
 
   if (deployConfig?.type) {
     if (deployConfig.type === DeployType.DEFAULT || deployConfig.type === DeployType.SNAPSHOT_ONLY) {
+      const cloudManager = new CloudManager({ api_key: deployConfig.oramaCloudAPIKey!, baseURL: baseUrl })
+      const index = cloudManager.index(deployConfig.indexId!)
       const endpointConfig = await fetchEndpointConfig(baseUrl, deployConfig.oramaCloudAPIKey!, deployConfig.indexId!)
 
-      await createSnapshot(baseUrl, deployConfig.oramaCloudAPIKey!, deployConfig.indexId!, oramaDocs)
+      // Reset index
+      await loggedOperation('Orama: Reset index data', async () => await index.snapshot([]), 'Orama: Index data reset')
+
+      // Populate index
+      await bulkInsert(index, oramaDocs)
 
       if (deployConfig.type === DeployType.DEFAULT) {
-        await deployIndex(baseUrl, deployConfig.oramaCloudAPIKey!, deployConfig.indexId!)
+        await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
       }
       return endpointConfig
     } else {

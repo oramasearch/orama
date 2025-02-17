@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { useEffect, useState } from 'react'
-import { Switch } from '@orama/switch'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import useIsBrowser from '@docusaurus/useIsBrowser'
 import { useColorMode } from '@docusaurus/theme-common'
@@ -79,7 +78,7 @@ export const useOrama = () => {
 
         await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
 
-        oramaInstance = new Switch(db)
+        oramaInstance = db
       }
 
       setSearchBoxConfig({
