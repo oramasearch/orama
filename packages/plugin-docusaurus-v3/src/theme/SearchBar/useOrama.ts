@@ -1,6 +1,5 @@
 //@ts-nocheck
 import { useEffect, useState } from 'react'
-import { Switch } from '@orama/switch'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import useIsBrowser from '@docusaurus/useIsBrowser'
 import { useColorMode } from '@docusaurus/theme-common'
@@ -14,9 +13,9 @@ import { DOCS_PRESET_SCHEMA } from '../../utils'
 export interface PluginData {
   searchData: {
     current: { data: ArrayBuffer } | null
-  },
-  searchBoxCustomConfig?: { [key:string]: any }
-  searchBtnConfig?: { [key:string]: any }
+  }
+  searchBoxCustomConfig?: { [key: string]: any }
+  searchBtnConfig?: { [key: string]: any }
   endpoint: { url: string; key: string } | null
   analytics: { apiKey: string; indexId: string; enabled: boolean } | null
   docsInstances: string[]
@@ -28,7 +27,9 @@ export const useOrama = () => {
     custom: null
   })
   const { colorMode } = useColorMode()
-  const { searchData, endpoint, analytics, searchBoxCustomConfig, searchBtnConfig }: PluginData = usePluginData('@orama/plugin-docusaurus-v3') as PluginData
+  const { searchData, endpoint, analytics, searchBoxCustomConfig, searchBtnConfig }: PluginData = usePluginData(
+    '@orama/plugin-docusaurus-v3'
+  ) as PluginData
 
   const baseURL = useBaseUrl('orama-search-index-current.json.gz')
   const isBrowser = useIsBrowser()
@@ -67,25 +68,25 @@ export const useOrama = () => {
           plugins: [
             ...(analytics
               ? [
-                pluginAnalytics({
-                  apiKey: analytics.apiKey,
-                  indexId: analytics.indexId,
-                  enabled: analytics.enabled
-                })
-              ]
+                  pluginAnalytics({
+                    apiKey: analytics.apiKey,
+                    indexId: analytics.indexId,
+                    enabled: analytics.enabled
+                  })
+                ]
               : [])
           ]
         })
 
         await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
 
-        oramaInstance = new Switch(db)
+        oramaInstance = db
       }
 
       setSearchBoxConfig({
         basic: {
           clientInstance: oramaInstance,
-          facetProperty: 'category',
+          facetProperty: 'category'
         },
         custom: searchBoxCustomConfig
       })
