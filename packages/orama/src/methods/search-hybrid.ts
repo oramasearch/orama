@@ -20,9 +20,7 @@ export function innerHybridSearch<T extends AnyOrama, ResultDocument = TypedDocu
   params: SearchParamsHybrid<T, ResultDocument>,
   language?: string
 ) {
-  const fullTextIDs = minMaxScoreNormalization(
-    innerFullTextSearch(orama, params, language)
-  )
+  const fullTextIDs = minMaxScoreNormalization(innerFullTextSearch(orama, params, language))
   const vectorIDs = innerVectorSearch(orama, params, language)
 
   const hybridWeights = params.hybridWeights
@@ -38,7 +36,7 @@ export function hybridSearch<T extends AnyOrama, ResultDocument = TypedDocument<
 
   function performSearchLogic(): Results<ResultDocument> {
     const uniqueTokenScores = innerHybridSearch(orama, params, language)
-    
+
     let facetsResults: any
     const shouldCalculateFacets = params.facets && Object.keys(params.facets).length > 0
     if (shouldCalculateFacets) {
@@ -52,7 +50,7 @@ export function hybridSearch<T extends AnyOrama, ResultDocument = TypedDocument<
 
     const offset = params.offset ?? 0
     const limit = params.limit ?? 10
-    
+
     const results = fetchDocuments(orama, uniqueTokenScores, offset, limit).filter(Boolean)
 
     const timeEnd = getNanosecondsTime()
@@ -76,7 +74,6 @@ export function hybridSearch<T extends AnyOrama, ResultDocument = TypedDocument<
 
     return returningResults
   }
-
 
   async function executeSearchAsync(): Promise<Results<ResultDocument>> {
     if (orama.beforeSearch) {

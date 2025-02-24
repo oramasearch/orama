@@ -31,8 +31,8 @@ test('local client', async () => {
         },
         embeddings: {
           defaultProperty: 'embeddings',
-          model: 'openai/text-embedding-3-small',
-        },
+          model: 'openai/text-embedding-3-small'
+        }
       })
     ]
   })
@@ -44,7 +44,7 @@ test('local client', async () => {
   ])
 
   const answerSession = new Switch(db).createAnswerSession({
-    systemPrompt: `You're an AI agent used to greet people. You will receive a name and will have to proceed generating a greeting message for that name. Use your fantasy.`,
+    systemPrompt: `You're an AI agent used to greet people. You will receive a name and will have to proceed generating a greeting message for that name. Use your fantasy.`
   })
 
   await answerSession.ask({ term: 'Bob', where: { age: { eq: 40 } } })

@@ -1,6 +1,18 @@
-import type { AnyOrama, Results, SearchParams, Nullable, IAnswerSessionConfig as OSSAnswerSessionConfig } from '@orama/orama'
+/* @ts-self-types="./index.d.ts" */
+import type {
+  AnyOrama,
+  Results,
+  SearchParams,
+  Nullable,
+  IAnswerSessionConfig as OSSAnswerSessionConfig
+} from '@orama/orama'
 import { search, AnswerSession as OSSAnswerSession } from '@orama/orama'
-import { OramaClient, ClientSearchParams, AnswerSessionParams as CloudAnswerSessionConfig, AnswerSession as CloudAnswerSession } from '@oramacloud/client'
+import {
+  OramaClient,
+  ClientSearchParams,
+  AnswerSessionParams as CloudAnswerSessionConfig,
+  AnswerSession as CloudAnswerSession
+} from '@oramacloud/client'
 
 export type OramaSwitchClient = AnyOrama | OramaClient
 
@@ -13,7 +25,7 @@ export type SearchConfig = {
 }
 
 function isOramaClient(client: any): client is OramaClient {
-  return client && typeof client === 'object' && 'api_key' in client && 'endpoint' in client;
+  return client && typeof client === 'object' && 'api_key' in client && 'endpoint' in client
 }
 
 export class Switch<T = OramaSwitchClient> {
@@ -48,20 +60,24 @@ export class Switch<T = OramaSwitchClient> {
     }
   }
 
-  createAnswerSession(params: T extends OramaClient ? CloudAnswerSessionConfig : OSSAnswerSessionConfig): T extends OramaClient ? CloudAnswerSession<true> : OSSAnswerSession {
+  createAnswerSession(
+    params: T extends OramaClient ? CloudAnswerSessionConfig : OSSAnswerSessionConfig
+  ): T extends OramaClient ? CloudAnswerSession<true> : OSSAnswerSession {
     if (this.isCloud) {
       const p = params as CloudAnswerSessionConfig
-      return (this.client as OramaClient).createAnswerSession(p) as unknown as T extends OramaClient ? CloudAnswerSession<true> : OSSAnswerSession
+      return (this.client as OramaClient).createAnswerSession(p) as unknown as T extends OramaClient
+        ? CloudAnswerSession<true>
+        : OSSAnswerSession
     }
 
     if (this.isOSS) {
       const p = params as OSSAnswerSessionConfig
       return new OSSAnswerSession(this.client as AnyOrama, {
-          conversationID: p.conversationID,
-          initialMessages: p.initialMessages,
-          events: p.events,
-          userContext: p.userContext,
-          systemPrompt: p.systemPrompt,
+        conversationID: p.conversationID,
+        initialMessages: p.initialMessages,
+        events: p.events,
+        userContext: p.userContext,
+        systemPrompt: p.systemPrompt
       }) as unknown as T extends OramaClient ? CloudAnswerSession<true> : OSSAnswerSession
     }
 

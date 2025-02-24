@@ -834,9 +834,6 @@ importers:
       tsup:
         specifier: ^7.2.0
         version: 7.2.0(@swc/core@1.10.9)(typescript@5.7.3)
-      tsx:
-        specifier: ^4.7.1
-        version: 4.19.2
 
   sandboxes/plugin-docusaurus-v2.4.3-sandbox:
     dependencies:

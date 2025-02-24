@@ -163,9 +163,7 @@
       "require": "./dist/sk.cjs"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"

@@ -3,7 +3,7 @@ import { resolve, relative } from 'node:path'
 
 const rootDir = process.cwd()
 
-const packages = [
+const npm_packages = [
   'orama',
   'plugin-astro',
   'plugin-data-persistence',
@@ -21,6 +21,17 @@ const packages = [
   'stopwords',
   'tokenizers',
   'switch'
+]
+
+const jsr_packages = [
+  'orama',
+  'stemmers',
+  'stopwords',
+  "swtich",
+  "tokenizers"
+]
+const jsr_packages_with_slow_types = [
+  "tokenizers"
 ]
 
 function step(message) {
@@ -57,14 +68,21 @@ async function execute(command, args, cwd) {
   return promise
 }
 
-async function main() {
-  await execute('pnpm', 'build')
-  // await execute('pnpm', 'test')
 
-  for (const pkg of packages) {
-    const cwd = resolve(rootDir, 'packages', pkg)
-    await execute('pnpm', ['publish'], cwd)
+await execute('pnpm', 'build')
+// await execute('pnpm', 'test')
+
+for (const pkg of npm_packages) {
+  const cwd = resolve(rootDir, 'packages', pkg)
+  await execute('pnpm', ['publish'], cwd)
+
+  if (jsr_packages.includes(pkg)) {
+    const args = ['publish']
+
+    if (jsr_packages_with_slow_types.includes(pkg)) {
+      args.push('--slow-types')
+    }
+
+    await execute('jsr',args, cwd)
   }
 }
-
-await main()
