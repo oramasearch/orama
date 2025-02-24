@@ -54,7 +54,7 @@ t.test('search method', async (t) => {
       const docIdsShouldMatch = allDocs.filter((d) => /coffee/.test(d.document.name as string)).map((d) => d.id)
 
       const result = await search(db, {
-        term: 'coffee',
+        term: 'coffee'
       })
 
       const matchedIds = result.hits.map((d) => d.id)
@@ -105,8 +105,8 @@ t.test('search method', async (t) => {
       t.equal(result6.count, 4)
 
       // Long string search (Tests for https://github.com/oramasearch/orama/issues/159 )
-      const result7 = await search(db, { term: 'They are the best'})
-      const result8 = await search(db, { term: 'Foxes are nice animals'})
+      const result7 = await search(db, { term: 'They are the best' })
+      const result8 = await search(db, { term: 'Foxes are nice animals' })
 
       t.equal(result7.count, 2)
       t.equal(result8.count, 2)
@@ -383,7 +383,8 @@ t.test('search method', async (t) => {
     t.end()
   })
 
-  t.test('should correctly search without term', async (t) => {    const db = create({
+  t.test('should correctly search without term', async (t) => {
+    const db = create({
       schema: {
         quote: 'string',
         author: 'string'
@@ -422,7 +423,8 @@ t.test('search method', async (t) => {
     )
   })
 
-  t.test('should correctly search for data returning doc including with unindexed keys', async (t) => {    const db = create({
+  t.test('should correctly search for data returning doc including with unindexed keys', async (t) => {
+    const db = create({
       schema: {
         quote: 'string',
         author: 'string'
@@ -455,7 +457,8 @@ t.test('search method', async (t) => {
     t.same(result2.hits[0].document, documentWithNestedUnindexedField)
   })
 
-  t.test('should throw an error when searching in non-existing indices', async (t) => {    const db = create({ schema: { foo: 'string', baz: 'string' } })
+  t.test('should throw an error when searching in non-existing indices', async (t) => {
+    const db = create({ schema: { foo: 'string', baz: 'string' } })
 
     t.throws(
       () =>
@@ -469,7 +472,8 @@ t.test('search method', async (t) => {
     )
   })
 
-  t.test('should support nested properties', async (t) => {    const db = create({
+  t.test('should support nested properties', async (t) => {
+    const db = create({
       schema: {
         quote: 'string',
         author: {
@@ -521,7 +525,8 @@ t.test('search method', async (t) => {
     t.equal(resultAuthorName.count, 0)
   })
 
-  t.test('should support multiple nested properties', async (t) => {    const db = create({
+  t.test('should support multiple nested properties', async (t) => {
+    const db = create({
       schema: {
         quote: 'string',
         author: {
@@ -642,7 +647,8 @@ t.test('search method', async (t) => {
     t.end()
   })
 
-  t.test('with geosearch', async (t) => {    const db = create({
+  t.test('with geosearch', async (t) => {
+    const db = create({
       schema: {
         id: 'string',
         name: 'string',
@@ -692,7 +698,8 @@ t.test('search method', async (t) => {
     t.strictSame(r2.hits.map((h) => h.id).sort(), ['1', '2'])
   })
 
-  t.test('with custom tokenizer', async (t) => {    const normalizationCache = new Map([['english:foo:dogs', 'Dogs']])
+  t.test('with custom tokenizer', async (t) => {
+    const normalizationCache = new Map([['english:foo:dogs', 'Dogs']])
 
     const db = create({
       schema: {

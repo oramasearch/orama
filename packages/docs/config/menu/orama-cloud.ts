@@ -39,7 +39,7 @@ const oramaCloudMenu = [
           {
             label: 'Custom integrations',
             link: '/cloud/data-sources/custom-integrations'
-          },
+          }
         ]
       },
       {
@@ -63,13 +63,13 @@ const oramaCloudMenu = [
             link: '/cloud/performing-search/hybrid-search'
           },
           {
-            label: "Multi-index search",
-            link: "/cloud/performing-search/multi-index-search.html",
+            label: 'Multi-index search',
+            link: '/cloud/performing-search/multi-index-search.html',
             badge: {
-              text: "New",
-              variant: "success"
+              text: 'New',
+              variant: 'success'
             }
-          },
+          }
         ]
       },
       {
@@ -145,7 +145,7 @@ const oramaCloudMenu = [
           {
             label: 'Chat Box',
             link: '/cloud/ui-components/chat-box'
-          },
+          }
         ]
       },
       {
@@ -175,7 +175,7 @@ const oramaCloudMenu = [
         collapsed: true,
         items: [
           {
-            label: "Data sources",
+            label: 'Data sources',
             collapsed: false,
             items: [
               {
@@ -217,7 +217,7 @@ const oramaCloudMenu = [
             ]
           },
           {
-            label: "Working with indexes",
+            label: 'Working with indexes',
             collapsed: false,
             items: [
               {
@@ -239,7 +239,7 @@ const oramaCloudMenu = [
             ]
           },
           {
-            label: "Learn more",
+            label: 'Learn more',
             collapsed: false,
             items: [
               {
@@ -249,9 +249,9 @@ const oramaCloudMenu = [
               {
                 label: 'Pricing and limits',
                 link: '/cloud/understanding-orama/pricing-limits'
-              },
+              }
             ]
-          },
+          }
         ]
       },
       {

@@ -67,7 +67,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('greater than or equal to', async (t) => {
-    const [db, [id1,,id3]] = await createSimpleDB()
+    const [db, [id1, , id3]] = await createSimpleDB()
 
     const r1_gte = await search(db, {
       term: 'coffee',
@@ -84,7 +84,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('less than', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lt = await search(db, {
       term: 'coffee',
@@ -100,7 +100,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('less than or equal to', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -116,7 +116,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('equal', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -132,7 +132,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('between', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -148,7 +148,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('multiple filters', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -167,7 +167,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('multiple filters, and operation', async (t) => {
-    const [db, [,, id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',

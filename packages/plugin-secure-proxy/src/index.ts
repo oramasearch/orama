@@ -12,7 +12,7 @@ export type SecureProxyPluginOptions = {
   apiKey: string
   embeddings: {
     defaultProperty: string
-    model: EmbeddingModel,
+    model: EmbeddingModel
     onInsert?: {
       generate: boolean
       properties: string[]
@@ -24,23 +24,23 @@ export type SecureProxyPluginOptions = {
   }
 }
 
-function getPropertyValue (obj: object, path: string) {
-  return path.split('.').reduce((current, key) => 
-    current && current[key] !== undefined ? current[key] : undefined, obj
-  )
+function getPropertyValue(obj: object, path: string) {
+  return path
+    .split('.')
+    .reduce((current, key) => (current && current[key] !== undefined ? current[key] : undefined), obj)
 }
-
 
 function getPropertiesValues(schema: object, properties: string[]) {
   return properties
-    .map(prop => getPropertyValue(schema, prop))
-    .filter(value => value !== undefined)
+    .map((prop) => getPropertyValue(schema, prop))
+    .filter((value) => value !== undefined)
     .join('. ')
 }
 
 export function pluginSecureProxy(pluginParams: SecureProxyPluginOptions): OramaPluginSync<SecureProxyExtra> {
   if (!pluginParams.apiKey) throw new Error('Missing "apiKey" parameter for plugin-secure-proxy')
-  if (!pluginParams.embeddings.defaultProperty) throw new Error('Missing "embeddings.defaultProperty" parameter for plugin-secure-proxy')
+  if (!pluginParams.embeddings.defaultProperty)
+    throw new Error('Missing "embeddings.defaultProperty" parameter for plugin-secure-proxy')
   if (!pluginParams.embeddings.model) throw new Error('Missing "embeddings.model" parameter for plugin-secure-proxy')
 
   const proxy = new OramaProxy({
@@ -74,7 +74,7 @@ export function pluginSecureProxy(pluginParams: SecureProxyPluginOptions): Orama
 
       params[pluginParams.embeddings.defaultProperty] = embeddings
     },
-    
+
     async beforeSearch<T extends AnyOrama>(_db: AnyOrama, params: SearchParams<T, TypedDocument<any>>) {
       if (params.mode !== 'vector' && params.mode !== 'hybrid') {
         return

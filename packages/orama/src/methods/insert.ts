@@ -394,7 +394,6 @@ function innerInsertMultipleSync<T extends AnyOrama>(
   return ids
 }
 
-
 export function innerInsertMultiple<T extends AnyOrama>(
   orama: T,
   docs: PartialSchemaDeep<TypedDocument<T>>[],

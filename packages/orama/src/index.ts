@@ -1,3 +1,4 @@
+/* @ts-self-types="./index.d.ts" */
 export { create } from './methods/create.js'
 export { count, getByID } from './methods/docs.js'
 export { insert, insertMultiple } from './methods/insert.js'

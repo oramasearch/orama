@@ -48,8 +48,7 @@ export function searchVector<T extends AnyOrama, ResultDocument = TypedDocument<
   const timeStart = getNanosecondsTime()
 
   function performSearchLogic(): Results<ResultDocument> {
-    const results = innerVectorSearch(orama, params, language)
-      .sort(sortTokenScorePredicate)
+    const results = innerVectorSearch(orama, params, language).sort(sortTokenScorePredicate)
 
     let facetsResults: any = []
 

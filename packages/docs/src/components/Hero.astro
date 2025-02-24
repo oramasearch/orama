@@ -1,30 +1,30 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from 'astro:assets'
 import type { Props } from '@astrojs/starlight/props'
 import { LinkButton } from '@astrojs/starlight/components'
 
 const { data } = Astro.props.entry
-const { title = data.title, tagline, image, actions = [] } = data.hero || {};
+const { title = data.title, tagline, image, actions = [] } = data.hero || {}
 
 const imageAttrs = {
-	loading: 'eager' as const,
-	decoding: 'async' as const,
-	width: 400,
-	height: 400,
-	alt: image?.alt || '',
-};
+  loading: 'eager' as const,
+  decoding: 'async' as const,
+  width: 400,
+  height: 400,
+  alt: image?.alt || ''
+}
 
-let darkImage: any = undefined;
-let lightImage: any = undefined;
+let darkImage: any = undefined
+let lightImage: any = undefined
 
 if (image) {
-    if ('dark' in image && 'light' in image) {
-		darkImage = image.dark;
-		lightImage = image.light;
-	} else if ('file' in image) {
-        darkImage = image.file;
-        lightImage = image.file;
-    }
+  if ('dark' in image && 'light' in image) {
+    darkImage = image.dark
+    lightImage = image.light
+  } else if ('file' in image) {
+    darkImage = image.file
+    lightImage = image.file
+  }
 }
 ---
 

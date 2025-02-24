@@ -13,8 +13,8 @@ export function getOramaUserId() {
   if (typeof document === 'undefined' || typeof window === 'undefined') return
 
   const cookies = document.cookie.split(';')
-  const oid = cookies.find(cookie => cookie.trim().startsWith('oid='))
-  
+  const oid = cookies.find((cookie) => cookie.trim().startsWith('oid='))
+
   if (oid) {
     return oid.split('=')[1]
   }
@@ -22,7 +22,11 @@ export function getOramaUserId() {
   return undefined
 }
 
-export function userSessionRefresh(client: OramaClient, userId: string | undefined, updateCallback: (userId: string | undefined) => void) {
+export function userSessionRefresh(
+  client: OramaClient,
+  userId: string | undefined,
+  updateCallback: (userId: string | undefined) => void
+) {
   const currentUserId = getOramaUserId()
   if (currentUserId !== userId) {
     console.warn('User ID changed:', currentUserId)
