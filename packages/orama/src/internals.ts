@@ -1,3 +1,4 @@
+/* @ts-self-types="./internals.d.ts" */
 export { boundedLevenshtein } from './components/levenshtein.js'
 export {
   formatBytes,
@@ -7,6 +8,6 @@ export {
   convertDistanceToMeters,
   safeArrayPush,
   setIntersection,
-  setUnion,
+  setUnion
 } from './utils.js'
 export { normalizeToken } from './components/tokenizer/index.js'

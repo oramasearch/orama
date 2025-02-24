@@ -170,7 +170,7 @@ export function create<T extends AnyOrama, TSchema extends T['schema']>(
       index.vectorIndexes[path] = {
         type: 'Vector',
         node: new VectorIndex(getVectorSize(type)),
-        isArray: false,
+        isArray: false
       }
     } else {
       const isArray = /\[/.test(type as string)
@@ -273,7 +273,16 @@ export function insert(
     return insertVector(index, prop, value as number[] | Float32Array, id, internalId)
   }
 
-  const insertScalar = insertScalarBuilder(implementation, index, prop, internalId, language, tokenizer, docsCount, options)
+  const insertScalar = insertScalarBuilder(
+    implementation,
+    index,
+    prop,
+    internalId,
+    language,
+    tokenizer,
+    docsCount,
+    options
+  )
 
   if (!isArrayType(schemaType)) {
     return insertScalar(value)
@@ -286,7 +295,13 @@ export function insert(
   }
 }
 
-export function insertVector(index: AnyIndexStore, prop: string, value: number[] | VectorType, id: DocumentID, internalDocumentId: InternalDocumentID): void {
+export function insertVector(
+  index: AnyIndexStore,
+  prop: string,
+  value: number[] | VectorType,
+  id: DocumentID,
+  internalDocumentId: InternalDocumentID
+): void {
   index.vectorIndexes[prop].node.add(internalDocumentId, value)
 }
 
@@ -372,7 +387,18 @@ export function remove(
   const elements = value as Array<string | number | boolean>
   const elementsLength = elements.length
   for (let i = 0; i < elementsLength; i++) {
-    removeScalar(implementation, index, prop, id, internalId, elements[i], innerSchemaType, language, tokenizer, docsCount)
+    removeScalar(
+      implementation,
+      index,
+      prop,
+      id,
+      internalId,
+      elements[i],
+      innerSchemaType,
+      language,
+      tokenizer,
+      docsCount
+    )
   }
 
   return true
@@ -396,7 +422,7 @@ export function calculateResultScores(
   const fieldLengths = index.fieldLengths[prop]
   const oramaOccurrences = index.tokenOccurrences[prop]
   const oramaFrequencies = index.frequencies[prop]
-  
+
   // oramaOccurrences[term] can be undefined, 0, string, or { [k: string]: number }
   const termOccurrences = typeof oramaOccurrences[term] === 'number' ? oramaOccurrences[term] ?? 0 : 0
 
@@ -417,14 +443,7 @@ export function calculateResultScores(
 
     const tf = oramaFrequencies?.[internalId]?.[term] ?? 0
 
-    const bm25 = BM25(
-      tf,
-      termOccurrences,
-      docsCount,
-      fieldLengths[internalId]!,
-      avgFieldLength,
-      bm25Relevance,
-    )
+    const bm25 = BM25(tf, termOccurrences, docsCount, fieldLengths[internalId]!, avgFieldLength, bm25Relevance)
 
     if (resultsMap.has(internalId)) {
       resultsMap.set(internalId, resultsMap.get(internalId)! + bm25 * boostPerProperty)
@@ -448,13 +467,13 @@ function searchInProperty(
   whereFiltersIDs: Set<InternalDocumentID> | undefined,
   keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
 ) {
-  const tokenLength = tokens.length;
+  const tokenLength = tokens.length
   for (let i = 0; i < tokenLength; i++) {
-    const term = tokens[i];
+    const term = tokens[i]
     const searchResult = tree.find({ term, exact, tolerance })
 
     const termsFound = Object.keys(searchResult)
-    const termsFoundLength = termsFound.length;
+    const termsFoundLength = termsFound.length
     for (let j = 0; j < termsFoundLength; j++) {
       const word = termsFound[j]
       const ids = searchResult[word]
@@ -468,7 +487,7 @@ function searchInProperty(
         resultsMap,
         boostPerProperty,
         whereFiltersIDs,
-        keywordMatchesMap,
+        keywordMatchesMap
       )
     }
   }
@@ -486,7 +505,7 @@ export function search(
   relevance: Required<BM25Params>,
   docsCount: number,
   whereFiltersIDs: Set<InternalDocumentID> | undefined,
-  threshold = 0,
+  threshold = 0
 ): TokenScore[] {
   const tokens = tokenizer.tokenize(term, language)
   const keywordsCount = tokens.length || 1
@@ -549,9 +568,9 @@ export function search(
   const fullMatches = results.filter(([id]) => {
     const propertyMatches = keywordMatchesMap.get(id)
     if (!propertyMatches) return false
-    
+
     // Check if any property has all keywords
-    return Array.from(propertyMatches.values()).some(matches => matches === keywordsCount)
+    return Array.from(propertyMatches.values()).some((matches) => matches === keywordsCount)
   })
 
   // If threshold is 0, return only full matches
@@ -656,9 +675,11 @@ export function searchByWhereClause<T extends AnyOrama>(
     }
 
     if (type === 'Flat') {
-      const results = new Set(isArray
-        ? node.filterArr(operation as EnumArrComparisonOperator)
-        : node.filter(operation as EnumComparisonOperator))
+      const results = new Set(
+        isArray
+          ? node.filterArr(operation as EnumArrComparisonOperator)
+          : node.filter(operation as EnumComparisonOperator)
+      )
 
       filtersMap[param] = setUnion(filtersMap[param], results)
 
@@ -668,7 +689,7 @@ export function searchByWhereClause<T extends AnyOrama>(
     if (type === 'AVL') {
       const operationOpt = operationKeys[0] as keyof ComparisonOperator
       const operationValue = (operation as ComparisonOperator)[operationOpt]
-      let filteredIDs: Set<InternalDocumentID> 
+      let filteredIDs: Set<InternalDocumentID>
 
       switch (operationOpt) {
         case 'gt': {
@@ -818,12 +839,7 @@ export function save<R = unknown>(index: Index): R {
   const savedIndexes: any = {}
   for (const name of Object.keys(indexes)) {
     const { type, node, isArray } = indexes[name]
-    if (type === 'Flat'
-        || type === 'Radix'
-        || type === 'AVL'
-        || type === 'BKD'
-        || type === 'Bool'
-    ) {
+    if (type === 'Flat' || type === 'Radix' || type === 'AVL' || type === 'BKD' || type === 'Bool') {
       savedIndexes[name] = {
         type,
         node: node.toJSON(),
@@ -866,7 +882,10 @@ export function createIndex(): IIndex<Index> {
   }
 }
 
-function addGeoResult(set: Set<InternalDocumentID> | undefined, ids: Array<{ docIDs: InternalDocumentID[] }>): Set<InternalDocumentID> {
+function addGeoResult(
+  set: Set<InternalDocumentID> | undefined,
+  ids: Array<{ docIDs: InternalDocumentID[] }>
+): Set<InternalDocumentID> {
   if (!set) {
     set = new Set()
   }
@@ -883,7 +902,10 @@ function addGeoResult(set: Set<InternalDocumentID> | undefined, ids: Array<{ doc
   return set
 }
 
-function addFindResult(set: Set<InternalDocumentID> | undefined, filteredIDsResults: FindResult): Set<InternalDocumentID> {
+function addFindResult(
+  set: Set<InternalDocumentID> | undefined,
+  filteredIDsResults: FindResult
+): Set<InternalDocumentID> {
   if (!set) {
     set = new Set()
   }

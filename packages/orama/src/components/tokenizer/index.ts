@@ -13,7 +13,7 @@ export interface DefaultTokenizer extends Tokenizer {
   stopWords?: string[]
   allowDuplicates: boolean
   normalizationCache: Map<string, string>
-  normalizeToken(this: DefaultTokenizer, prop: Optional<string>, token: string, withCache:Optional<boolean>): string
+  normalizeToken(this: DefaultTokenizer, prop: Optional<string>, token: string, withCache: Optional<boolean>): string
 }
 
 export function normalizeToken(this: DefaultTokenizer, prop: string, token: string, withCache: boolean = true): string {
@@ -54,7 +54,13 @@ function trim(text: string[]): string[] {
   return text
 }
 
-function tokenize(this: DefaultTokenizer, input: string, language?: string, prop?: string, withCache: boolean = true): string[] {
+function tokenize(
+  this: DefaultTokenizer,
+  input: string,
+  language?: string,
+  prop?: string,
+  withCache: boolean = true
+): string[] {
   if (language && language !== this.language) {
     throw createError('LANGUAGE_NOT_SUPPORTED', language)
   }
@@ -73,7 +79,7 @@ function tokenize(this: DefaultTokenizer, input: string, language?: string, prop
     tokens = input
       .toLowerCase()
       .split(splitRule)
-      .map(t => normalizeToken(t, withCache))
+      .map((t) => normalizeToken(t, withCache))
       .filter(Boolean)
   }
 

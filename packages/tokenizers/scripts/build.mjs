@@ -9,7 +9,9 @@ if (process.env.BUILD_TOKENIZERS !== '1') {
 
 const isWasmPackInstalled = await checkWasmPackInstalled()
 
-const languages = ['mandarin', 'japanese']
+const languages = ['mandarin', 
+  //'japanese'
+  ]
 
 const outdirBaseURL = new URL('../build', import.meta.url).pathname
 
@@ -24,7 +26,7 @@ for (const language of languages) {
     console.warn('!! WARNING')
     console.warn(`!! Compilation of the **${language}** tokenizer requires wasm-pack to be installed.`)
     console.warn('!! No wasm-pack installation found. Skipping build.')
-    process.exit(0)
+    process.exit(1)
   }
 
   const tokenizersBaseURL = new URL('../src', import.meta.url).pathname

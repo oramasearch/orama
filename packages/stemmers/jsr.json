@@ -1,0 +1,10 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@orama/stemmers",
+  "version": "3.0.8",
+  "publish": {
+    "include": ["README.md", "LICENSE.md", "dist/*.js", "dist/*.d.ts", "dist/*.js.map"],
+    "exclude": ["!dist"]
+  },
+  "exports": "./dist/esm/index.js"
+}

@@ -1,20 +1,39 @@
-import type { AnyOrama, SearchableType, IIndex, SearchableValue, Tokenizer, OnlyStrings, FlattenSchemaProperty, TokenScore, WhereCondition, OramaPluginSync, AnySchema, ObjectComponents, BM25Params } from '@orama/orama'
+import type {
+  AnyOrama,
+  SearchableType,
+  IIndex,
+  SearchableValue,
+  Tokenizer,
+  OnlyStrings,
+  FlattenSchemaProperty,
+  TokenScore,
+  WhereCondition,
+  OramaPluginSync,
+  AnySchema,
+  ObjectComponents,
+  BM25Params
+} from '@orama/orama'
+import { index as Index, internalDocumentIDStore } from '@orama/orama/components'
 import {
-  index as Index, internalDocumentIDStore } from '@orama/orama/components'
-import { PT15IndexStore, insertString, recursiveCreate, PositionsStorage, searchString, removeString } from './algorithm.js';
+  PT15IndexStore,
+  insertString,
+  recursiveCreate,
+  PositionsStorage,
+  searchString,
+  removeString
+} from './algorithm.js'
 
-type InternalDocumentID = internalDocumentIDStore.InternalDocumentID;
-type InternalDocumentIDStore = internalDocumentIDStore.InternalDocumentIDStore;
-type DocumentID = internalDocumentIDStore.DocumentID;
+type InternalDocumentID = internalDocumentIDStore.InternalDocumentID
+type InternalDocumentIDStore = internalDocumentIDStore.InternalDocumentIDStore
+type DocumentID = internalDocumentIDStore.DocumentID
 
 export function pluginPT15(): OramaPluginSync {
-
   return {
     name: 'orama-plugin-pt15',
 
     getComponents: function getComponents(schema: AnySchema) {
       return createComponents(schema)
-    },
+    }
   }
 }
 
@@ -26,7 +45,7 @@ function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any,
           indexes: {},
           vectorIndexes: {},
           searchableProperties: [],
-          searchablePropertiesWithTypes: {},
+          searchablePropertiesWithTypes: {}
         }
 
         recursiveCreate(indexDatastore, schema, '')
@@ -46,71 +65,98 @@ function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any,
         docsCount: number
       ) {
         if (!(schemaType === 'string' || schemaType === 'string[]')) {
-          return Index.insert(implementation as unknown as IIndex<Index.Index>, indexDatastorage as unknown as Index.Index, prop, id, internalId, value, schemaType, language, tokenizer, docsCount)
+          return Index.insert(
+            implementation as unknown as IIndex<Index.Index>,
+            indexDatastorage as unknown as Index.Index,
+            prop,
+            id,
+            internalId,
+            value,
+            schemaType,
+            language,
+            tokenizer,
+            docsCount
+          )
         }
 
         const storage = indexDatastorage.indexes[prop].node as PositionsStorage
 
         if (Array.isArray(value)) {
           for (const item of value) {
-            insertString(
-              item as string,
-              storage,
-              prop,
-              internalId,
-              language,
-              tokenizer,
-            )
+            insertString(item as string, storage, prop, internalId, language, tokenizer)
           }
         } else {
-          insertString(
-            value as string,
-            storage,
-            prop,
-            internalId,
-            language,
-            tokenizer,
-          )
+          insertString(value as string, storage, prop, internalId, language, tokenizer)
         }
       },
       // remove: <T extends I>(implementation: IIndex<T>, index: T, prop: string, id: DocumentID, value: SearchableValue, schemaType: SearchableType, language: string | undefined, tokenizer: Tokenizer, docsCount: number) => SyncOrAsyncValue<boolean>;
-      remove: function remove(implementation: IIndex<PT15IndexStore>, indexDatastorage: PT15IndexStore, prop: string, id: DocumentID, internalId: InternalDocumentID, value: SearchableValue, schemaType: SearchableType, language: string | undefined, tokenizer: Tokenizer, docsCount: number) {
+      remove: function remove(
+        implementation: IIndex<PT15IndexStore>,
+        indexDatastorage: PT15IndexStore,
+        prop: string,
+        id: DocumentID,
+        internalId: InternalDocumentID,
+        value: SearchableValue,
+        schemaType: SearchableType,
+        language: string | undefined,
+        tokenizer: Tokenizer,
+        docsCount: number
+      ) {
         if (!(schemaType === 'string' || schemaType === 'string[]')) {
-          return Index.remove(implementation as IIndex<Index.Index>, indexDatastorage as Index.Index, prop, id, internalId, value, schemaType, language, tokenizer, docsCount)
+          return Index.remove(
+            implementation as IIndex<Index.Index>,
+            indexDatastorage as Index.Index,
+            prop,
+            id,
+            internalId,
+            value,
+            schemaType,
+            language,
+            tokenizer,
+            docsCount
+          )
         }
 
         const storage = indexDatastorage.indexes[prop].node as PositionsStorage
 
         if (Array.isArray(value)) {
           for (const item of value) {
-            removeString(
-              item as string,
-              storage,
-              prop,
-              internalId,
-              tokenizer,
-              language
-            )
+            removeString(item as string, storage, prop, internalId, tokenizer, language)
           }
         } else {
-          removeString(
-            value as string,
-            storage,
-            prop,
-            internalId,
-            tokenizer,
-            language
-          )
+          removeString(value as string, storage, prop, internalId, tokenizer, language)
         }
 
         return true
       },
-      insertDocumentScoreParameters: () => {throw new Error()},
-      insertTokenScoreParameters: () => {throw new Error()},
-      removeDocumentScoreParameters: () => {throw new Error()},
-      removeTokenScoreParameters: () => {throw new Error()},
-      calculateResultScores: () => {throw new Error()},
-      search: function search<T extends AnyOrama>(index: PT15IndexStore, term: string, tokenizer: Tokenizer, language: string | undefined, propertiesToSearch: string[], exact: boolean, tolerance: number, boost: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>, relevance: Required<BM25Params>, docsCount: number, whereFiltersIDs: Set<InternalDocumentID> | undefined): TokenScore[] {
+      insertDocumentScoreParameters: () => {
+        throw new Error()
+      },
+      insertTokenScoreParameters: () => {
+        throw new Error()
+      },
+      removeDocumentScoreParameters: () => {
+        throw new Error()
+      },
+      removeTokenScoreParameters: () => {
+        throw new Error()
+      },
+      calculateResultScores: () => {
+        throw new Error()
+      },
+      search: function search<T extends AnyOrama>(
+        index: PT15IndexStore,
+        term: string,
+        tokenizer: Tokenizer,
+        language: string | undefined,
+        propertiesToSearch: string[],
+        exact: boolean,
+        tolerance: number,
+        boost: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>,
+        relevance: Required<BM25Params>,
+        docsCount: number,
+        whereFiltersIDs: Set<InternalDocumentID> | undefined
+      ): TokenScore[] {
         if (tolerance !== 0) {
           throw new Error('Tolerance not implemented yet')
         }
@@ -128,7 +174,7 @@ function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any,
           const property = propertiesToSearch[i]
           const storage = index.indexes[property].node as PositionsStorage
           const boostPerProp = boost[property] ?? 1
-          const map = searchString(tokenizer, term, storage, boostPerProp, whereFiltersIDs);
+          const map = searchString(tokenizer, term, storage, boostPerProp, whereFiltersIDs)
           if (map.size > max.score) {
             max = {
               score: map.size,
@@ -157,11 +203,18 @@ function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any,
             }
           }
         }
-        
+
         return Array.from(base)
       },
-      searchByWhereClause: function searchByWhereClause<T extends AnyOrama>(index: PT15IndexStore, tokenizer: Tokenizer, filters: Partial<WhereCondition<T['schema']>>, language: string | undefined) {
-        const stringFiltersList = Object.entries(filters).filter(([propName]) => index.indexes[propName].type === 'Position')
+      searchByWhereClause: function searchByWhereClause<T extends AnyOrama>(
+        index: PT15IndexStore,
+        tokenizer: Tokenizer,
+        filters: Partial<WhereCondition<T['schema']>>,
+        language: string | undefined
+      ) {
+        const stringFiltersList = Object.entries(filters).filter(
+          ([propName]) => index.indexes[propName].type === 'Position'
+        )
 
         // PT15 doen't support string filters.
         // this plugin doesn't distringuish between prefix and exact match.

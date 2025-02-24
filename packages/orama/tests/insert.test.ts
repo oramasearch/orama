@@ -439,7 +439,6 @@ t.test('insertMultiple method', async (t) => {
   })
 
   await t.test('should support batch insert of documents', async (t) => {
-
     const db = create({
       schema: {
         date: 'string',
@@ -549,7 +548,7 @@ t.test('insertMultiple method', async (t) => {
   })
 })
 
-t.test('insert shouldn\'t use tokenizer cache', async (t) => {
+t.test("insert shouldn't use tokenizer cache", async (t) => {
   const db = await create({
     schema: {
       name: 'string'
@@ -562,7 +561,7 @@ t.test('insert shouldn\'t use tokenizer cache', async (t) => {
 
   // Empty map
   t.strictSame(db.tokenizer.normalizationCache, new Map())
-});
+})
 
 interface BaseDataEvent extends AnyDocument {
   description: string
