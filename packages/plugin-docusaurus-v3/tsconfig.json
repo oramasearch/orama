@@ -8,6 +8,8 @@
     "skipLibCheck": true,
     "jsx": "react",
 
+    "typeRoots": ["node_modules/@types", "node_modules/@docusaurus"],
+
     /* Strict Type-Checking Options */
     "strict": true,
     "strictNullChecks": true,

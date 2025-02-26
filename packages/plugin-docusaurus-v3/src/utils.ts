@@ -1,4 +1,6 @@
-import { AnySchema } from '@orama/orama'
+import { AnyOrama, create, insertMultiple } from '@orama/orama'
+import { IndexConfig, OramaDoc } from './types'
+import { DOCS_PRESET_SCHEMA } from './constants'
 
 export const restFetcher = async <T = unknown>(url: string, options?: any): Promise<T> => {
   const response = await fetch(url, options)
@@ -33,7 +35,7 @@ export async function loggedOperation(preMessage: string, fn: () => Promise<any>
   }
 }
 
-export async function fetchEndpointConfig(baseUrl: string, APIKey: string, indexId: string) {
+export async function fetchEndpointConfig(baseUrl: string, APIKey: string, indexId: string): Promise<IndexConfig> {
   const result = await loggedOperation(
     'Orama: Fetch index endpoint config',
     async () =>
@@ -45,27 +47,18 @@ export async function fetchEndpointConfig(baseUrl: string, APIKey: string, index
     'Orama: Fetch index endpoint config (success)'
   )
 
-  return { endpoint: result?.api_endpoint, public_api_key: result?.api_key }
+  return { endpoint: result?.api_endpoint, api_key: result?.api_key }
 }
 
-export async function bulkInsert(oramaIndex: any, docs: any[], limit = 50, offset = 0) {
-  const chunk = docs.slice(offset, offset + limit)
+export async function createOramaInstance(oramaDocs: OramaDoc[]): Promise<AnyOrama> {
+  console.debug('Orama: Creating instance.')
+  const db = create({
+    schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' }
+  })
 
-  if (chunk.length > 0) {
-    await loggedOperation(
-      `Orama: Start documents insertion (range ${offset + 1}-${offset + chunk.length})`,
-      async () => await oramaIndex.insert(docs),
-      'Orama: insert created successfully'
-    )
-    await bulkInsert(oramaIndex, docs, limit, offset + limit)
-  }
-}
+  await insertMultiple(db, oramaDocs as any)
 
-export const DOCS_PRESET_SCHEMA: AnySchema = {
-  title: 'string',
-  content: 'string',
-  path: 'string',
-  section: 'string',
-  category: 'enum',
-  version: 'enum'
+  console.debug('Orama: Instance created.')
+
+  return db
 }

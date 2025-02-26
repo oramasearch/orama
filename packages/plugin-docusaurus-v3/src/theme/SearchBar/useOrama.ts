@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { useEffect, useState } from 'react'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import useIsBrowser from '@docusaurus/useIsBrowser'
@@ -8,87 +7,94 @@ import { ungzip } from 'pako'
 import { OramaClient } from '@oramacloud/client'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
-import { DOCS_PRESET_SCHEMA } from '../../utils'
 
-export interface PluginData {
-  searchData: {
-    current: { data: ArrayBuffer } | null
+import { DOCS_PRESET_SCHEMA } from '../../constants'
+import type { OramaCloudData, OramaData, OramaPlugins } from '../../types'
+import { createOramaInstance } from '../../utils'
+
+function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
+  const pluginsArray = []
+
+  if (plugins?.analytics) {
+    pluginsArray.push(
+      pluginAnalytics({
+        apiKey: plugins.analytics.apiKey,
+        indexId: plugins.analytics.indexId,
+        enabled: plugins.analytics.enabled
+      })
+    )
   }
-  searchBoxCustomConfig?: { [key: string]: any }
-  searchBtnConfig?: { [key: string]: any }
-  endpoint: { url: string; key: string } | null
-  analytics: { apiKey: string; indexId: string; enabled: boolean } | null
-  docsInstances: string[]
+
+  return pluginsArray
 }
 
-export const useOrama = () => {
-  const [searchBoxConfig, setSearchBoxConfig] = useState({
-    basic: null,
-    custom: null
+async function getOramaLocalData(indexGzipURL: string, plugins: OramaPlugins | undefined) {
+  try {
+    const searchResponse = await fetch(indexGzipURL)
+    let buffer
+
+    if (searchResponse.status === 0) {
+      throw new Error(`Network error: ${await searchResponse.text()}`)
+    } else if (searchResponse.status !== 200) {
+      throw new Error(`HTTP error ${searchResponse.status}: ${await searchResponse.text()}`)
+    }
+
+    buffer = await searchResponse.arrayBuffer()
+
+    const deflated = ungzip(buffer, { to: 'string' })
+    const parsedDeflated = JSON.parse(deflated)
+
+    const db = create({
+      schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
+      plugins: getOramaPlugins(plugins)
+    })
+
+    await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
+
+    return db
+  } catch (e: any) {
+    console.error('Error loading search index', e)
+    throw e
+  }
+}
+
+function isCloudData(data: OramaData): data is OramaCloudData {
+  return data.oramaMode === 'cloud'
+}
+
+export default function useOrama() {
+  const [searchBoxConfig, setSearchBoxConfig] = useState<{
+    basic: Record<string, any>
+    custom: Record<string, any>
+  }>({
+    basic: {},
+    custom: {}
   })
   const { colorMode } = useColorMode()
-  const { searchData, endpoint, analytics, searchBoxCustomConfig, searchBtnConfig }: PluginData = usePluginData(
-    '@orama/plugin-docusaurus-v3'
-  ) as PluginData
+  const oramaData: OramaData = usePluginData('@orama/plugin-docusaurus-v3') as OramaData
 
-  const baseURL = useBaseUrl('orama-search-index-current.json.gz')
+  const indexGzipURL = useBaseUrl('orama-search-index-current.json.gz')
   const isBrowser = useIsBrowser()
 
   useEffect(() => {
     async function loadOrama() {
-      let oramaInstance = null
+      let oramaInstance
 
-      if (endpoint?.url) {
-        oramaInstance = new OramaClient({
-          endpoint: endpoint.url,
-          api_key: endpoint.key
-        })
+      if (isCloudData(oramaData)) {
+        oramaInstance = new OramaClient(oramaData.indexConfig)
+      } else if (oramaData.oramaDocs) {
+        oramaInstance = await createOramaInstance(oramaData.oramaDocs)
       } else {
-        let buffer
-
-        if (searchData?.current) {
-          buffer = searchData.current.data
-        } else {
-          const searchResponse = await fetch(baseURL)
-
-          if (searchResponse.status === 0) {
-            throw new Error(`Network error: ${await searchResponse.text()}`)
-          } else if (searchResponse.status !== 200) {
-            throw new Error(`HTTP error ${searchResponse.status}: ${await searchResponse.text()}`)
-          }
-
-          buffer = await searchResponse.arrayBuffer()
-        }
-
-        const deflated = ungzip(buffer, { to: 'string' })
-        const parsedDeflated = JSON.parse(deflated)
-
-        const db = await create({
-          schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
-          plugins: [
-            ...(analytics
-              ? [
-                  pluginAnalytics({
-                    apiKey: analytics.apiKey,
-                    indexId: analytics.indexId,
-                    enabled: analytics.enabled
-                  })
-                ]
-              : [])
-          ]
-        })
-
-        await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
-
-        oramaInstance = db
+        oramaInstance = await getOramaLocalData(indexGzipURL, oramaData.plugins)
       }
 
       setSearchBoxConfig({
         basic: {
           clientInstance: oramaInstance,
-          facetProperty: 'category'
+          facetProperty: 'category',
+          disableChat: !isCloudData(oramaData)
         },
-        custom: searchBoxCustomConfig
+        custom: oramaData.searchbox ?? {}
       })
     }
 
@@ -101,5 +107,5 @@ export const useOrama = () => {
     })
   }, [isBrowser])
 
-  return { searchBoxConfig, searchBtnConfig, colorMode, clientMode: endpoint?.url ? 'cloud' : 'oss' }
+  return { searchBoxConfig, searchBtnConfig: oramaData.searchButton, colorMode }
 }
