@@ -1,20 +1,16 @@
 ---
-title: Docusaurus Plugin
-description: Learn how to use the Docusaurus plugin in Orama.
+title: Connect to Docusaurus
+description: Learn how to connect Orama Cloud to your Docusaurus project.
+editUrl: false
 ---
-import { Aside } from '@astrojs/starlight/components';
+import { Aside, Code } from '@astrojs/starlight/components';
 import Install from '../../../../components/Install.astro'
 
-
-The docusaurus plugin allows you to index the content of your Docusaurus websites and offer text search to your visitors.
-This plugin can be used in OSS mode where you host the documents, or in cloud mode where your data will be stored by us and you will have access to analytics where you can see the number of queries and much more.
-
-## Pre-requisites
-
-In order guarantee a correct functionality of the plugin, you need to have the `@docusaurus/core` at least in the version `3.2.0`.
-
+<Aside>
+	To guarantee the plugin's correct functionality, you need to have the `@docusaurus/core` package at least in version `3.2.0`.
+</Aside>
 <Aside type="caution">
-This plugin do not support Docusaurus v2. Use [`@orama/plugin-docusaurus`](https://www.npmjs.com/package/@orama/plugin-docusaurus) instead.
+	This plugin doesn't support Docusaurus v2. Use [`@orama/plugin-docusaurus`](https://www.npmjs.com/package/@orama/plugin-docusaurus) instead.
 </Aside>
 
 ## Installation
@@ -25,62 +21,60 @@ You can install the plugin using any major Node.js package manager.
 
 ## Usage
 
-### With Orama OSS
+To use the plugin you will need to add it to your Docusaurus list of plugins. You can do this by adding the following code to your `docusaurus.config.js` file:
 
-Add the plugin to your `docusaurus.config.js`:
+<Code lang="js" title="docusaurus.config.js" code={`
+plugins: ["@orama/plugin-docusaurus-v3"];
+`} />
 
-```js
-{
-  // ...
-  plugins: ["@orama/plugin-docusaurus-v3"],
-  // ...
-}
-```
+### Configuration
 
-And that's it, you now have a search that will update whenever you build your site.
+#### Orama Plugins
 
-### With Orama Cloud
+Under the `plugins` Orama configuration object you can add some of the following plugins:
 
-If you want to use Orama Cloud as the source so you can have access to analytics for free you need a couple more variables:
+##### Analytics
 
-```js
-// ...
+Simply add the following code to your `docusaurus.config.js` file:
+
+<Code lang="js" title="docusaurus.config.js" code={`
 plugins: [
-  [
-    "@orama/plugin-docusaurus-v3",
-    {
-      cloud: {
-        indexId: "<your_orama_index_id>",
-        oramaCloudAPIKey: process.env.ORAMA_CLOUD_API_KEY, // Env variable suggested
-        deploy: false | "default" | "snapshot-only", // Enables deploy while building/starting
-      },
-    },
-  ],
+	  [
+	    "@orama/plugin-docusaurus-v3",
+	    {
+	      plugins: {
+	        analytics: {
+	          enabled: true,
+	          apiKey: process.env.ORAMA_ANALYTICS_API_KEY,
+	          indexId: process.env.ORAMA_ANALYTICS_INDEX_ID,
+	        },
+	      },
+	    },
+	  ],
 ];
-// ...
-```
+`} />
 
-Make sure you use the correct deploy configuration. Failure to do so will result in compilation failure. see [DelopyType](https://github.com/oramasearch/orama/blob/77ba63c654068ef718bc84604e11e57dafd7a4d4/packages/plugin-docusaurus-v3/src/index.ts#L14). 
+For more information about the props you can use on the analytics plugin, check the [Analytics plugin](/open-source/plugins/plugin-analytics) section.
 
-To get this variables first create a new integration for HTTP Integrations in here:
+#### Searchbox & Search Button
 
-<img
-  src='/oss/docussarus-1.png'
-  alt='select integrations'
-/>
+This plugin uses the [Orama Searchbox](/cloud/ui-components/search-box) for the search functionality.
+You pass props to the searchbox and/or the search button component by adding the following code to your `docusaurus.config.js` file:
 
-And then docusaurus:
+<Code lang="js" title="docusaurus.config.js" code={`
+plugins: [
+	  [
+	    "@orama/plugin-docusaurus-v3",
+	    {
+	      searchbox: {
+	        placeholder: "Search...",
+	      }
+	      searchButton: {
+	        text: "Click here to search..."
+	      }
+	    },
+	  ],
+];
+`} />
 
-<img
-  src='/oss/docussarus-2.png'
-  alt='Select Docusaurus'
-/>
-
-On the next page you will see all the variables you need to get you up and running:
-
-<img
-  src='/oss/docussarus-3.png'
-  alt="the variables"
-/>
-
-And you are set, if you set deploy to true your index will update whenever you build the website and there are changes to your pages.
+For more information about the props you can use on the searchbox, check the [Searchbox](/cloud/ui-components/search-box#usage) section and the [Search Button](/cloud/ui-components/search-button#usage) section.

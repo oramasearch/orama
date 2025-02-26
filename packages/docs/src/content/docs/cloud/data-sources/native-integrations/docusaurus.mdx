@@ -29,25 +29,29 @@ plugins: [
     "@orama/plugin-docusaurus-v3",
     {
       cloud: {
-        indexId: "YOUR_ORAMACLOUD_INDEX_ID", // This is your index ID
-        oramaCloudAPIKey: process.env.PRIVATE_API_KEY, // This is your Private API key. Keep it safe!
-        deploy: process.env.ENABLE_ORAMACLOUD_DEPLOY, // true or false. Enables deploy while building/starting
+        apiKey: process.env.ORAMA_CLOUD_PRIVATE_API_KEY,
+        indexId: "YOUR_ORAMA_CLOUD_INDEX_ID",
+        deploy: process.env.ENABLE_ORAMA_CLOUD_DEPLOY,
       },
     },
   ],
 ];
 `} />
 
+<Aside>
+	If the property `cloud` is not declared inside the configuration, the plugin will work on OSS mode, creating a local instance of Orama.
+	<br/>For more information, check the [OSS mode](/open-source/plugins/plugin-docusaurus) section.
+</Aside>
 
 ### Configuration
 
-You can get the variables required for the plugin's configuration in your Orama Cloud dashboard, right after creating a new index. **All fields are required**.
+You can get the variables required for the plugin's configuration in your Orama Cloud dashboard, right after creating a new index.
 
-| Name                  | Type      | Description                                                                 |
-|-----------------------|-----------|-----------------------------------------------------------------------------|
-| **indexId**           | string    | The ID of the index you want to connect to.                                 |
-| **oramaCloudAPIKey**  | string    | Your Private API key. Keep it safe!                                         |
-| **deploy**            | boolean   | Enables the plugin to deploy the index while building/starting your project.|
+| Name                  |Required  | Type                       | Description                                                                 |
+|-----------------------|----------|----------------------------|-----------------------------------------------------------------------------|
+| **indexId**           |yes      | string                     | The ID of the index you want to connect to.                                 |
+| **apiKey**            |yes      | string                     | Your Private API key. Keep it safe!                                         |
+| **deploy**            |no     | `default`, `snapshot-only`, `undefined`  | `default` Deploys the index while building/starting your project.<br/>`snapshot-only` Inserts the data into the index but does not deploy it.<br/>`undefined` Does not deploy the index.|
 
 ## Creating an index
 
@@ -77,3 +81,31 @@ You can get the variables required for the plugin's configuration in your Orama 
   </ol>
 </Steps>
 
+### Advanced configuration
+
+#### Searchbox & Search Button
+This plugin uses the [Orama Searchbox](/cloud/ui-components/search-box) for the search functionality.
+You pass props to the searchbox and/or the search button component by adding the following code to your `docusaurus.config.js` file:
+
+<Code lang="js" title="docusaurus.config.js" code={`
+plugins: [
+	  [
+	    "@orama/plugin-docusaurus-v3",
+	    {
+	      cloud: {
+	        apiKey: process.env.ORAMA_CLOUD_PRIVATE_API_KEY,
+	        indexId: "YOUR_ORAMA_CLOUD_INDEX_ID",
+	        deploy: "default"
+	      },
+	      searchbox: {
+	        placeholder: "Search...",
+	      }
+	      searchButton: {
+	        text: "Click here to search..."
+	      }
+	    },
+	  ],
+];
+`} />
+
+For more information about the props you can use on the searchbox, check the [Searchbox](/cloud/ui-components/search-box#usage) section and the [Search Button](/cloud/ui-components/search-button#usage) section.
