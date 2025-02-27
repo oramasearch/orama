@@ -1,21 +1,14 @@
 import fs from 'fs'
 import t from 'tap'
 import { create, insert, search } from '@orama/orama'
+import { createTokenizer } from '../src/mandarin.js'
 
-if (!fs.existsSync('build/tokenizer-mandarin/tokenizer.js') && process.env.TEST_TOKENIZERS !== '1') {
-  // Still experimental. @todo: remove this check
-  console.log(`Skipping Mandarin tokenizer tests`)
-  process.exit(0)
-}
-
-const { createTokenizer } = await import('../build/tokenizer-mandarin/tokenizer.js')
-
-const db = await create({
+const db = create({
   schema: {
     name: 'string'
   },
   components: {
-    tokenizer: await createTokenizer()
+    tokenizer: createTokenizer()
   }
 })
 
@@ -23,8 +16,7 @@ function getHitsNames(hits) {
   return hits.map((hit) => hit.document.name)
 }
 
-// Temporary skip. Initializing a WASM package in CI is slowing down everything and we need to find a better way to handle this.
-t.skip('Mandarin tokenizer', async (t) => {
+t.test('Mandarin tokenizer', async (t) => {
   await insert(db, { name: '北京' }) // Beijing
   await insert(db, { name: '上海' }) // Shanghai
   await insert(db, { name: '广州' }) // Guangzhou
