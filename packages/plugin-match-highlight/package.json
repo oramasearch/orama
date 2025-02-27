@@ -1,8 +1,14 @@
 {
   "name": "@orama/plugin-match-highlight",
-  "version": "3.0.8",
+  "version": "3.1.0",
   "description": "Orama plugin for search match highlighting",
-  "keywords": ["full-text search", "search", "fuzzy search", "typo-tolerant search", "full-text"],
+  "keywords": [
+    "full-text search",
+    "search",
+    "fuzzy search",
+    "typo-tolerant search",
+    "full-text"
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -22,7 +28,9 @@
     }
   },
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "swc --delete-dir-on-start -s -w --extensions .ts,.cts -d dist src",
     "build": "swc --delete-dir-on-start --extensions .ts,.cts -d dist src",

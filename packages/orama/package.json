@@ -1,6 +1,6 @@
 {
   "name": "@orama/orama",
-  "version": "3.0.8",
+  "version": "3.1.0",
   "type": "module",
   "description": "A complete search engine and RAG pipeline in your browser, server, or edge network with support for full-text, vector, and hybrid search in less than 2kb.",
   "sideEffects": false,
