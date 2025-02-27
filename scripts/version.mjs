@@ -1,8 +1,10 @@
-import { readFile, writeFile } from 'fs/promises'
+import { readFileSync } from 'node:fs'
+import { readFile, writeFile } from 'node:fs/promises'
 import { inc, valid } from 'semver'
 import { simpleGit } from 'simple-git'
 import { fileURLToPath } from 'url'
-import oramaPackage from '../packages/orama/package.json' assert { type: 'json' }
+
+const oramaPackage = JSON.parse(readFileSync('../packages/orama/package.json', 'utf-8'))
 
 const dryRun = process.env.DRY_RUN === 'true'
 const skipGit = process.env.SKIP_GIT === 'true'
