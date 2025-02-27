@@ -1,30 +1,23 @@
-import fs from 'fs'
 import t from 'tap'
-import { create, insert, search } from '@orama/orama'
+import { create, insert, Results, search } from '@orama/orama'
+import { createTokenizer } from '../src/japanese.js'
 
-if (!fs.existsSync('build/tokenizer-japanese/tokenizer.js') && process.env.TEST_TOKENIZERS !== '1') {
-  // Still experimental. @todo: remove this check
-  console.log(`Skipping Japanese tokenizer tests`)
-  process.exit(0)
-}
-
-const { createTokenizer } = await import('../build/tokenizer-japanese/tokenizer.js')
-
-const db = await create({
+const db = create({
   schema: {
     name: 'string'
   },
   components: {
-    tokenizer: await createTokenizer()
+    tokenizer: createTokenizer()
   }
 })
 
+// @ts-ignore
 function getHitsNames(hits) {
+  // @ts-ignore
   return hits.map((hit) => hit.document.name)
 }
 
-// Temporary skip. Initializing a WASM package in CI is slowing down everything and we need to find a better way to handle this.
-t.skip('Japanese tokenizer', async (t) => {
+t.test('Japanese tokenizer', async (t) => {
   await insert(db, { name: '東京' }) // Tokyo
   await insert(db, { name: '大阪' }) // Osaka
   await insert(db, { name: '京都' }) // Kyoto

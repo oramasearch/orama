@@ -834,11 +834,11 @@ importers:
       tap:
         specifier: ^18.6.1
         version: 18.8.0(@swc/core@1.10.9)(@types/node@20.17.14)(react-dom@18.3.1)(react@18.3.1)(typescript@5.7.3)
-      tsup:
-        specifier: ^7.2.0
-        version: 7.2.0(@swc/core@1.10.9)(typescript@5.7.3)
+      tshy:
+        specifier: ^3.0.2
+        version: 3.0.2
       tsx:
-        specifier: ^4.7.1
+        specifier: ^4.19.2
         version: 4.19.2
 
   sandboxes/plugin-docusaurus-v2.4.3-sandbox:
