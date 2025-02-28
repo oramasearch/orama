@@ -31,7 +31,7 @@
     "@orama/orama": "workspace:*"
   },
   "files": [
-    "build"
+    "dist"
   ],
   "repository": {
     "type": "git",
