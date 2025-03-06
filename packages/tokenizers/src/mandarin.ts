@@ -1,15 +1,15 @@
 import type { DefaultTokenizer, DefaultTokenizerConfig } from "@orama/orama";
 import { normalizeToken } from "@orama/orama/internals";
 
-const tokenizerLanguage = "japanese";
+const tokenizerLanguage = "mandarin";
 
 type TLanguage = typeof tokenizerLanguage;
 
-type JapaneseTokenizerConfig = DefaultTokenizerConfig & {
+type MandarinTokenizerConfig = DefaultTokenizerConfig & {
   language: TLanguage;
 };
 
-const defaultConfig: JapaneseTokenizerConfig = {
+const defaultConfig: MandarinTokenizerConfig = {
   language: tokenizerLanguage,
 };
 
@@ -68,7 +68,7 @@ function tokenizeInternal(
 }
 
 export function createTokenizer(
-  config: JapaneseTokenizerConfig = defaultConfig,
+  config: MandarinTokenizerConfig = defaultConfig,
 ): DefaultTokenizer {
   const tokenizerConfig = {
     tokenize: tokenizeInternal,
