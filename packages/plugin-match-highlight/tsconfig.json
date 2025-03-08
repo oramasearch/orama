@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "target": "ESNext",
+    "target": "ES2020",
     "module": "NodeNext",
-    "moduleResolution": "nodenext",
     "outDir": "dist",
-    "lib": ["ESNext", "DOM"],
+    "jsx": "react",
+    "noImplicitAny": false,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "esModuleInterop": true,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "nodenext"
   },
-  "include": ["src/*.ts", "src/**/*.ts"]
+  "include": ["src/*.ts", "src/**/*.ts", "src/*.tsx", "src/**/*.tsx"]
 }

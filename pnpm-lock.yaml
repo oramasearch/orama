@@ -544,12 +544,12 @@ importers:
       '@types/tap':
         specifier: ^15.0.7
         version: 15.0.12
-      c8:
-        specifier: ^7.12.0
-        version: 7.14.0
       tap:
         specifier: ^18.6.1
         version: 18.8.0(@swc/core@1.10.9)(@types/node@20.17.14)(react-dom@18.3.1)(react@18.3.1)(typescript@5.7.3)
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(@swc/core@1.10.9)(typescript@5.7.3)
       tsx:
         specifier: ^3.12.2
         version: 3.14.0
