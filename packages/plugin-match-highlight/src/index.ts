@@ -97,7 +97,7 @@ export async function searchWithHighlight<T extends AnyOrama, ResultDocument = T
   const result = await search(orama, params, language)
   const queryTokens: string[] = orama.tokenizer.tokenize(params.term ?? '', language)
 
-  const hitsWithPosition: SearchResultWithHighlight<ResultDocument>['hits'] = []
+  const hitsWithPosition: ResultWithPositions<ResultDocument>[] = []
   for (const hit of result.hits) {
     const hitPositions = Object.entries<any>((orama as OramaWithHighlight<T>).data.positions[hit.id])
 
