@@ -143,7 +143,7 @@ import { create, insertMultiple, search } from '@orama/orama'
 const db = create({
   schema: {
     title: 'string',
-    embedding: 'vector[5]'', // we are using a 5-dimensional vector.
+    embedding: 'vector[5]', // we are using a 5-dimensional vector.
   },
 });
 
@@ -210,7 +210,8 @@ await insert(db, { description: 'Bose QuietComfort Bluetooth Headphones' })
 // Orama will also generate and use embeddings at search time when search mode is set to "vector" or "hybrid"!
 const searchResults = await search(db, {
   term: 'Headphones for 12th grade students',
-  mode: 'vector'
+  mode: 'vector',
+  similarity: 0.75,
 })
 ```
 
