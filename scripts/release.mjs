@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process'
-import { resolve, relative } from 'node:path'
+import { relative, resolve } from 'node:path'
 
 const rootDir = process.cwd()
 
@@ -15,6 +15,7 @@ const packages = [
   'plugin-analytics',
   'plugin-secure-proxy',
   'plugin-embeddings',
+  'plugin-match-highlight',
   'plugin-qps',
   'plugin-pt15',
   'stemmers',
