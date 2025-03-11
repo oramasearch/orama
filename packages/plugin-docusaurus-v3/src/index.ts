@@ -148,7 +148,7 @@ export async function insertChunkDocumentsIntoIndex(oramaIndex: any, docs: any[]
   if (chunk.length > 0) {
     await loggedOperation(
       `Orama: Start documents insertion (range ${offset + 1}-${offset + chunk.length})`,
-      async () => await oramaIndex.insert(docs),
+      async () => await oramaIndex.insert(chunk),
       'Orama: insert created successfully'
     )
     await insertChunkDocumentsIntoIndex(oramaIndex, docs, limit, offset + limit)
