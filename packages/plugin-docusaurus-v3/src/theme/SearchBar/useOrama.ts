@@ -4,7 +4,7 @@ import useIsBrowser from '@docusaurus/useIsBrowser'
 import { useColorMode } from '@docusaurus/theme-common'
 import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
-import { OramaClient } from '@oramacloud/client'
+import * as OramaCloudClient from '@oramacloud/client'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
 
@@ -79,18 +79,26 @@ export default function useOrama() {
   useEffect(() => {
     async function loadOrama() {
       let oramaInstance
-
+      let searchBoxBasicConfig = {}
+      
       if (isCloudData(oramaData)) {
-        oramaInstance = new OramaClient(oramaData.indexConfig)
+        searchBoxBasicConfig = {
+          index: {
+            endpoint: oramaData.indexConfig.endpoint,
+            api_key: oramaData.indexConfig.api_key
+          }
+        }
       } else if (oramaData.oramaDocs) {
         oramaInstance = await createOramaInstance(oramaData.oramaDocs)
+        searchBoxBasicConfig = { clientInstance: oramaInstance }
       } else {
         oramaInstance = await getOramaLocalData(indexGzipURL, oramaData.plugins)
+        searchBoxBasicConfig = { clientInstance: oramaInstance }
       }
-
+      
       setSearchBoxConfig({
         basic: {
-          clientInstance: oramaInstance,
+          ...searchBoxBasicConfig,
           facetProperty: 'category',
           disableChat: !isCloudData(oramaData)
         },

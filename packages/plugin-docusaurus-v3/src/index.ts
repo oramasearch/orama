@@ -6,7 +6,7 @@ import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { gzip } from 'pako'
 import { AnyOrama, create, insertMultiple, save } from '@orama/orama'
-import { CloudManager } from '@oramacloud/client'
+import * as OramaCloudClient from '@oramacloud/client'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
@@ -121,8 +121,14 @@ async function syncOramaIndex({
   cloudConfig: CloudConfig
 }): Promise<IndexConfig> {
   const { apiKey, indexId, deploy } = cloudConfig
+  
   const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
-  const cloudManager = new CloudManager({ api_key: apiKey!, baseURL: baseUrl })
+  
+  const cloudManager = new OramaCloudClient.CloudManager({
+    api_key: apiKey!,
+    baseURL: baseUrl
+  })
+  
   const index = cloudManager.index(indexId)
 
   const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
@@ -162,14 +168,12 @@ async function createOramaGzip({
   oramaInstance: AnyOrama
   context: LoadContext
 }) {
-  console.debug('Orama: Creating gzipped index file.')
 
   const version = 'current'
   const serializedOrama = JSON.stringify(save(oramaInstance))
   const gzippedOrama = gzip(serializedOrama)
   writeFileSync(indexPath(context.generatedFilesDir, version), gzippedOrama)
 
-  console.debug('Orama: Gzipped index file created.')
 }
 
 async function fetchOramaDocs(
@@ -310,6 +314,7 @@ export default function OramaPluginDocusaurus(context: LoadContext, options: Plu
 
     async allContentLoaded({ actions, allContent }) {
       const { cloud: cloudConfig, ...otherOptions } = options
+      
       const searchDataConfig = [
         {
           docs: allContent['docusaurus-plugin-content-docs']
