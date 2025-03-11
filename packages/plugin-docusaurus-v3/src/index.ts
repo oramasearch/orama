@@ -6,7 +6,7 @@ import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { gzip } from 'pako'
 import { AnyOrama, create, insertMultiple, save } from '@orama/orama'
-import * as OramaCloudClient from '@oramacloud/client'
+import { CloudManager } from '@oramacloud/client'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
@@ -124,7 +124,7 @@ async function syncOramaIndex({
   
   const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
   
-  const cloudManager = new OramaCloudClient.CloudManager({
+  const cloudManager = new CloudManager({
     api_key: apiKey!,
     baseURL: baseUrl
   })
@@ -168,12 +168,14 @@ async function createOramaGzip({
   oramaInstance: AnyOrama
   context: LoadContext
 }) {
-
+  console.debug('Orama: Creating gzipped index file.')
+  
   const version = 'current'
   const serializedOrama = JSON.stringify(save(oramaInstance))
   const gzippedOrama = gzip(serializedOrama)
   writeFileSync(indexPath(context.generatedFilesDir, version), gzippedOrama)
 
+  console.debug('Orama: Gzipped index file created.')
 }
 
 async function fetchOramaDocs(

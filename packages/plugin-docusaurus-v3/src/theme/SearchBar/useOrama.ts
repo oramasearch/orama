@@ -4,7 +4,7 @@ import useIsBrowser from '@docusaurus/useIsBrowser'
 import { useColorMode } from '@docusaurus/theme-common'
 import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
-import * as OramaCloudClient from '@oramacloud/client'
+import { OramaClient } from '@oramacloud/client'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
 
