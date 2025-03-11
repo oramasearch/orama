@@ -129,7 +129,7 @@ async function syncOramaIndex({
 
   if (deploy) {
     // Reset index
-    await loggedOperation('Orama: Reset index data', async () => await index.snapshot([]), 'Orama: Index data reset')
+    await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
 
     // Populate index
     await insertChunkDocumentsIntoIndex(index, oramaDocs)
@@ -181,7 +181,7 @@ async function fetchOramaDocs(
   context: LoadContext
 ) {
   let versions: string[] = []
-  let docsInstances: string[] = []
+  const docsInstances: string[] = []
   const allOramaDocsPromises: Promise<any>[] = []
 
   searchDataConfig.forEach((config) => {
