@@ -121,15 +121,21 @@ async function syncOramaIndex({
   cloudConfig: CloudConfig
 }): Promise<IndexConfig> {
   const { apiKey, indexId, deploy } = cloudConfig
+  
   const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
-  const cloudManager = new CloudManager({ api_key: apiKey!, baseURL: baseUrl })
+  
+  const cloudManager = new CloudManager({
+    api_key: apiKey!,
+    baseURL: baseUrl
+  })
+  
   const index = cloudManager.index(indexId)
 
   const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
 
   if (deploy) {
     // Reset index
-    await loggedOperation('Orama: Reset index data', async () => await index.snapshot([]), 'Orama: Index data reset')
+    await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
 
     // Populate index
     await insertChunkDocumentsIntoIndex(index, oramaDocs)
@@ -148,7 +154,7 @@ export async function insertChunkDocumentsIntoIndex(oramaIndex: any, docs: any[]
   if (chunk.length > 0) {
     await loggedOperation(
       `Orama: Start documents insertion (range ${offset + 1}-${offset + chunk.length})`,
-      async () => await oramaIndex.insert(docs),
+      async () => await oramaIndex.insert(chunk),
       'Orama: insert created successfully'
     )
     await insertChunkDocumentsIntoIndex(oramaIndex, docs, limit, offset + limit)
@@ -163,7 +169,7 @@ async function createOramaGzip({
   context: LoadContext
 }) {
   console.debug('Orama: Creating gzipped index file.')
-
+  
   const version = 'current'
   const serializedOrama = JSON.stringify(save(oramaInstance))
   const gzippedOrama = gzip(serializedOrama)
@@ -181,7 +187,7 @@ async function fetchOramaDocs(
   context: LoadContext
 ) {
   let versions: string[] = []
-  let docsInstances: string[] = []
+  const docsInstances: string[] = []
   const allOramaDocsPromises: Promise<any>[] = []
 
   searchDataConfig.forEach((config) => {
@@ -310,6 +316,7 @@ export default function OramaPluginDocusaurus(context: LoadContext, options: Plu
 
     async allContentLoaded({ actions, allContent }) {
       const { cloud: cloudConfig, ...otherOptions } = options
+      
       const searchDataConfig = [
         {
           docs: allContent['docusaurus-plugin-content-docs']

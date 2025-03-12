@@ -14,7 +14,7 @@ export function OramaSearchNoDocs() {
   return (
     <div>
       {searchBoxConfig.basic && (
-        <>
+        <React.Fragment>
           <OramaSearchButton colorScheme={colorMode} className="DocSearch-Button" {...searchBtnConfig}>
             {searchBtnConfig?.text || 'Search'}
           </OramaSearchButton>
@@ -28,7 +28,7 @@ export function OramaSearchNoDocs() {
               }
             }}
           />
-        </>
+        </React.Fragment>
       )}
     </div>
   )
@@ -55,12 +55,14 @@ export function OramaSearchWithDocs({ pluginId }: { pluginId: string }) {
         {searchBtnConfig?.text || 'Search'}
       </OramaSearchButton>
       {searchBoxConfig.basic && (
-        <OramaSearchBox
-          {...searchBoxConfig.basic}
-          {...searchBoxConfig.custom}
-          colorScheme={colorMode}
-          searchParams={searchParams}
-        />
+        <React.Fragment>
+          <OramaSearchBox
+            {...searchBoxConfig.basic}
+            {...searchBoxConfig.custom}
+            colorScheme={colorMode}
+            searchParams={searchParams}
+          />
+        </React.Fragment>
       )}
     </div>
   )
