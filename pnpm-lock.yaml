@@ -808,6 +808,9 @@ importers:
 
   packages/switch:
     dependencies:
+      '@orama/core':
+        specifier: ^0.0.10
+        version: 0.0.10
       '@orama/orama':
         specifier: workspace:*
         version: link:../orama
@@ -7438,6 +7441,15 @@ packages:
     resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
     dev: true
 
+  /@orama/core@0.0.10:
+    resolution: {integrity: sha512-rZ4AHeHoFTxOXMhM0An2coO3OfR+FpL0ejXc1PPrNsGB4p6VNlky7FAGeuqOvS5gUYB5ywJsmDzCxeflPtgk4w==}
+    dependencies:
+      '@orama/cuid2': 2.2.3
+      dedent: 1.5.3
+    transitivePeerDependencies:
+      - babel-plugin-macros
+    dev: false
+
   /@orama/crawly@0.0.6:
     resolution: {integrity: sha512-8u0pv9IvKrYaO9gbOe7hcZ757Kd6y6qqyN5uPXXPJmAk0nXc2p172YsZEp8NzanZgvcH6G6t1XsG74t7Mptchw==}
     dependencies:
@@ -12980,6 +12992,15 @@ packages:
   /dedent@0.7.0:
     resolution: {integrity: sha512-Q6fKUPqnAHAyhiUgFU7BUzLiv0kd8saH9al7tnu5Q/okj6dnupxyTgFIBjVzJATdfIAm9NAsvXNzjaKa+bxVyA==}
     dev: true
+
+  /dedent@1.5.3:
+    resolution: {integrity: sha512-NHQtfOOW68WD8lgypbLA5oT+Bt0xXJhiYvoR6SmmNXZfpzOGXwdKWmcwG8N7PwVVWV3eF/68nmD9BaJSsTBhyQ==}
+    peerDependencies:
+      babel-plugin-macros: ^3.1.0
+    peerDependenciesMeta:
+      babel-plugin-macros:
+        optional: true
+    dev: false
 
   /deep-equal@2.2.3:
     resolution: {integrity: sha512-ZIwpnevOurS8bpT4192sqAowWM76JDKSHYzMLty3BZGSswgq6pBaH3DhCSW5xVAZICZyKdOBPjwww5wfgT/6PA==}
