@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-secure-proxy",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Orama plugin for generating embeddings securely on the front-end",
   "keywords": [
     "orama",
