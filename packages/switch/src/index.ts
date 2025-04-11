@@ -35,7 +35,7 @@ function isOramaClient(client: any): client is OramaClient {
 }
 
 function isOramaCoreClient(client: any): client is CollectionManager {
-  return client && client instanceof CollectionManager;
+  return client && (client instanceof CollectionManager || client.constructor.name === "CollectionManager");
 }
 
 function isOramaJSClient(client: any): client is AnyOrama {
@@ -56,13 +56,13 @@ export class Switch<T = OramaSwitchClient> {
     this.client = client;
 
     switch (true) {
-      case isOramaClient(client):
-        this.clientType = "cloud";
-        this.isCloud = true;
-        break;
       case isOramaCoreClient(client):
         this.clientType = "core";
         this.isCore = true;
+        break;
+      case isOramaClient(client):
+        this.clientType = "cloud";
+        this.isCloud = true;
         break;
       case isOramaJSClient(client):
         this.clientType = "oss";
