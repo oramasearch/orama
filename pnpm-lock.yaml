@@ -456,7 +456,7 @@ importers:
         version: link:../plugin-parsedoc
       '@orama/react-components':
         specifier: ^0.5.0
-        version: 0.5.0(react-dom@18.3.1)(react@18.3.1)
+        version: 0.5.0(@orama/core@0.0.10)(react-dom@18.3.1)(react@18.3.1)
       '@oramacloud/client':
         specifier: ^2.1.4
         version: 2.1.4
@@ -569,8 +569,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       next:
-        specifier: ^14.2.21
-        version: 14.2.23(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^14.2.26
+        version: 14.2.26(react-dom@18.3.1)(react@18.3.1)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -752,7 +752,7 @@ importers:
         version: link:../plugin-data-persistence
       '@orama/searchbox':
         specifier: 1.0.0-beta.13
-        version: 1.0.0-beta.13(@orama/highlight@0.1.8)(@orama/orama@packages+orama)(@oramacloud/client@1.0.0-beta.21)(@preact/signals-core@1.8.0)(@preact/signals@1.3.2)(postcss@8.5.3)(preact-custom-element@4.3.0)(preact@10.26.4)
+        version: 1.0.0-beta.13(@orama/highlight@0.1.9)(@orama/orama@packages+orama)(@oramacloud/client@1.0.0-beta.21)(@preact/signals-core@1.8.0)(@preact/signals@1.3.2)(postcss@8.5.3)(preact-custom-element@4.3.0)(preact@10.26.5)
       '@vitejs/plugin-vue':
         specifier: ^4.5.1
         version: 4.6.2(vite@4.5.10)(vue@3.5.13)
@@ -5902,8 +5902,8 @@ packages:
     resolution: {integrity: sha512-fXVXEyFA5Yv3M3n8sUGT7+fvecGrZP4k6FnWWMSZVQf69kAq0LLpaBQLGcPR30m3zMmKYhECP4k/ZkzvhEW5kw==}
     dev: false
 
-  /@emnapi/runtime@1.3.1:
-    resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}
+  /@emnapi/runtime@1.4.0:
+    resolution: {integrity: sha512-64WYIf4UYcdLnbKn/umDlNjQDSS8AgZrI/R9+x5ilkUVFxXcA1Ebl+gQLc/6mERA4407Xof0R7wEyEuj091CVw==}
     requiresBuild: true
     dependencies:
       tslib: 2.8.1
@@ -6926,7 +6926,7 @@ packages:
     cpu: [wasm32]
     requiresBuild: true
     dependencies:
-      '@emnapi/runtime': 1.3.1
+      '@emnapi/runtime': 1.4.0
     optional: true
 
   /@img/sharp-win32-ia32@0.33.5:
@@ -7347,12 +7347,12 @@ packages:
       strict-event-emitter: 0.5.1
     dev: true
 
-  /@next/env@14.2.23:
-    resolution: {integrity: sha512-CysUC9IO+2Bh0omJ3qrb47S8DtsTKbFidGm6ow4gXIG6reZybqxbkH2nhdEm1tC8SmgzDdpq3BIML0PWsmyUYA==}
+  /@next/env@14.2.26:
+    resolution: {integrity: sha512-vO//GJ/YBco+H7xdQhzJxF7ub3SUwft76jwaeOyVVQFHCi5DCnkP16WHB+JBylo4vOKPoZBlR94Z8xBxNBdNJA==}
     dev: false
 
-  /@next/swc-darwin-arm64@14.2.23:
-    resolution: {integrity: sha512-WhtEntt6NcbABA8ypEoFd3uzq5iAnrl9AnZt9dXdO+PZLACE32z3a3qA5OoV20JrbJfSJ6Sd6EqGZTrlRnGxQQ==}
+  /@next/swc-darwin-arm64@14.2.26:
+    resolution: {integrity: sha512-zDJY8gsKEseGAxG+C2hTMT0w9Nk9N1Sk1qV7vXYz9MEiyRoF5ogQX2+vplyUMIfygnjn9/A04I6yrUTRTuRiyQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -7360,8 +7360,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-darwin-x64@14.2.23:
-    resolution: {integrity: sha512-vwLw0HN2gVclT/ikO6EcE+LcIN+0mddJ53yG4eZd0rXkuEr/RnOaMH8wg/sYl5iz5AYYRo/l6XX7FIo6kwbw1Q==}
+  /@next/swc-darwin-x64@14.2.26:
+    resolution: {integrity: sha512-U0adH5ryLfmTDkahLwG9sUQG2L0a9rYux8crQeC92rPhi3jGQEY47nByQHrVrt3prZigadwj/2HZ1LUUimuSbg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -7369,8 +7369,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-arm64-gnu@14.2.23:
-    resolution: {integrity: sha512-uuAYwD3At2fu5CH1wD7FpP87mnjAv4+DNvLaR9kiIi8DLStWSW304kF09p1EQfhcbUI1Py2vZlBO2VaVqMRtpg==}
+  /@next/swc-linux-arm64-gnu@14.2.26:
+    resolution: {integrity: sha512-SINMl1I7UhfHGM7SoRiw0AbwnLEMUnJ/3XXVmhyptzriHbWvPPbbm0OEVG24uUKhuS1t0nvN/DBvm5kz6ZIqpg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -7378,8 +7378,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-arm64-musl@14.2.23:
-    resolution: {integrity: sha512-Mm5KHd7nGgeJ4EETvVgFuqKOyDh+UMXHXxye6wRRFDr4FdVRI6YTxajoV2aHE8jqC14xeAMVZvLqYqS7isHL+g==}
+  /@next/swc-linux-arm64-musl@14.2.26:
+    resolution: {integrity: sha512-s6JaezoyJK2DxrwHWxLWtJKlqKqTdi/zaYigDXUJ/gmx/72CrzdVZfMvUc6VqnZ7YEvRijvYo+0o4Z9DencduA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -7387,8 +7387,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-x64-gnu@14.2.23:
-    resolution: {integrity: sha512-Ybfqlyzm4sMSEQO6lDksggAIxnvWSG2cDWnG2jgd+MLbHYn2pvFA8DQ4pT2Vjk3Cwrv+HIg7vXJ8lCiLz79qoQ==}
+  /@next/swc-linux-x64-gnu@14.2.26:
+    resolution: {integrity: sha512-FEXeUQi8/pLr/XI0hKbe0tgbLmHFRhgXOUiPScz2hk0hSmbGiU8aUqVslj/6C6KA38RzXnWoJXo4FMo6aBxjzg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -7396,8 +7396,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-x64-musl@14.2.23:
-    resolution: {integrity: sha512-OSQX94sxd1gOUz3jhhdocnKsy4/peG8zV1HVaW6DLEbEmRRtUCUQZcKxUD9atLYa3RZA+YJx+WZdOnTkDuNDNA==}
+  /@next/swc-linux-x64-musl@14.2.26:
+    resolution: {integrity: sha512-BUsomaO4d2DuXhXhgQCVt2jjX4B4/Thts8nDoIruEJkhE5ifeQFtvW5c9JkdOtYvE5p2G0hcwQ0UbRaQmQwaVg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -7405,8 +7405,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-arm64-msvc@14.2.23:
-    resolution: {integrity: sha512-ezmbgZy++XpIMTcTNd0L4k7+cNI4ET5vMv/oqNfTuSXkZtSA9BURElPFyarjjGtRgZ9/zuKDHoMdZwDZIY3ehQ==}
+  /@next/swc-win32-arm64-msvc@14.2.26:
+    resolution: {integrity: sha512-5auwsMVzT7wbB2CZXQxDctpWbdEnEW/e66DyXO1DcgHxIyhP06awu+rHKshZE+lPLIGiwtjo7bsyeuubewwxMw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
@@ -7414,8 +7414,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-ia32-msvc@14.2.23:
-    resolution: {integrity: sha512-zfHZOGguFCqAJ7zldTKg4tJHPJyJCOFhpoJcVxKL9BSUHScVDnMdDuOU1zPPGdOzr/GWxbhYTjyiEgLEpAoFPA==}
+  /@next/swc-win32-ia32-msvc@14.2.26:
+    resolution: {integrity: sha512-GQWg/Vbz9zUGi9X80lOeGsz1rMH/MtFO/XqigDznhhhTfDlDoynCM6982mPCbSlxJ/aveZcKtTlwfAjwhyxDpg==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
@@ -7423,8 +7423,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-x64-msvc@14.2.23:
-    resolution: {integrity: sha512-xCtq5BD553SzOgSZ7UH5LH+OATQihydObTrCTvVzOro8QiWYKdBVwcB2Mn2MLMo6DGW9yH1LSPw7jS7HhgJgjw==}
+  /@next/swc-win32-x64-msvc@14.2.26:
+    resolution: {integrity: sha512-2rdB3T1/Gp7bv1eQTTm9d1Y1sv9UuJ2LAwOE0Pe2prHKe32UNscj7YS13fRB37d0GAiGNR+Y7ZcW8YjDI8Ns0w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -7607,6 +7607,10 @@ packages:
     resolution: {integrity: sha512-w3TvtWUKYlf/NoujoyEs38nJRi1lkwxdOXntXDYB9cfHzx+s+iPrps70YwFRRJu9TcHW8ffz503b0E6aAfsuvg==}
     dev: false
 
+  /@orama/highlight@0.1.9:
+    resolution: {integrity: sha512-eH4uZMea4R9x9vBFJyS/87oR4Y8oIKxF7e1SItJ9DhPlexZWMVZRlFYvHS1BM/563/dU240ct4ZaGHoYKiCkyQ==}
+    dev: false
+
   /@orama/orama@1.2.11:
     resolution: {integrity: sha512-0yDcWgxOX0je18Z5dR64r4L3Jzm6bDNIpqM7qSu7H+9qhf6EsnlJbICrjt/oJ+WYnwiog4T0OXduVfLwAX+NVA==}
     engines: {node: '>= 16.0.0'}
@@ -7616,8 +7620,8 @@ packages:
     resolution: {integrity: sha512-euTV/2kya290SNkl5m8e/H1na8iDygk74nNtl4E0YZNyYIrEMwE1JwamoroMKGZw2Uz+in/8gH3m1+2YfP0j1w==}
     engines: {node: '>= 16.0.0'}
 
-  /@orama/orama@3.1.4:
-    resolution: {integrity: sha512-7tTuIdkzgRscJ7sGHVsoK9GtXSpwbfrj3WYnuSu/SepXHhshYiQaOeXc/aeLh4MfgIre6tEs/caIop8wrhMi3g==}
+  /@orama/orama@3.1.5:
+    resolution: {integrity: sha512-iAy2H6VWbS/fFLkbioGec5g3uDNj65+wpADL8k1RbxEGoquIPl3xqYMKux30dJV97Rr1OnXgC0kCLWRQi/Mrdg==}
     engines: {node: '>= 16.0.0'}
     dev: false
 
@@ -7659,18 +7663,20 @@ packages:
       - zod
     dev: false
 
-  /@orama/react-components@0.5.0(react-dom@18.3.1)(react@18.3.1):
+  /@orama/react-components@0.5.0(@orama/core@0.0.10)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-pJPccCGTI6HUUEeqveViEbQ8zvG5z3kdqQhvC1WFGm/Mlf2fYXSAOCp6wQsktGk1wZ5zG9utb4CcpQO4akh7zQ==}
     peerDependencies:
       react: '>=17.0.0 <20.0.0'
       react-dom: '>=17.0.0 <20.0.0'
     dependencies:
-      '@orama/wc-components': 0.5.0
+      '@orama/wc-components': 0.5.0(@orama/core@0.0.10)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    transitivePeerDependencies:
+      - '@orama/core'
     dev: false
 
-  /@orama/searchbox@1.0.0-beta.13(@orama/highlight@0.1.8)(@orama/orama@packages+orama)(@oramacloud/client@1.0.0-beta.21)(@preact/signals-core@1.8.0)(@preact/signals@1.3.2)(postcss@8.5.3)(preact-custom-element@4.3.0)(preact@10.26.4):
+  /@orama/searchbox@1.0.0-beta.13(@orama/highlight@0.1.9)(@orama/orama@packages+orama)(@oramacloud/client@1.0.0-beta.21)(@preact/signals-core@1.8.0)(@preact/signals@1.3.2)(postcss@8.5.3)(preact-custom-element@4.3.0)(preact@10.26.5):
     resolution: {integrity: sha512-u1KntN2l1Dg52/UVwh9wZdu8eG/kmk42FjgWZ7ExM+CMZCr6aatAHVPuZnecDZGHV4/t4XV4W9tGgvZ1MxnsJg==}
     peerDependencies:
       '@orama/highlight': ^0.1.2
@@ -7681,28 +7687,30 @@ packages:
       preact: ^10.19.1
       preact-custom-element: ^4.3.0
     dependencies:
-      '@orama/highlight': 0.1.8
+      '@orama/highlight': 0.1.9
       '@orama/orama': link:packages/orama
       '@orama/plugin-analytics': 2.1.1
       '@oramacloud/client': 1.0.0-beta.21(typescript@5.7.3)
-      '@preact/signals': 1.3.2(preact@10.26.4)
+      '@preact/signals': 1.3.2(preact@10.26.5)
       '@preact/signals-core': 1.8.0
       object-to-css-variables: 0.2.1
       postcss-functions: 4.0.2(postcss@8.5.3)
-      preact: 10.26.4
-      preact-custom-element: 4.3.0(preact@10.26.4)
-      preact-feather: 4.2.1(preact@10.26.4)
+      preact: 10.26.5
+      preact-custom-element: 4.3.0(preact@10.26.5)
+      preact-feather: 4.2.1(preact@10.26.5)
     transitivePeerDependencies:
       - postcss
     dev: false
 
-  /@orama/switch@3.1.3(@orama/orama@3.1.4)(@oramacloud/client@2.1.4):
-    resolution: {integrity: sha512-Gtah1T5jhF4hv+Bpl1k8ogAg3klTUwWzpI9sUG2XuaLHKPiob0PrVxD7YxJ06BERkFY0KdcDEK6k5fgIYcDPxA==}
+  /@orama/switch@3.1.4(@orama/core@0.0.10)(@orama/orama@3.1.5)(@oramacloud/client@2.1.4):
+    resolution: {integrity: sha512-XHyVte3Z7/tOwPZCMOQg/n39rb2MHGbxDmBCQcWnkU9UaPDWBuGUapNRjFKGMqL5fQrC3ou8EJZ/7P1Gcmbrrw==}
     peerDependencies:
-      '@orama/orama': 3.1.3
+      '@orama/core': ^0.0.10
+      '@orama/orama': 3.1.4
       '@oramacloud/client': ^2.1.1
     dependencies:
-      '@orama/orama': 3.1.4
+      '@orama/core': 0.0.10
+      '@orama/orama': 3.1.5
       '@oramacloud/client': 2.1.4
     dev: false
 
@@ -7728,12 +7736,12 @@ packages:
       - zod
     dev: false
 
-  /@orama/wc-components@0.5.0:
+  /@orama/wc-components@0.5.0(@orama/core@0.0.10):
     resolution: {integrity: sha512-8UsuX+xqzyIKpNDCwlOh0/4q9psXKnM66Bmsejs9sYyBBJhP+h6h1fuhTIp6L66zXMMoiGjXHNb8cdW4j3ziBA==}
     dependencies:
       '@orama/highlight': 0.1.8
-      '@orama/orama': 3.1.4
-      '@orama/switch': 3.1.3(@orama/orama@3.1.4)(@oramacloud/client@2.1.4)
+      '@orama/orama': 3.1.5
+      '@orama/switch': 3.1.4(@orama/core@0.0.10)(@orama/orama@3.1.5)(@oramacloud/client@2.1.4)
       '@oramacloud/client': 2.1.4
       '@phosphor-icons/webcomponents': 2.1.5
       '@stencil/core': 4.24.0
@@ -7745,6 +7753,8 @@ packages:
       marked-highlight: 2.2.1(marked@13.0.3)
       shiki: 1.29.1
       sse.js: 2.5.0
+    transitivePeerDependencies:
+      - '@orama/core'
     dev: false
 
   /@oramacloud/client@1.0.0-beta.21(typescript@5.7.3):
@@ -7810,7 +7820,7 @@ packages:
     resolution: {integrity: sha512-uNPFs4wq/iOPbggCwTkVNbIr64Vfd7ZS/h+cricXVnzXWocjDTfJ3wLL4lr0qiSu41g8z+eCAGBqJ30RO2O4AA==}
     dependencies:
       '@orama/cuid2': 2.2.3
-      '@orama/orama': 3.1.4
+      '@orama/orama': 3.1.5
       lodash: 4.17.21
     dev: false
 
@@ -7920,13 +7930,13 @@ packages:
   /@preact/signals-core@1.8.0:
     resolution: {integrity: sha512-OBvUsRZqNmjzCZXWLxkZfhcgT+Fk8DDcT/8vD6a1xhDemodyy87UJRJfASMuSD8FaAIeGgGm85ydXhm7lr4fyA==}
 
-  /@preact/signals@1.3.2(preact@10.26.4):
+  /@preact/signals@1.3.2(preact@10.26.5):
     resolution: {integrity: sha512-naxcJgUJ6BTOROJ7C3QML7KvwKwCXQJYTc5L/b0eEsdYgPB6SxwoQ1vDGcS0Q7GVjAenVq/tXrybVdFShHYZWg==}
     peerDependencies:
       preact: 10.x
     dependencies:
       '@preact/signals-core': 1.8.0
-      preact: 10.26.4
+      preact: 10.26.5
     dev: false
 
   /@rollup/pluginutils@5.1.4:
@@ -11335,7 +11345,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.24.4
-      caniuse-lite: 1.0.30001695
+      caniuse-lite: 1.0.30001713
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -11656,7 +11666,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001695
+      caniuse-lite: 1.0.30001713
       electron-to-chromium: 1.5.84
       node-releases: 2.0.19
       update-browserslist-db: 1.1.2(browserslist@4.24.4)
@@ -11925,13 +11935,17 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.24.4
-      caniuse-lite: 1.0.30001695
+      caniuse-lite: 1.0.30001713
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: false
 
   /caniuse-lite@1.0.30001695:
     resolution: {integrity: sha512-vHyLade6wTgI2u1ec3WQBxv+2BrTERV28UXQu9LO6lZ9pYeMk34vjXFLOxo1A4UBA8XTL4njRQZdno/yYaSmWw==}
+    dev: false
+
+  /caniuse-lite@1.0.30001713:
+    resolution: {integrity: sha512-wCIWIg+A4Xr7NfhTuHdX+/FKh3+Op3LBbSp2N5Pfx6T/LhdQy3GTyoTg48BReaW/MyMNZAkTadsBtai3ldWK0Q==}
 
   /canvaskit-wasm@0.39.1:
     resolution: {integrity: sha512-Gy3lCmhUdKq+8bvDrs9t8+qf7RvcjuQn+we7vTVVyqgOVO1UVfHpsnBxkTZw+R4ApEJ3D5fKySl9TU11hmjl/A==}
@@ -19452,8 +19466,8 @@ packages:
       typescript: 5.7.3
     dev: false
 
-  /next@14.2.23(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-mjN3fE6u/tynneLiEg56XnthzuYw+kD7mCujgVqioxyPqbmiotUCGJpIZGS/VaPg3ZDT1tvWxiVyRzeqJFm/kw==}
+  /next@14.2.26(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-b81XSLihMwCfwiUVRRja3LphLo4uBBMZEzBBWMaISbKTwOmq3wPknIETy/8000tr7Gq4WmbuFYPS7jOYIf+ZJw==}
     engines: {node: '>=18.17.0'}
     hasBin: true
     peerDependencies:
@@ -19470,25 +19484,25 @@ packages:
       sass:
         optional: true
     dependencies:
-      '@next/env': 14.2.23
+      '@next/env': 14.2.26
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001695
+      caniuse-lite: 1.0.30001713
       graceful-fs: 4.2.11
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       styled-jsx: 5.1.1(react@18.3.1)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.23
-      '@next/swc-darwin-x64': 14.2.23
-      '@next/swc-linux-arm64-gnu': 14.2.23
-      '@next/swc-linux-arm64-musl': 14.2.23
-      '@next/swc-linux-x64-gnu': 14.2.23
-      '@next/swc-linux-x64-musl': 14.2.23
-      '@next/swc-win32-arm64-msvc': 14.2.23
-      '@next/swc-win32-ia32-msvc': 14.2.23
-      '@next/swc-win32-x64-msvc': 14.2.23
+      '@next/swc-darwin-arm64': 14.2.26
+      '@next/swc-darwin-x64': 14.2.26
+      '@next/swc-linux-arm64-gnu': 14.2.26
+      '@next/swc-linux-arm64-musl': 14.2.26
+      '@next/swc-linux-x64-gnu': 14.2.26
+      '@next/swc-linux-x64-musl': 14.2.26
+      '@next/swc-win32-arm64-msvc': 14.2.26
+      '@next/swc-win32-ia32-msvc': 14.2.26
+      '@next/swc-win32-x64-msvc': 14.2.26
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -22013,28 +22027,28 @@ packages:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  /preact-custom-element@4.3.0(preact@10.26.4):
+  /preact-custom-element@4.3.0(preact@10.26.5):
     resolution: {integrity: sha512-5hG7nQhU4e7RNfCEQklaUqYQiiyibLuJ2wbhR+E2v1m8m9NDsJok5MykW/Nx0YLLBcXr8xnkap6DwByGy2TzDA==}
     peerDependencies:
       preact: 10.x
     dependencies:
-      preact: 10.26.4
+      preact: 10.26.5
     dev: false
 
-  /preact-feather@4.2.1(preact@10.26.4):
+  /preact-feather@4.2.1(preact@10.26.5):
     resolution: {integrity: sha512-yK5kYW64AoOkm+xTtUjwcFx0zNrqVTbwmtww8G2AmAB6f8wyQgwZgc6oRXllSYeg7q1I8VbkUpErJuKJ6Vq2eA==}
     peerDependencies:
       preact: ^10.0.0
     dependencies:
-      preact: 10.26.4
+      preact: 10.26.5
     dev: false
 
   /preact@10.25.4:
     resolution: {integrity: sha512-jLdZDb+Q+odkHJ+MpW/9U5cODzqnB+fy2EiHSZES7ldV5LK7yjlVzTp7R8Xy6W6y75kfK8iWYtFVH7lvjwrCMA==}
     dev: true
 
-  /preact@10.26.4:
-    resolution: {integrity: sha512-KJhO7LBFTjP71d83trW+Ilnjbo+ySsaAgCfXOXUlmGzJ4ygYPWmysm77yg4emwfmoz3b22yvH5IsVFHbhUaH5w==}
+  /preact@10.26.5:
+    resolution: {integrity: sha512-fmpDkgfGU6JYux9teDWLhj9mKN55tyepwYbxHgQuIxbWQzgFg5vk7Mrrtfx7xRxq798ynkY4DDDxZr235Kk+4w==}
     dev: false
 
   /preferred-pm@3.1.4:
