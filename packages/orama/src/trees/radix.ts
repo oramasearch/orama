@@ -47,10 +47,10 @@ export class RadixNode {
     const stack: RadixNode[] = [this]
     while (stack.length > 0) {
       const node = stack.pop()!
-  
+
       if (node.e) {
         const { w, d: docIDs } = node
-  
+
         if (exact && w !== term) {
           continue
         }
@@ -61,7 +61,7 @@ export class RadixNode {
         if (getOwnProperty(output, w) !== null) {
           if (tolerance) {
             const difference = Math.abs(term.length - w.length)
-  
+
             if (difference <= tolerance && syncBoundedLevenshtein(term, w, tolerance).isBounded) {
               output[w] = []
             } else {
@@ -70,7 +70,7 @@ export class RadixNode {
           } else {
             output[w] = []
           }
-        }        
+        }
 
         // check if _output[w] exists and then add the doc to it
         // always check in own property to prevent access to inherited properties
@@ -84,33 +84,33 @@ export class RadixNode {
           }
         }
       }
-  
+
       if (node.c.size > 0) {
         stack.push(...node.c.values())
       }
     }
     return output
-  }  
+  }
 
   public insert(word: string, docId: InternalDocumentID): void {
     let node: RadixNode = this
     let i = 0
     const wordLength = word.length
-  
+
     while (i < wordLength) {
       const currentCharacter = word[i]
       const childNode = node.c.get(currentCharacter)
-  
+
       if (childNode) {
         const edgeLabel = childNode.s
         const edgeLabelLength = edgeLabel.length
         let j = 0
-  
+
         // Find the common prefix length between edgeLabel and the remaining word
         while (j < edgeLabelLength && i + j < wordLength && edgeLabel[j] === word[i + j]) {
           j++
         }
-  
+
         if (j === edgeLabelLength) {
           // Edge label fully matches; proceed to the child node
           node = childNode
@@ -125,23 +125,23 @@ export class RadixNode {
           }
           continue
         }
-  
+
         // Split the edgeLabel at the common prefix
         const commonPrefix = edgeLabel.slice(0, j)
         const newEdgeLabel = edgeLabel.slice(j)
         const newWordLabel = word.slice(i + j)
-  
+
         // Create an intermediate node for the common prefix
         const inbetweenNode = new RadixNode(commonPrefix[0], commonPrefix, false)
         node.c.set(commonPrefix[0], inbetweenNode)
         inbetweenNode.updateParent(node)
-  
+
         // Update the existing childNode
         childNode.s = newEdgeLabel
         childNode.k = newEdgeLabel[0]
         inbetweenNode.c.set(newEdgeLabel[0], childNode)
         childNode.updateParent(inbetweenNode)
-  
+
         if (newWordLabel) {
           // Create a new node for the remaining part of the word
           const newNode = new RadixNode(newWordLabel[0], newWordLabel, true)
@@ -163,13 +163,13 @@ export class RadixNode {
         return
       }
     }
-  
+
     // If we reach here, the word already exists in the tree
     if (!node.e) {
       node.e = true
     }
     node.addDocument(docId)
-  }  
+  }
 
   private _findLevenshtein(
     term: string,
@@ -247,35 +247,43 @@ export class RadixNode {
       let node: RadixNode = this
       let i = 0
       const termLength = term.length
-  
+
       while (i < termLength) {
         const character = term[i]
         const childNode = node.c.get(character)
-  
+
         if (childNode) {
           const edgeLabel = childNode.s
           const edgeLabelLength = edgeLabel.length
           let j = 0
-  
+
           // Compare edge label with the term starting from position i
           while (j < edgeLabelLength && i + j < termLength && edgeLabel[j] === term[i + j]) {
             j++
           }
-  
+
           if (j === edgeLabelLength) {
             // Full match of edge label; proceed to the child node
             node = childNode
             i += j
           } else if (i + j === termLength) {
-            // The term ends in the middle of the edge label
-            if (exact) {
-              // Exact match required but term doesn't end at a node
-              return {}
+            // The term ends in the middle of the edge label - FIX: this handles prefix matches like 'p' matching 'phone'
+            // Check if the term matches from the beginning of the edge label
+            if (j === termLength - i) {
+              // Term is a prefix of the edge label
+              if (exact) {
+                // Exact match required but term doesn't end at a node
+                return {}
+              } else {
+                // Partial match; collect words starting from this node
+                const output: FindResult = {}
+                // Just call findAllWords on the child node to collect all words in this subtree
+                childNode.findAllWords(output, term, exact, tolerance)
+                return output
+              }
             } else {
-              // Partial match; collect words starting from this node
-              const output: FindResult = {}
-              childNode.findAllWords(output, term, exact, tolerance)
-              return output
+              // Mismatch found
+              return {}
             }
           } else {
             // Mismatch found
@@ -286,36 +294,36 @@ export class RadixNode {
           return {}
         }
       }
-  
+
       // Term fully matched; collect words starting from this node
       const output: FindResult = {}
       node.findAllWords(output, term, exact, tolerance)
       return output
     }
   }
-  
+
   public contains(term: string): boolean {
     let node: RadixNode = this
     let i = 0
     const termLength = term.length
-  
+
     while (i < termLength) {
       const character = term[i]
       const childNode = node.c.get(character)
-  
+
       if (childNode) {
         const edgeLabel = childNode.s
         const edgeLabelLength = edgeLabel.length
         let j = 0
-  
+
         while (j < edgeLabelLength && i + j < termLength && edgeLabel[j] === term[i + j]) {
           j++
         }
-  
+
         if (j < edgeLabelLength) {
           return false
         }
-  
+
         i += edgeLabelLength
         node = childNode
       } else {
@@ -323,7 +331,7 @@ export class RadixNode {
       }
     }
     return true
-  }  
+  }
 
   public removeWord(term: string): boolean {
     if (!term) {
@@ -392,7 +400,7 @@ export class RadixNode {
       i++
     }
     return a.slice(0, i)
-  }  
+  }
 
   public toJSON(): object {
     return {

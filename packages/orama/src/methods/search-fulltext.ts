@@ -17,11 +17,13 @@ import type {
 import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
 import { count } from './docs.js'
 import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
-import { prioritizeTokenScores } from '../components/algorithms.js'
 
 export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
-  params: Pick<SearchParamsFullText<T>, 'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold'>,
+  params: Pick<
+    SearchParamsFullText<T>,
+    'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold'
+  >,
   language: Language | undefined
 ) {
   const { term, properties } = params
@@ -50,7 +52,6 @@ export function innerFullTextSearch<T extends AnyOrama>(
     propertiesToSearch = propertiesToSearch.filter((prop: string) => (properties as string[]).includes(prop))
   }
 
-
   // If filters are enabled, we need to get the IDs of the documents that match the filters.
   const hasFilters = Object.keys(params.where ?? {}).length > 0
   let whereFiltersIDs: Set<number> | undefined
@@ -58,12 +59,13 @@ export function innerFullTextSearch<T extends AnyOrama>(
     whereFiltersIDs = orama.index.searchByWhereClause(index, orama.tokenizer, params.where!, language)
   }
 
-
   let uniqueDocsIDs: TokenScore[]
   // We need to perform the search if:
   // - we have a search term
   // - or we have properties to search
   //   in this case, we need to return all the documents that contains at least one of the given properties
+  const threshold = params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
+
   if (term || properties) {
     const docsCount = count(orama)
     uniqueDocsIDs = orama.index.search(
@@ -78,20 +80,19 @@ export function innerFullTextSearch<T extends AnyOrama>(
       applyDefault(params.relevance),
       docsCount,
       whereFiltersIDs,
-      params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
+      threshold
     )
-
-
   } else {
     // Tokenizer returns empty array and the search term is empty as well.
     // We return all the documents.
-    const docIds = whereFiltersIDs ? Array.from(whereFiltersIDs) : Object.keys(orama.documentsStore.getAll(orama.data.docs))
+    const docIds = whereFiltersIDs
+      ? Array.from(whereFiltersIDs)
+      : Object.keys(orama.documentsStore.getAll(orama.data.docs))
     uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
   }
 
   return uniqueDocsIDs
 }
-
 
 export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocument<T>>(
   orama: T,
@@ -187,7 +188,6 @@ export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocumen
   return performSearchLogic()
 }
 
-
 export const defaultBM25Params: BM25Params = {
   k: 1.2,
   b: 0.75,
@@ -195,8 +195,8 @@ export const defaultBM25Params: BM25Params = {
 }
 function applyDefault(bm25Relevance?: BM25Params): Required<BM25Params> {
   const r = bm25Relevance ?? {}
-  r.k = r.k ?? defaultBM25Params.k;
-  r.b = r.b ?? defaultBM25Params.b;
-  r.d = r.d ?? defaultBM25Params.d;
+  r.k = r.k ?? defaultBM25Params.k
+  r.b = r.b ?? defaultBM25Params.b
+  r.d = r.d ?? defaultBM25Params.d
   return r as Required<BM25Params>
 }
