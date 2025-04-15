@@ -1,13 +1,8 @@
 {
   "name": "@orama/plugin-secure-proxy",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "description": "Orama plugin for generating embeddings securely on the front-end",
-  "keywords": [
-    "orama",
-    "embeddings",
-    "secure proxy",
-    "vector search"
-  ],
+  "keywords": ["orama", "embeddings", "secure proxy", "vector search"],
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -29,9 +24,7 @@
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup --config tsup.lib.js",
     "lint": "exit 0",

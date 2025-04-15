@@ -1,6 +1,6 @@
 {
   "name": "@orama/switch",
-  "version": "3.1.5",
+  "version": "3.1.6",
   "description": "Orama Switch allows you to run queries on Orama Cloud, OramaCore and Orama JS with a single interface",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -13,17 +13,12 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "test": "tsx --test tests/answer-session.test.ts && tsx --test tests/search.test.ts"
   },
-  "keywords": [
-    "orama",
-    "orama cloud"
-  ],
+  "keywords": ["orama", "orama cloud"],
   "type": "module",
   "author": {
     "name": "Michele Riva",
