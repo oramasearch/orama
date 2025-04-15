@@ -41,8 +41,14 @@ export function prioritizeTokenScores(
   const results = tokenScores.sort((a, b) => b[1] - a[1])
 
   // If threshold is 1, it means we will return all the results with at least one search term,
-  // prioritizig the ones that contains more search terms (fuzzy match)
+  // prioritizing the ones that contains more search terms (fuzzy match)
   if (threshold === 1) {
+    return results
+  }
+
+  // For threshold = 0 when keywordsCount is 1 (single term search),
+  // we return all matches since they automatically contain 100% of keywords
+  if (threshold === 0 && keywordsCount === 1) {
     return results
   }
 
@@ -104,7 +110,7 @@ export function prioritizeTokenScores(
   const thresholdLength =
     lastTokenWithAllKeywords + Math.ceil((threshold * 100 * (allResults - lastTokenWithAllKeywords)) / 100)
 
-  return resultsWithIdAndScore.slice(0, allResults + thresholdLength)
+  return resultsWithIdAndScore.slice(0, Math.min(allResults, thresholdLength))
 }
 
 export function BM25(
