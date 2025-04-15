@@ -1,8 +1,7 @@
 ---
-import type { Props } from '@astrojs/starlight/props'
 import Default from '@astrojs/starlight/components/Head.astro'
 
-const ogImageUrl = new URL(`/og/${Astro.props.id.replace(/\.\w+$/, '.png')}`, Astro.site)
+const ogImageUrl = new URL(`/og/${Astro.locals.starlightRoute.id.replace(/\.\w+$/, '.png')}`, Astro.site)
 ---
 
 <Default {...Astro.props}><slot /></Default>
