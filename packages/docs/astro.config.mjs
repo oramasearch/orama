@@ -33,11 +33,11 @@ export default defineConfig({
       description: 'Your product answer engine. Unlimited full-text search, embeddings generations and more. Help your users find the right answers, faster.',
       favicon: '/favicon.png',
       head: head,
-      social: {
-        github: 'https://github.com/oramasearch/orama',
-        slack: 'https://orama.to/slack',
-        twitter: 'https://x.com/oramasearch',
-      },
+      social: [
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/oramasearch/orama' },
+        { icon: 'slack', label: 'Slack', href: 'https://orama.to/slack' },
+        { icon: 'x.com', label: 'X', href: 'https://x.com/oramasearch' },
+      ],
       customCss: ['./src/tailwind.css', './src/styles/custom.css'],
       logo: {
         replacesTitle: true,
@@ -49,7 +49,6 @@ export default defineConfig({
         Header: './src/components/Header.astro',
         Footer: './src/components/Footer.astro',
         Search: './src/components/Search.astro',
-        Hero: "./src/components/Hero.astro",
         Head: './src/components/Head.astro',
         TableOfContents: './src/components/TableOfContents.astro',
       },

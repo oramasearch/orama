@@ -1,11 +1,10 @@
 ---
-import type { Props } from '@astrojs/starlight/props';
 import TableOfContentsList from './TableOfContents/TableOfContentsList.astro';
 import { Icon } from '@astrojs/starlight/components';
 
 const { labels, toc } = Astro.props;
 
-const showMiniBanner = Astro.props.slug.startsWith("open-source");
+const showMiniBanner = Astro.locals.starlightRoute.id.startsWith("open-source");
 
 ---
 
