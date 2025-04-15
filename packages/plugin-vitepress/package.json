@@ -30,7 +30,7 @@
     "jsdom": "^23.0.1",
     "markdown-it": "^13.0.2",
     "slugify": "^1.6.6",
-    "vite": "^4.5.10"
+    "vite": "^4.5.13"
   },
   "publishConfig": {
     "access": "public"
