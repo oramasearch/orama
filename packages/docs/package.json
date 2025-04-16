@@ -23,7 +23,7 @@
     "html-to-text": "^9.0.5",
     "sharp": "^0.34.1",
     "tsx": "^4.19.3",
-    "typescript": "^5.4.5"
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
