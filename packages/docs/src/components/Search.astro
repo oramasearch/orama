@@ -1,0 +1,21 @@
+---
+import { Search } from './Search'
+---
+
+<div class="custom-orama-search">
+  <Search client:only="react"/>
+</div>
+
+<style>
+.custom-orama-search {
+  min-width: 150px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .custom-orama-search {
+    margin-right: 40px;
+    max-width: 320px;
+  }
+}
+</style>
