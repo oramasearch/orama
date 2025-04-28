@@ -2,7 +2,10 @@
   "name": "orama-monorepo",
   "version": "3.1.6",
   "description": "A complete search engine and RAG pipeline in your browser, server, or edge network with support for full-text, vector, and hybrid search in less than 2kb.",
-  "workspaces": ["packages/*", "sandboxes/*"],
+  "workspaces": [
+    "packages/*",
+    "sandboxes/*"
+  ],
   "scripts": {
     "build": "turbo build",
     "format": "biome format --write ./packages",
@@ -55,7 +58,9 @@
   ],
   "license": "Apache-2.0",
   "lint-staged": {
-    "*": ["pnpm format:hook"]
+    "*": [
+      "pnpm format:hook"
+    ]
   },
   "config": {
     "commitizen": {
@@ -77,5 +82,5 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "pnpm@8.15.4+sha512.0bd3a9be9eb0e9a692676deec00a303ba218ba279d99241475616b398dbaeedd11146f92c2843458f557b1d127e09d4c171e105bdcd6b61002b39685a8016b9e"
+  "packageManager": "pnpm@10.9.0+sha512.0486e394640d3c1fb3c9d43d49cf92879ff74f8516959c235308f5a8f62e2e19528a65cdc2a3058f587cde71eba3d5b56327c8c33a97e4c4051ca48a10ca2d5f"
 }
