@@ -35,15 +35,27 @@ export async function loggedOperation(preMessage: string, fn: () => Promise<any>
   }
 }
 
-export async function fetchEndpointConfig(baseUrl: string, APIKey: string, indexId: string): Promise<IndexConfig> {
+// Fetch is only for OramaCore cloud mode
+export async function fetchEndpointConfig(baseUrl: string, APIKey: string, indexId: string, collectionId: string | undefined, isLegacy: boolean): Promise<IndexConfig> {
   const result = await loggedOperation(
     'Orama: Fetch index endpoint config',
     async () =>
-      await restFetcher(`${baseUrl}/indexes/get-index?id=${indexId}`, {
-        headers: {
-          Authorization: `Bearer ${APIKey}`
+      {
+        let url = `${baseUrl}/indexes/get-index?id=${indexId}`
+        if (!isLegacy && collectionId) {
+          const CLOUD_PROXY_URL = process.env.ORAMA_CLOUD_BASE_URL || 'https://staging.cloud.orama.com'
+          url = `${CLOUD_PROXY_URL}/api/v2/teams/${indexId}/collections/${collectionId}`
+        } else if (!isLegacy && !collectionId) {
+          throw new Error('Collection id is mandatory. Check configurations.')
         }
-      }),
+        
+        return await restFetcher(url, {
+          headers: {
+            Authorization: `Bearer ${APIKey}`
+          },
+          method: 'GET'
+        })
+      },
     'Orama: Fetch index endpoint config (success)'
   )
 

@@ -9,6 +9,8 @@ export type CloudConfig = {
   deploy?: DeployType
   indexId: string
   apiKey: string
+  collectionId?: string
+  legacy: boolean
 }
 
 export type OramaPlugins = {

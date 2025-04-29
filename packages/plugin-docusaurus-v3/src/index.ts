@@ -5,13 +5,13 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { gzip } from 'pako'
-import { AnyOrama, create, insertMultiple, save } from '@orama/orama'
-import { CloudManager } from '@oramacloud/client'
+import { AnyOrama, save } from '@orama/orama'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
+import OramaClient from './orama-client'
 
-import { createOramaInstance, fetchEndpointConfig, loggedOperation } from './utils'
+import { createOramaInstance, loggedOperation } from './utils'
 import { CloudConfig, DeployType, IndexConfig, OramaData, OramaDoc, PluginOptions } from './types'
 
 async function generateDocs({
@@ -113,6 +113,16 @@ function indexPath(outDir: string, version: string) {
   return resolve(outDir, 'orama-search-index-@VERSION@.json.gz'.replace('@VERSION@', version))
 }
 
+// TODO: replace OramaCore with production URL
+function getWriterBaseUrl(legacy: boolean): string {
+  const defaultBaseUrl = legacy 
+    ? 'https://cloud.oramasearch.com/api/v1'  // Legacy, OramaCloud or self-hosted
+    : 'https://manager.api.staging.orama.com' // OramaCore, both Cloud and self-hosted 
+
+  // TODO: Rename ORAMA_CLOUD_BASE_URL to ORAMA_WRITER_BASE_URL
+  return process.env.ORAMA_WRITE_URL || defaultBaseUrl
+}
+
 async function syncOramaIndex({
   oramaDocs,
   cloudConfig
@@ -120,28 +130,24 @@ async function syncOramaIndex({
   oramaDocs: OramaDoc[]
   cloudConfig: CloudConfig
 }): Promise<IndexConfig> {
-  const { apiKey, indexId, deploy } = cloudConfig
-  
-  const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
-  
-  const cloudManager = new CloudManager({
-    api_key: apiKey!,
-    baseURL: baseUrl
-  })
-  
-  const index = cloudManager.index(indexId)
+  const { apiKey, indexId, deploy, collectionId, legacy } = cloudConfig
+  const baseUrl = getWriterBaseUrl(legacy)
 
-  const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
+  const cloudManagerNew = new OramaClient(apiKey!, baseUrl, collectionId, legacy)
+  await cloudManagerNew.setIndex(indexId)
+
+  const endpointConfig = await cloudManagerNew.fetchEndpointConfig()
 
   if (deploy) {
-    // Reset index
-    await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
+    console.log('Instance of cloudManagerNew', cloudManagerNew)
+    await cloudManagerNew.startTransaction()
 
-    // Populate index
-    await insertChunkDocumentsIntoIndex(index, oramaDocs)
+    await loggedOperation('Orama: Reset index data', async () => await cloudManagerNew.empty(), 'Orama: Index data reset')
+
+    await insertChunkDocumentsIntoIndex(cloudManagerNew, oramaDocs)
 
     if (cloudConfig.deploy === DeployType.DEFAULT) {
-      await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
+      await loggedOperation('Orama: Start deployment', async () => await cloudManagerNew.commit(), 'Orama: Deployment started.')
     }
   }
 
@@ -154,7 +160,7 @@ export async function insertChunkDocumentsIntoIndex(oramaIndex: any, docs: any[]
   if (chunk.length > 0) {
     await loggedOperation(
       `Orama: Start documents insertion (range ${offset + 1}-${offset + chunk.length})`,
-      async () => await oramaIndex.insert(chunk),
+      async () => await oramaIndex.insertDocuments(chunk),
       'Orama: insert created successfully'
     )
     await insertChunkDocumentsIntoIndex(oramaIndex, docs, limit, offset + limit)
