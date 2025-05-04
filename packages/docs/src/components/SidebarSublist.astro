@@ -1,48 +1,47 @@
 ---
-import {Icon, Badge} from '@astrojs/starlight/components';
+import { Icon, Badge } from '@astrojs/starlight/components'
 
 export interface Link {
-	type: 'link';
-	label: string;
-	href: string;
-	isCurrent: boolean;
-	badge: any | undefined;
-	attrs: any;
-    isNested?: boolean;
+  type: 'link'
+  label: string
+  href: string
+  isCurrent: boolean
+  badge: any | undefined
+  attrs: any
+  isNested?: boolean
 }
 
 interface Group {
-	type: 'group';
-	label: string;
-	entries: (Link | Group)[];
-	collapsed: boolean;
-	badge: any | undefined;
-    isNested?: boolean;
+  type: 'group'
+  label: string
+  entries: (Link | Group)[]
+  collapsed: boolean
+  badge: any | undefined
+  isNested?: boolean
 }
 
-type SidebarEntry = Link | Group;
+type SidebarEntry = Link | Group
 
 interface Props {
-	sublist: SidebarEntry[];
-	nested?: boolean;
+  sublist: SidebarEntry[]
+  nested?: boolean
 }
 
-const { sublist, nested } = Astro.props;
+const { sublist, nested } = Astro.props
 
 function flattenSidebar(sidebar, isNested = true) {
-  return sidebar.flatMap(entry => {
+  return sidebar.flatMap((entry) => {
     // Add the isNested property to the entry
-    entry.isNested = isNested;
+    entry.isNested = isNested
 
     // Maintain the existing logic
     if (entry.type === 'group') {
-      return flattenSidebar(entry.entries, false);
+      return flattenSidebar(entry.entries, false)
     } else {
-      return entry;
+      return entry
     }
-  });
+  })
 }
-
 ---
 
 <ul class:list={{ 'top-level': !nested }}>

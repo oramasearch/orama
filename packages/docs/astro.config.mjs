@@ -4,7 +4,7 @@ import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
 import cookieconsent from '@jop-software/astro-cookieconsent'
 import starlightImageZoom from 'starlight-image-zoom'
-import {openSourceMenu, oramaCloudMenu, head, cookieConsentConfig } from './config'
+import { openSourceMenu, oramaCloudMenu, head, cookieConsentConfig } from './config'
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,13 +30,14 @@ export default defineConfig({
       pagefind: false,
       plugins: [starlightImageZoom()],
       title: 'Orama Docs',
-      description: 'Your product answer engine. Unlimited full-text search, embeddings generations and more. Help your users find the right answers, faster.',
+      description:
+        'Your product answer engine. Unlimited full-text search, embeddings generations and more. Help your users find the right answers, faster.',
       favicon: '/favicon.png',
       head: head,
       social: {
         github: 'https://github.com/oramasearch/orama',
         slack: 'https://orama.to/slack',
-        twitter: 'https://x.com/oramasearch',
+        twitter: 'https://x.com/oramasearch'
       },
       customCss: ['./src/tailwind.css', './src/styles/custom.css'],
       logo: {
@@ -49,14 +50,11 @@ export default defineConfig({
         Header: './src/components/Header.astro',
         Footer: './src/components/Footer.astro',
         Search: './src/components/Search.astro',
-        Hero: "./src/components/Hero.astro",
+        Hero: './src/components/Hero.astro',
         Head: './src/components/Head.astro',
-        TableOfContents: './src/components/TableOfContents.astro',
+        TableOfContents: './src/components/TableOfContents.astro'
       },
-      sidebar: [
-        ...oramaCloudMenu,
-        ...openSourceMenu,
-      ],
+      sidebar: [...oramaCloudMenu, ...openSourceMenu],
       editLink: {
         baseUrl: 'https://github.com/oramasearch/orama/edit/main/packages/docs'
       }
