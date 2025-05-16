@@ -4,7 +4,6 @@ import useIsBrowser from '@docusaurus/useIsBrowser'
 import { useColorMode } from '@docusaurus/theme-common'
 import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
-import { OramaClient } from '@oramacloud/client'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
 
@@ -29,33 +28,31 @@ function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
 }
 
 async function getOramaLocalData(indexGzipURL: string, plugins: OramaPlugins | undefined) {
-  try {
-    const searchResponse = await fetch(indexGzipURL)
-    let buffer
+	try {
+		const searchResponse = await fetch(indexGzipURL);
 
-    if (searchResponse.status === 0) {
-      throw new Error(`Network error: ${await searchResponse.text()}`)
-    } else if (searchResponse.status !== 200) {
-      throw new Error(`HTTP error ${searchResponse.status}: ${await searchResponse.text()}`)
-    }
+		if (!searchResponse.ok) {
+			const errorText = await searchResponse.text();
+			throw new Error(`HTTP error ${searchResponse.status}: ${errorText}`);
+		}
 
-    buffer = await searchResponse.arrayBuffer()
+		const buffer = await searchResponse.arrayBuffer();
+		const deflatedString = ungzip(buffer, { to: 'string' });
+		const parsedData = JSON.parse(deflatedString);
 
-    const deflated = ungzip(buffer, { to: 'string' })
-    const parsedDeflated = JSON.parse(deflated)
+		const db = create({
+			schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
+			plugins: getOramaPlugins(plugins)
+		});
 
-    const db = create({
-      schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
-      plugins: getOramaPlugins(plugins)
-    })
+		const documents: Record<string, unknown>[] = Object.values(parsedData.docs.docs);
+		await insertMultiple(db, documents);
 
-    await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
-
-    return db
-  } catch (e: any) {
-    console.error('Error loading search index', e)
-    throw e
-  }
+		return db;
+	} catch (error) {
+		console.error('Error loading search index:', error);
+		throw error;
+	}
 }
 
 function isCloudData(data: OramaData): data is OramaCloudData {

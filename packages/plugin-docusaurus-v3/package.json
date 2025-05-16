@@ -25,7 +25,7 @@
     "@orama/orama": "workspace:*",
     "@orama/plugin-analytics": "workspace:*",
     "@orama/plugin-parsedoc": "workspace:*",
-    "@orama/react-components": "^0.5.0",
+    "@orama/react-components": "^0.7.0",
     "@oramacloud/client": "^2.1.4",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
@@ -44,11 +44,9 @@
     "typescript": "^5.6.3"
   },
   "peerDependencies": {
-    "@docusaurus/plugin-content-docs": "~3.6.0",
-    "@docusaurus/theme-common": "~3.6.0",
-    "@docusaurus/utils": "~3.6.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "@docusaurus/plugin-content-docs": "^3",
+    "@docusaurus/theme-common": "^3",
+    "@docusaurus/utils": "^3"
   },
   "publishConfig": {
     "access": "public"
