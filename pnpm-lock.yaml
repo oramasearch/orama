@@ -434,14 +434,14 @@ importers:
   packages/plugin-docusaurus-v3:
     dependencies:
       '@docusaurus/plugin-content-docs':
-        specifier: ~3.6.0
+        specifier: ^3
         version: 3.6.3(@mdx-js/react@3.1.0(@types/react@18.3.20)(react@18.3.1))(@swc/core@1.11.22)(acorn@8.14.1)(eslint@8.57.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       '@docusaurus/theme-common':
-        specifier: ~3.6.0
+        specifier: ^3
         version: 3.6.3(@docusaurus/plugin-content-docs@3.6.3(@mdx-js/react@3.1.0(@types/react@18.3.20)(react@18.3.1))(@swc/core@1.11.22)(acorn@8.14.1)(eslint@8.57.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3))(@swc/core@1.11.22)(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       '@docusaurus/utils':
-        specifier: ~3.6.0
-        version: 3.6.3(@swc/core@1.11.22)(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
+        specifier: ^3
+        version: 3.7.0(@swc/core@1.11.22)(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@orama/highlight':
         specifier: ^0.1.5
         version: 0.1.9
@@ -455,8 +455,8 @@ importers:
         specifier: workspace:*
         version: link:../plugin-parsedoc
       '@orama/react-components':
-        specifier: ^0.5.0
-        version: 0.5.1(@orama/core@0.0.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^0.7.0
+        version: 0.7.0(@stencil/core@4.27.0)(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oramacloud/client':
         specifier: ^2.1.4
         version: 2.1.4
@@ -475,12 +475,6 @@ importers:
       pako:
         specifier: ^2.1.0
         version: 2.1.0
-      react:
-        specifier: ^18.0.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.0.0
-        version: 18.3.1(react@18.3.1)
       tslib:
         specifier: ^2.6.2
         version: 2.8.1
@@ -3523,6 +3517,11 @@ packages:
   '@lit-labs/ssr-dom-shim@1.3.0':
     resolution: {integrity: sha512-nQIWonJ6eFAvUUrSlwyHDm/aE8PBDu5kRpL0vHMg6K8fK3Diq1xdPjTnsJSwxABhaZ+5eBi1btQB5ShUTKo4nQ==}
 
+  '@lit/react@1.0.7':
+    resolution: {integrity: sha512-cencnwwLXQKiKxjfFzSgZRngcWJzUDZi/04E0fSaF86wZgchMdvTyu+lE36DrUfvuus3bH8+xLPrhM1cTjwpzw==}
+    peerDependencies:
+      '@types/react': 17 || 18 || 19
+
   '@lit/reactive-element@2.1.0':
     resolution: {integrity: sha512-L2qyoZSQClcBmq0qajBVbhYEcG6iK0XfLn66ifLe/RfC0/ihpc+pl0Wdn8bJ8o+hj38cG0fGXRgSS20MuXn7qA==}
 
@@ -3696,6 +3695,9 @@ packages:
   '@orama/core@0.0.10':
     resolution: {integrity: sha512-rZ4AHeHoFTxOXMhM0An2coO3OfR+FpL0ejXc1PPrNsGB4p6VNlky7FAGeuqOvS5gUYB5ywJsmDzCxeflPtgk4w==}
 
+  '@orama/core@0.1.8':
+    resolution: {integrity: sha512-dVzUZsEJ/nnHyX+JjNO6KxTVY9bXV6YuEd+nJ5vDNn12S+cIobK3fSHdA4t2gI+2jVP9N67Ia5Uwxa8GNB743A==}
+
   '@orama/crawly@0.0.6':
     resolution: {integrity: sha512-8u0pv9IvKrYaO9gbOe7hcZ757Kd6y6qqyN5uPXXPJmAk0nXc2p172YsZEp8NzanZgvcH6G6t1XsG74t7Mptchw==}
 
@@ -3722,8 +3724,8 @@ packages:
       react: ^17.0.0 || ^18.3.1
       react-dom: ^17.0.0 || ^18.3.1
 
-  '@orama/react-components@0.5.1':
-    resolution: {integrity: sha512-R6lLg9dIOdCkTPXDqGSxoQh1DQb02iR+5REiD27UTqv175Gvp6nOYav0hqIn/UQk8wIQPfUOO9A3T2U3T/iyKg==}
+  '@orama/react-components@0.7.0':
+    resolution: {integrity: sha512-YAUkFwqKqYdL2Lh0VhQM+bQOx3vfZwxUurOX9+fS85/k+KIGPG18l5iDjWMAsA4WC96SEvV1xfSA67XMXEgwrA==}
     peerDependencies:
       react: '>=17.0.0 <20.0.0'
       react-dom: '>=17.0.0 <20.0.0'
@@ -3749,8 +3751,8 @@ packages:
   '@orama/wc-components@0.0.28':
     resolution: {integrity: sha512-caxCZ2MdoEC92BKbN9Ki7R+icTQnpL3SAzKX2J8k4eFSMvt0svujGxogSbo1stQYtWGaQx2Rf1ucNMI/z7mQhw==}
 
-  '@orama/wc-components@0.5.1':
-    resolution: {integrity: sha512-tA8wvx6YGaktjqDD5dY9VvCowVdjmatGhYy+fHp/nor2ezPXWilFyjll4q9HGK/v2Os2l9D0laXVptd4jX3pBQ==}
+  '@orama/wc-components@0.7.0':
+    resolution: {integrity: sha512-PuDxF4evv8al91lFLVDHC9i+ow4m4+p69WGEzCa/UhV5c7sifV4Bd4d7A0yATuyEJTuaQUtEtn4kM3EEfK994g==}
 
   '@oramacloud/client@1.3.14':
     resolution: {integrity: sha512-lD8i0+52W+RX5mDVfEEEdp38NvVCi5fX7GHLUlVTkKGnb5W8u2lEJlYnVhq9Lt0A5Qs3T9NYIczgTvUzD3jzpA==}
@@ -4090,10 +4092,22 @@ packages:
     resolution: {integrity: sha512-Ug7x6z5lwrz0WqdnNFOMYrDQNTPAprvHLSh6+/fmml3qUiz6l5eq+2MzLKWtn/q5K5NpSiFsZTP/fck/3vjSxA==}
     engines: {node: '>=14'}
 
+  '@stencil/core@4.27.0':
+    resolution: {integrity: sha512-GOA+pvSpwL734yijTB8+LHesqPq3o/K6IaCrNoZybNVpe6lgVfvciDwPeP1XOj6JZpA/Lp8Uh3U9znoS8qgwOA==}
+    engines: {node: '>=16.0.0', npm: '>=7.10.0'}
+    hasBin: true
+
   '@stencil/core@4.30.0':
     resolution: {integrity: sha512-rInn2BaN3ISgtz+yfOeiTvAvY+xjz8g5v9hDtQMIP6uefjO6JHXGhUJw2CujnuEOWjYeVR/BYdZJTi0dWN9/vQ==}
     engines: {node: '>=16.0.0', npm: '>=7.10.0'}
     hasBin: true
+
+  '@stencil/react-output-target@0.8.2':
+    resolution: {integrity: sha512-O7zRCfRbiPmxaW3oaPBB3RFOMQOuy1dfkcUUg+6en6NckrRzC2YEAzzo6iIkppDrPW34TJJRy/mqJUdlBPLJ1g==}
+    peerDependencies:
+      '@stencil/core': '>=3 || >= 4.0.0-beta.0 || >= 4.0.0'
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
 
   '@stencil/store@2.1.3':
     resolution: {integrity: sha512-qeWJisbcafVcAhFZidiqK82ULlgBzPNEhlsm0PZ54FHkNTIomxns2MiI7IOGUvGPumK1WK7KzajRomHHc8SYag==}
@@ -4635,6 +4649,9 @@ packages:
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
+
+  '@ts-morph/common@0.23.0':
+    resolution: {integrity: sha512-m7Lllj9n/S6sOkCkRftpM7L24uvmfXQFedlW/4hENcuJH1HHm9u5EgxZb9uVjQSCGrbBWBkOGgcTxNg36r6ywA==}
 
   '@tsconfig/node14@14.1.3':
     resolution: {integrity: sha512-ZC9/Kq2c0+4l8sDx/z3YQyP7+OSMTQr/xxJaSFHLGhGL0t9bPjuX1Zwmg3C2VB5KWGgI8MXMRShXRJroy4utGA==}
@@ -5968,6 +5985,9 @@ packages:
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
+
+  code-block-writer@13.0.3:
+    resolution: {integrity: sha512-Oofo0pq3IKnsFtuHqSF7TqBfr71aeyZDVJ0HpmqB7FBM2qEigL0iPONSCZSO9pE9dZTAxANe5XHG9Uy0YMv8cg==}
 
   code-excerpt@4.0.0:
     resolution: {integrity: sha512-xxodCmBen3iy2i0WtAK8FlFNrRzjUqjRsMfho58xT/wvZU1YTM3fCnRjcy1gJPMepaRlgm/0e6w8SpWHpn3/cA==}
@@ -7857,6 +7877,9 @@ packages:
   hpack.js@2.1.6:
     resolution: {integrity: sha512-zJxVehUdMGIKsRaNt7apO2Gqp0BdqW5yaiGHXXmbpvxgBYVZnAql+BJb4RO5ad2MgpbZKn5G6nMnegrH1FcNYQ==}
 
+  html-dom-parser@5.1.1:
+    resolution: {integrity: sha512-+o4Y4Z0CLuyemeccvGN4bAO20aauB2N9tFEAep5x4OW34kV4PTarBHm6RL02afYt2BMKcr0D2Agep8S3nJPIBg==}
+
   html-encoding-sniffer@4.0.0:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
     engines: {node: '>=18'}
@@ -7882,6 +7905,15 @@ packages:
     resolution: {integrity: sha512-tXgn3QfqPIpGl9o+K5tpcj3/MN4SfLtsx2GWwBC3SSd0tXQGyF3gsSqad8loJgKZGM3ZxbYDd5yhiBIdWpmvLA==}
     engines: {node: ^14.13.1 || >=16.0.0}
     hasBin: true
+
+  html-react-parser@5.2.5:
+    resolution: {integrity: sha512-bRPdv8KTqG9CEQPMNGksDqmbiRfVQeOidry8pVetdh/1jQ1Edx4KX5m0lWvDD89Pt4CqTYjK1BLz6NoNVxN/Uw==}
+    peerDependencies:
+      '@types/react': 0.14 || 15 || 16 || 17 || 18 || 19
+      react: 0.14 || 15 || 16 || 17 || 18 || 19
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   html-tags@3.3.1:
     resolution: {integrity: sha512-ztqyC3kLto0e9WbNp0aeP+M3kTt+nbaIveGmUxAtZa+8iFgKLUOD4YKM5j+f3QD89bra7UeumolZHKuOXnTmeQ==}
@@ -7917,6 +7949,9 @@ packages:
 
   html-whitespace-sensitive-tag-names@3.0.1:
     resolution: {integrity: sha512-q+310vW8zmymYHALr1da4HyXUQ0zgiIwIicEfotYPWGN0OJVEN/58IJ3A4GBYcEq3LGAZqKb+ugvP0GNB9CEAA==}
+
+  htmlparser2@10.0.0:
+    resolution: {integrity: sha512-TwAZM+zE5Tq3lrEHvOlvwgj1XLWQCtaaibSN11Q+gGBAS7Y1uZSWwXXRe4iF6OXnaq1riyQAPFOBtYc77Mxq0g==}
 
   htmlparser2@6.1.0:
     resolution: {integrity: sha512-gyyPk6rgonLFEDGoeRgQNaEUvdJ4ktTmmUh/h2t7s+M8oPpIPxgNACWa+6ESR57kXstwqPiCut0V8NRpcwgU7A==}
@@ -11037,6 +11072,9 @@ packages:
       react-loadable: '*'
       webpack: '>=4.41.1 || 5.x'
 
+  react-property@2.0.2:
+    resolution: {integrity: sha512-+PbtI3VuDV0l6CleQMsx2gtK0JZbZKbpdu5ynr+lbsuvtmgbNcS3VM0tuY2QjFNOcWxvXeHjDpy42RO+4U2rug==}
+
   react-reconciler@0.29.2:
     resolution: {integrity: sha512-zZQqIiYgDCTP/f1N/mAR10nJGrPD2ZR+jDSEsKWJHYC7Cm2wodlwbR3upZRdC3cjIjSlTLNVyO7Iu0Yy7t2AYg==}
     engines: {node: '>=0.10.0'}
@@ -12104,6 +12142,9 @@ packages:
     resolution: {integrity: sha512-mKX8HA/cdBqMKUr0MMZAFssCkIGoZeSCMXgnt79yKxNFguMLVFgRe6wB+fsL0NmoHDbeyZXczy7vEPSoo3rkzg==}
     engines: {node: '>=16'}
 
+  style-object-to-css-string@1.1.3:
+    resolution: {integrity: sha512-bISQoUsir/qGfo7vY8rw00ia9nnyE1jvYt3zZ2jhdkcXZ6dAEi74inMzQ6On57vFI+I4Fck6wOv5UI9BEwJDgw==}
+
   style-to-js@1.1.16:
     resolution: {integrity: sha512-/Q6ld50hKYPH3d/r6nr117TZkHR0w0kGGIVfpG9N6D8NymRPM9RqCUv4pRpJ62E5DqOYx2AFpbZMyCPnjQCnOw==}
 
@@ -12401,6 +12442,9 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  ts-morph@22.0.0:
+    resolution: {integrity: sha512-M9MqFGZREyeb5fTl6gNHKZLqBQA0TjA1lea+CR48R8EBTDuWrNqW6ccC5QvjNR4s6wDumD3LTCjOFSp9iwlzaw==}
 
   ts-standard@12.0.2:
     resolution: {integrity: sha512-XX2wrB9fKKTfBj4yD3ABm9iShzZcS2iWcPK8XzlBvuL20+wMiLgiz/k5tXgZwTaYq5wRhbks1Y9PelhujF/9ag==}
@@ -17626,6 +17670,10 @@ snapshots:
 
   '@lit-labs/ssr-dom-shim@1.3.0': {}
 
+  '@lit/react@1.0.7(@types/react@18.3.20)':
+    dependencies:
+      '@types/react': 18.3.20
+
   '@lit/reactive-element@2.1.0':
     dependencies:
       '@lit-labs/ssr-dom-shim': 1.3.0
@@ -17864,6 +17912,15 @@ snapshots:
     transitivePeerDependencies:
       - babel-plugin-macros
 
+  '@orama/core@0.1.8':
+    dependencies:
+      '@orama/cuid2': 2.2.3
+      dedent: 1.5.3
+      zod: 3.24.3
+      zod-to-json-schema: 3.24.5(zod@3.24.3)
+    transitivePeerDependencies:
+      - babel-plugin-macros
+
   '@orama/crawly@0.0.6':
     dependencies:
       cheerio: 1.0.0-rc.12
@@ -17905,13 +17962,16 @@ snapshots:
       - ws
       - zod
 
-  '@orama/react-components@0.5.1(@orama/core@0.0.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@orama/react-components@0.7.0(@stencil/core@4.27.0)(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@orama/wc-components': 0.5.1(@orama/core@0.0.10)
+      '@orama/wc-components': 0.7.0
+      '@stencil/react-output-target': 0.8.2(@stencil/core@4.27.0)(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
-      - '@orama/core'
+      - '@stencil/core'
+      - '@types/react'
+      - babel-plugin-macros
 
   '@orama/searchbox@1.0.0-beta.13(@orama/highlight@0.1.9)(@orama/orama@packages+orama)(@oramacloud/client@2.1.4)(@preact/signals-core@1.8.0)(@preact/signals@1.3.2(preact@10.26.5))(postcss@8.5.3)(preact-custom-element@4.3.0(preact@10.26.5))(preact@10.26.5)':
     dependencies:
@@ -17929,9 +17989,9 @@ snapshots:
     transitivePeerDependencies:
       - postcss
 
-  '@orama/switch@3.1.6(@orama/core@0.0.10)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)':
+  '@orama/switch@3.1.6(@orama/core@0.1.8)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)':
     dependencies:
-      '@orama/core': 0.0.10
+      '@orama/core': 0.1.8
       '@orama/orama': 3.1.6
       '@oramacloud/client': 2.1.4
 
@@ -17955,15 +18015,16 @@ snapshots:
       - ws
       - zod
 
-  '@orama/wc-components@0.5.1(@orama/core@0.0.10)':
+  '@orama/wc-components@0.7.0':
     dependencies:
+      '@orama/core': 0.1.8
       '@orama/highlight': 0.1.9
       '@orama/orama': 3.1.6
-      '@orama/switch': 3.1.6(@orama/core@0.0.10)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
+      '@orama/switch': 3.1.6(@orama/core@0.1.8)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
       '@oramacloud/client': 2.1.4
       '@phosphor-icons/webcomponents': 2.1.5
-      '@stencil/core': 4.30.0
-      '@stencil/store': 2.1.3(@stencil/core@4.30.0)
+      '@stencil/core': 4.27.0
+      '@stencil/store': 2.1.3(@stencil/core@4.27.0)
       dompurify: 3.2.5
       highlight.js: 11.11.1
       markdown-it: 14.1.0
@@ -17972,7 +18033,7 @@ snapshots:
       shiki: 1.29.2
       sse.js: 2.6.0
     transitivePeerDependencies:
-      - '@orama/core'
+      - babel-plugin-macros
 
   '@oramacloud/client@1.3.14(encoding@0.1.13)(typescript@5.8.3)(ws@8.18.1)(zod@3.24.3)':
     dependencies:
@@ -18301,6 +18362,8 @@ snapshots:
       p-map: 4.0.0
       webpack-sources: 3.2.3
 
+  '@stencil/core@4.27.0': {}
+
   '@stencil/core@4.30.0':
     optionalDependencies:
       '@rollup/rollup-darwin-arm64': 4.34.9
@@ -18311,6 +18374,22 @@ snapshots:
       '@rollup/rollup-linux-x64-musl': 4.34.9
       '@rollup/rollup-win32-arm64-msvc': 4.34.9
       '@rollup/rollup-win32-x64-msvc': 4.34.9
+
+  '@stencil/react-output-target@0.8.2(@stencil/core@4.27.0)(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@lit/react': 1.0.7(@types/react@18.3.20)
+      '@stencil/core': 4.27.0
+      html-react-parser: 5.2.5(@types/react@18.3.20)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      style-object-to-css-string: 1.1.3
+      ts-morph: 22.0.0
+    transitivePeerDependencies:
+      - '@types/react'
+
+  '@stencil/store@2.1.3(@stencil/core@4.27.0)':
+    dependencies:
+      '@stencil/core': 4.27.0
 
   '@stencil/store@2.1.3(@stencil/core@4.30.0)':
     dependencies:
@@ -19097,6 +19176,13 @@ snapshots:
   '@tokenizer/token@0.3.0': {}
 
   '@trysound/sax@0.2.0': {}
+
+  '@ts-morph/common@0.23.0':
+    dependencies:
+      fast-glob: 3.3.3
+      minimatch: 9.0.5
+      mkdirp: 3.0.1
+      path-browserify: 1.0.1
 
   '@tsconfig/node14@14.1.3': {}
 
@@ -20875,6 +20961,8 @@ snapshots:
   clsx@1.2.1: {}
 
   clsx@2.1.1: {}
+
+  code-block-writer@13.0.3: {}
 
   code-excerpt@4.0.0:
     dependencies:
@@ -23452,6 +23540,11 @@ snapshots:
       readable-stream: 2.3.8
       wbuf: 1.7.3
 
+  html-dom-parser@5.1.1:
+    dependencies:
+      domhandler: 5.0.3
+      htmlparser2: 10.0.0
+
   html-encoding-sniffer@4.0.0:
     dependencies:
       whatwg-encoding: 3.1.1
@@ -23484,6 +23577,16 @@ snapshots:
       relateurl: 0.2.7
       terser: 5.39.0
 
+  html-react-parser@5.2.5(@types/react@18.3.20)(react@18.3.1):
+    dependencies:
+      domhandler: 5.0.3
+      html-dom-parser: 5.1.1
+      react: 18.3.1
+      react-property: 2.0.2
+      style-to-js: 1.1.16
+    optionalDependencies:
+      '@types/react': 18.3.20
+
   html-tags@3.3.1: {}
 
   html-to-text@9.0.5:
@@ -23513,6 +23616,13 @@ snapshots:
       webpack: 5.99.7(@swc/core@1.11.22)
 
   html-whitespace-sensitive-tag-names@3.0.1: {}
+
+  htmlparser2@10.0.0:
+    dependencies:
+      domelementtype: 2.3.0
+      domhandler: 5.0.3
+      domutils: 3.2.2
+      entities: 6.0.0
 
   htmlparser2@6.1.0:
     dependencies:
@@ -27268,6 +27378,8 @@ snapshots:
       react-loadable: '@docusaurus/react-loadable@6.0.0(react@18.3.1)'
       webpack: 5.99.7(@swc/core@1.11.22)
 
+  react-property@2.0.2: {}
+
   react-reconciler@0.29.2(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
@@ -28874,6 +28986,8 @@ snapshots:
       '@tokenizer/token': 0.3.0
       peek-readable: 5.4.2
 
+  style-object-to-css-string@1.1.3: {}
+
   style-to-js@1.1.16:
     dependencies:
       style-to-object: 1.0.8
@@ -29289,6 +29403,11 @@ snapshots:
       typescript: 5.8.3
 
   ts-interface-checker@0.1.13: {}
+
+  ts-morph@22.0.0:
+    dependencies:
+      '@ts-morph/common': 0.23.0
+      code-block-writer: 13.0.3
 
   ts-standard@12.0.2(typescript@5.8.3):
     dependencies:
