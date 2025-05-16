@@ -446,14 +446,14 @@ importers:
         specifier: ^0.1.5
         version: 0.1.9
       '@orama/orama':
-        specifier: ^3.1.6
-        version: 3.1.6
+        specifier: workspace:*
+        version: link:../orama
       '@orama/plugin-analytics':
-        specifier: ^3.1.6
-        version: 3.1.6
+        specifier: workspace:*
+        version: link:../plugin-analytics
       '@orama/plugin-parsedoc':
-        specifier: ^3.1.6
-        version: 3.1.6
+        specifier: workspace:*
+        version: link:../plugin-parsedoc
       '@orama/react-components':
         specifier: ^0.7.0
         version: 0.7.0(@stencil/core@4.27.0)(@types/react@18.3.20)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3717,12 +3717,6 @@ packages:
 
   '@orama/plugin-analytics@2.1.1':
     resolution: {integrity: sha512-t7wS4crQCbfnDuHsvNyA3z4Q44DUca7hgZV8KVpRpz2jgKK4qlPEQig+NOL3rp2lHAAjFwxXegCIaeoW9dChQA==}
-
-  '@orama/plugin-analytics@3.1.6':
-    resolution: {integrity: sha512-qTKfw5bIpiB0naa5gsilo0URYBf17pI+xS09HY+wRRjSV3oh9rz4pk7tRWl07tWjSbPMvxlL+GchABy8HvfQOg==}
-
-  '@orama/plugin-parsedoc@3.1.6':
-    resolution: {integrity: sha512-ONPWPDlq2/LaxrPYdXR/vkwHUlD+l9iOL1u+IPYl1bIfVEqxQRmDVEfh2jUPApOabSEOMzm4Qgnr/3U2AqyZgw==}
 
   '@orama/react-components@0.0.28':
     resolution: {integrity: sha512-zd4j5zEOLOLQgqHipprUnh0cSMWryOX562m6oeVcqm6ckEX72F0gI3MK6nPo0Zc5rrm5nJKqqqteKK1dCLRd4w==}
@@ -17945,28 +17939,6 @@ snapshots:
   '@orama/plugin-analytics@2.1.1':
     dependencies:
       '@orama/orama': 2.1.1
-
-  '@orama/plugin-analytics@3.1.6':
-    dependencies:
-      '@orama/orama': 3.1.6
-
-  '@orama/plugin-parsedoc@3.1.6':
-    dependencies:
-      '@orama/orama': 3.1.6
-      glob: 8.1.0
-      hast-util-from-html: 1.0.2
-      hast-util-from-string: 2.0.0
-      hast-util-to-html: 8.0.4
-      hast-util-to-string: 2.0.0
-      rehype: 12.0.1
-      rehype-document: 6.1.0
-      rehype-parse: 8.0.5
-      rehype-preset-minify: 6.0.0
-      remark-parse: 10.0.2
-      remark-rehype: 10.1.0
-      unified: 10.1.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@orama/react-components@0.0.28(encoding@0.1.13)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)(typescript@5.8.3)(ws@8.18.1)(zod@3.24.3)':
     dependencies:
