@@ -535,6 +535,12 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
   properties?: '*' | FlattenSchemaProperty<T>[]
 
   /**
+   * The maximum [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
+   * between the term and the searchable property.
+   */
+  tolerance?: number
+
+  /**
    * The BM25 parameters to use.
    *
    * k: Term frequency saturation parameter.
@@ -1313,7 +1319,9 @@ export type OramaPluginSync<T = unknown> = {
   beforeUpdateMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
   afterUpdateMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
   afterCreate?: <T extends AnyOrama>(orama: T) => SyncOrAsyncValue
-  getComponents?: <IndexStore extends AnyIndexStore, TDocumentStore, TSorter>(schema: AnySchema) => SyncOrAsyncValue<Partial<ObjectComponents<IIndex<IndexStore>, TDocumentStore, TSorter>>>
+  getComponents?: <IndexStore extends AnyIndexStore, TDocumentStore, TSorter>(
+    schema: AnySchema
+  ) => SyncOrAsyncValue<Partial<ObjectComponents<IIndex<IndexStore>, TDocumentStore, TSorter>>>
 }
 
 export type OramaPluginAsync<T = unknown> = Promise<OramaPluginSync<T>>
