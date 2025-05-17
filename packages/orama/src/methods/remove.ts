@@ -3,9 +3,8 @@ import { runMultipleHook, runSingleHook } from '../components/hooks.js'
 import {
   DocumentID,
   getDocumentIdFromInternalId,
-  getInternalDocumentId,
+  getInternalDocumentId
 } from '../components/internal-document-id-store.js'
-import { trackRemoval } from '../components/sync-blocking-checker.js'
 import { isAsyncFunction } from '../utils.js'
 
 export function remove<T extends AnyOrama>(
@@ -41,10 +40,7 @@ async function removeAsync<T extends AnyOrama>(
   }
 
   const internalId = getInternalDocumentId(orama.internalDocumentIDStore, id)
-  const docId = getDocumentIdFromInternalId(
-    orama.internalDocumentIDStore,
-    internalId
-  )
+  const docId = getDocumentIdFromInternalId(orama.internalDocumentIDStore, internalId)
   const docsCount = orama.documentsStore.count(docs)
 
   if (!skipHooks) {
@@ -119,7 +115,6 @@ async function removeAsync<T extends AnyOrama>(
 
   orama.documentsStore.remove(orama.data.docs, id, internalId)
 
-  trackRemoval(orama)
   return result
 }
 
@@ -133,10 +128,7 @@ function removeSync<T extends AnyOrama>(orama: T, id: DocumentID, language?: str
   }
 
   const internalId = getInternalDocumentId(orama.internalDocumentIDStore, id)
-  const docId = getDocumentIdFromInternalId(
-    orama.internalDocumentIDStore,
-    internalId
-  )
+  const docId = getDocumentIdFromInternalId(orama.internalDocumentIDStore, internalId)
   const docsCount = orama.documentsStore.count(docs)
 
   if (!skipHooks) {
@@ -168,7 +160,7 @@ function removeSync<T extends AnyOrama>(orama: T, id: DocumentID, language?: str
         schemaType,
         language,
         orama.tokenizer,
-        docsCount,
+        docsCount
       )
     ) {
       result = false
@@ -193,7 +185,6 @@ function removeSync<T extends AnyOrama>(orama: T, id: DocumentID, language?: str
 
   orama.documentsStore.remove(orama.data.docs, id, internalId)
 
-  trackRemoval(orama)
   return result
 }
 
