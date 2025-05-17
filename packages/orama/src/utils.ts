@@ -339,108 +339,108 @@ export function isPromise(obj: any): obj is Promise<unknown> {
 }
 
 /**
- * Checks if the provided input is an async function or if the input is an array 
+ * Checks if the provided input is an async function or if the input is an array
  * containing at least one async function.
  *
  * @param func - A single function or an array of functions to check.
  *               Non-function values are ignored.
- * @returns `true` if the input is an async function or an array containing at least 
+ * @returns `true` if the input is an async function or an array containing at least
  *          one async function, otherwise `false`.
  */
 export function isAsyncFunction(func: any): boolean {
   if (Array.isArray(func)) {
-    return func.some(item => isAsyncFunction(item));
+    return func.some((item) => isAsyncFunction(item))
   }
 
   return func?.constructor?.name === 'AsyncFunction'
 }
 
-const withIntersection = 'intersection' in (new Set());
+const withIntersection = 'intersection' in new Set()
 
 export function setIntersection<V>(...sets: Set<V>[]): Set<V> {
   // Fast path 1
   if (sets.length === 0) {
-    return new Set();
+    return new Set()
   }
   // Fast path 2
   if (sets.length === 1) {
-    return sets[0];
+    return sets[0]
   }
   // Fast path 3
   if (sets.length === 2) {
-    const set1 = sets[0];
-    const set2 = sets[1];
+    const set1 = sets[0]
+    const set2 = sets[1]
 
     if (withIntersection) {
-      return set1.intersection(set2);
+      return set1.intersection(set2)
     }
-    const result = new Set<V>();
-    const base = set1.size < set2.size ? set1 : set2;
-    const other = base === set1 ? set2 : set1;
+    const result = new Set<V>()
+    const base = set1.size < set2.size ? set1 : set2
+    const other = base === set1 ? set2 : set1
     for (const value of base) {
       if (other.has(value)) {
-        result.add(value);
+        result.add(value)
       }
     }
-    return result;
+    return result
   }
 
   // Slow path
   // Find the smallest set
   const min = {
     index: 0,
-    size: sets[0].size,
+    size: sets[0].size
   }
   for (let i = 1; i < sets.length; i++) {
     if (sets[i].size < min.size) {
-      min.index = i;
-      min.size = sets[i].size;
+      min.index = i
+      min.size = sets[i].size
     }
   }
 
   if (withIntersection) {
-    let base = sets[min.index];
+    let base = sets[min.index]
     for (let i = 0; i < sets.length; i++) {
       if (i === min.index) {
-        continue;
+        continue
       }
-      base = base.intersection(sets[i]);
+      base = base.intersection(sets[i])
     }
 
-    return base;
+    return base
   }
 
   // manual implementation:
   // intersect all sets with the smallest set
-  const base = sets[min.index];
+  const base = sets[min.index]
   for (let i = 0; i < sets.length; i++) {
     if (i === min.index) {
-      continue;
+      continue
     }
-    const other = sets[i];
+    const other = sets[i]
     for (const value of base) {
       if (!other.has(value)) {
-        base.delete(value);
+        base.delete(value)
       }
     }
   }
 
-  return base;
+  return base
 }
 
-const withUnion = 'union' in (new Set());
+const withUnion = 'union' in new Set()
 export function setUnion<V>(set1: Set<V> | undefined, set2: Set<V>) {
   if (withUnion) {
     if (set1) {
-      return set1.union(set2);
+      return set1.union(set2)
     }
-    return set2;
+    return set2
   }
 
   if (!set1) {
-    return new Set(set2);
+    return new Set(set2)
   }
-  return new Set([...set1, ...set2]);
+  return new Set([...set1, ...set2])
 }
 
 // This code is taken from https://github.com/davidmarkclements/atomic-sleep, MIT licensed at the time of commit b8149d3ca276c84a54fa8fa1478f9cc79aabc15a.
@@ -448,7 +448,7 @@ export function setUnion<V>(set1: Set<V> | undefined, set2: Set<V>) {
 export function sleep(ms: number) {
   if (typeof SharedArrayBuffer !== 'undefined' && typeof Atomics !== 'undefined') {
     const nil = new Int32Array(new SharedArrayBuffer(4))
-    const valid = ms > 0 && ms < Infinity 
+    const valid = ms > 0 && ms < Infinity
     if (valid === false) {
       if (typeof ms !== 'number' && typeof ms !== 'bigint') {
         throw TypeError('sleep: ms must be a number')
@@ -457,9 +457,8 @@ export function sleep(ms: number) {
     }
 
     Atomics.wait(nil, 0, 0, Number(ms))
-    
   } else {
-    const valid = ms > 0 && ms < Infinity 
+    const valid = ms > 0 && ms < Infinity
     if (valid === false) {
       if (typeof ms !== 'number' && typeof ms !== 'bigint') {
         throw TypeError('sleep: ms must be a number')
@@ -467,6 +466,8 @@ export function sleep(ms: number) {
       throw RangeError('sleep: ms must be a number that is greater than 0 but less than Infinity')
     }
     const target = Date.now() + Number(ms)
-    while (target > Date.now()){ /* empty */ }
+    while (target > Date.now()) {
+      /* empty */
+    }
   }
 }
