@@ -1,6 +1,6 @@
 {
   "name": "@orama/tokenizers",
-  "version": "3.1.6",
+  "version": "3.1.7",
   "type": "module",
   "description": "Additional tokenizers for Orama",
   "sideEffects": false,
@@ -30,9 +30,7 @@
   "dependencies": {
     "@orama/orama": "workspace:*"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"
@@ -67,10 +65,7 @@
     "node": ">= 20.0.0"
   },
   "tshy": {
-    "dialects": [
-      "esm",
-      "commonjs"
-    ],
+    "dialects": ["esm", "commonjs"],
     "exports": {
       "./japanese": "./src/japanese.ts",
       "./mandarin": "./src/mandarin.ts",
