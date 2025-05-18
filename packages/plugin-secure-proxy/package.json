@@ -36,10 +36,7 @@
   "devDependencies": {
     "@orama/orama": "workspace:*",
     "@types/node": "^20.9.0",
-    "c8": "^7.12.0",
     "sinon": "^17.0.1",
-    "tap": "^18.6.1",
-    "tap-mocha-reporter": "^5.0.3",
     "tape": "^5.6.1",
     "ts-standard": "^12.0.2",
     "tsup": "^7.2.0",

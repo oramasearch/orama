@@ -30,7 +30,9 @@
   "dependencies": {
     "@orama/orama": "workspace:*"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"
@@ -65,7 +67,10 @@
     "node": ">= 20.0.0"
   },
   "tshy": {
-    "dialects": ["esm", "commonjs"],
+    "dialects": [
+      "esm",
+      "commonjs"
+    ],
     "exports": {
       "./japanese": "./src/japanese.ts",
       "./mandarin": "./src/mandarin.ts",
@@ -73,7 +78,6 @@
     }
   },
   "devDependencies": {
-    "tap": "^18.6.1",
     "tshy": "^3.0.2",
     "tsx": "^4.19.2"
   }
