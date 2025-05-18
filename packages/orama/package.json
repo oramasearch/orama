@@ -81,7 +81,9 @@
     }
   },
   "types": "./dist/commonjs/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"
@@ -140,13 +142,11 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.27",
     "@types/node": "^20.9.0",
-    "@types/tap": "^15.0.7",
     "auto-changelog": "^2.4.0",
     "c8": "^7.12.0",
     "commitizen": "^4.2.6",
     "glob": "^9.2.3",
     "prettier": "^2.8.1",
-    "tap": "^21.0.1",
     "tap-mocha-reporter": "^5.0.3",
     "tape": "^5.6.1",
     "tcompare": "^6.0.0",
@@ -169,7 +169,10 @@
       "./components": "./src/components.ts",
       "./trees": "./src/trees.ts"
     },
-    "esmDialects": ["deno", "browser"]
+    "esmDialects": [
+      "deno",
+      "browser"
+    ]
   },
   "module": "./dist/esm/index.js"
 }
