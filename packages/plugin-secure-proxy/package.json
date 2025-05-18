@@ -36,7 +36,6 @@
   "devDependencies": {
     "@orama/orama": "workspace:*",
     "@types/node": "^20.9.0",
-    "c8": "^7.12.0",
     "sinon": "^17.0.1",
     "tape": "^5.6.1",
     "ts-standard": "^12.0.2",
