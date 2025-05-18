@@ -31,7 +31,7 @@
     "semver": "^7.3.8",
     "simple-git": "^3.17.0",
     "tap": "^21.1.0",
-    "tap-mocha-reporter": "^5.0.3",
+    "tap-mocha-reporter": "^5.0.4",
     "tape": "^5.6.1",
     "tcompare": "^6.0.0",
     "tsx": "^3.12.1",

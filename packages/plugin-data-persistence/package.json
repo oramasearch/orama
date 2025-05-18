@@ -48,8 +48,6 @@
     "c8": "^7.12.0",
     "msgpack": "link:@types/msgpack/msgpack",
     "readable-stream": "^4.3.0",
-    "tap": "^18.6.1",
-    "tap-mocha-reporter": "^5.0.3",
     "tsx": "^3.12.2",
     "typescript": "^5.0.0"
   },
