@@ -1,9 +1,10 @@
 import { getFacets } from '../components/facets.js'
 import { getGroups } from '../components/groups.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'
-import { getInternalDocumentId } from '../components/internal-document-id-store.js'
+import { getInternalDocumentId, InternalDocumentID } from '../components/internal-document-id-store.js'
 import { Language } from '../components/tokenizer/languages.js'
 import { createError } from '../errors.js'
+import { getNested } from '../utils.js'
 import type {
   AnyOrama,
   BM25Params,
@@ -22,7 +23,7 @@ export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
   params: Pick<
     SearchParamsFullText<T>,
-    'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold'
+    'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold' | 'exactToken'
   >,
   language: Language | undefined
 ) {
@@ -66,7 +67,26 @@ export function innerFullTextSearch<T extends AnyOrama>(
   //   in this case, we need to return all the documents that contains at least one of the given properties
   const threshold = params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
 
-  if (term || properties) {
+  if (params.exact && term) {
+    const docs = orama.documentsStore.getAll(orama.data.docs) as Record<InternalDocumentID, TypedDocument<T>>
+    const normalizeTerm= term.toLowerCase()
+
+    uniqueDocsIDs = Object.entries(docs)
+    .filter(([, doc]) => {
+      return propertiesToSearch.some((prop) => {
+        const value = getNested(doc, prop)
+        if (typeof value === 'string') {
+          return value.toLowerCase() === normalizeTerm
+        }
+        if (Array.isArray(value)) {
+          return value.some((v) => typeof v === 'string' && v.toLowerCase() === normalizeTerm)
+        }
+        return false
+      })
+    })
+    .map(([id,]) => [+id, 0] as TokenScore)
+  }
+  else if (term || properties) {
     const docsCount = count(orama)
     uniqueDocsIDs = orama.index.search(
       index,
@@ -74,8 +94,8 @@ export function innerFullTextSearch<T extends AnyOrama>(
       orama.tokenizer,
       language,
       propertiesToSearch,
-      params.exact || false,
       params.tolerance || 0,
+      params.exactToken || false,
       params.boost || {},
       applyDefault(params.relevance),
       docsCount,

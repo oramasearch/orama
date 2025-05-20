@@ -319,6 +319,11 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
   exact?: boolean
 
   /**
+   * Whether each token should be matched exactly.
+   */
+  exactToken?: boolean
+
+  /**
    * The maximum [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
    * between the term and the searchable property.
    */
@@ -982,8 +987,8 @@ export interface IIndex<I extends AnyIndexStore> {
     tokenizer: Tokenizer,
     language: string | undefined,
     propertiesToSearch: string[],
-    exact: boolean,
     tolerance: number,
+    exactToken: boolean,
     boost: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>,
     relevance: Required<BM25Params>,
     docsCount: number,
