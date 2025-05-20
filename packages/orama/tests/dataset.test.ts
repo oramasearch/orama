@@ -108,9 +108,9 @@ t.test("orama.dataset", async (t) => {
       Object.keys((db.data.docs as DocumentsStore).docs).length,
       (dataset as EventJson).result.events.length,
     );
-    t.equal(s1.count, 1117);
-    t.equal(s2.count, 7314);
-    t.equal(s3.count, 7314);
+    t.equal(s1.count, 1081);
+    t.equal(s2.count, 0);
+    t.equal(s3.count, 1842);
 
     t.end();
   });
@@ -143,7 +143,7 @@ t.test("orama.dataset", async (t) => {
     const s1 = removeVariadicData(
       await search(db, {
         term: "war",
-        exact: true,
+        exactToken: true,
         // eslint-disable-next-line
         // @ts-ignore
         properties: ["description"],
@@ -155,7 +155,7 @@ t.test("orama.dataset", async (t) => {
     const s2 = removeVariadicData(
       await search(db, {
         term: "war",
-        exact: true,
+        exactToken: true,
         properties: ["description"],
         limit: 10,
         offset: 10,
@@ -165,7 +165,7 @@ t.test("orama.dataset", async (t) => {
     const s3 = removeVariadicData(
       await search(db, {
         term: "war",
-        exact: true,
+        exactToken: true,
         properties: ["description"],
         limit: 10,
         offset: 20,
@@ -174,7 +174,7 @@ t.test("orama.dataset", async (t) => {
 
     const s4 = await search(db, {
       term: "war",
-      exact: true,
+      exactToken: true,
       properties: ["description"],
       limit: 2240,
       offset: 0,
@@ -182,7 +182,7 @@ t.test("orama.dataset", async (t) => {
 
     const s5 = await search(db, {
       term: "war",
-      exact: true,
+      exactToken: true,
       properties: ["description"],
       limit: 10,
       offset: 2239,
@@ -223,7 +223,7 @@ t.test("orama.dataset", async (t) => {
   t.test("should correctly delete documents", async (t) => {
     const documentsToDelete = await search(db, {
       term: "war",
-      exact: true,
+      exactToken: true,
       properties: ["description"],
       limit: 10,
       offset: 0,
@@ -235,13 +235,12 @@ t.test("orama.dataset", async (t) => {
 
     const newSearch = await search(db, {
       term: "war",
-      exact: true,
       properties: ["description"],
       limit: 10,
       offset: 0,
     });
 
-    t.equal(newSearch.count, 2347);
+    t.equal(newSearch.count, 2743);
 
     t.end();
   });
