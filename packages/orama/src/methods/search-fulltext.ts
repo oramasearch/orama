@@ -1,7 +1,7 @@
 import { getFacets } from '../components/facets.js'
 import { getGroups } from '../components/groups.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'
-import { getInternalDocumentId } from '../components/internal-document-id-store.js'
+import { getInternalDocumentId, InternalDocumentID } from '../components/internal-document-id-store.js'
 import { Language } from '../components/tokenizer/languages.js'
 import { createError } from '../errors.js'
 import type {
@@ -14,7 +14,7 @@ import type {
   TokenScore,
   TypedDocument
 } from '../types.js'
-import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
+import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate, getNested } from '../utils.js'
 import { count } from './docs.js'
 import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
 
@@ -66,7 +66,39 @@ export function innerFullTextSearch<T extends AnyOrama>(
   //   in this case, we need to return all the documents that contains at least one of the given properties
   const threshold = params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
 
-  if (term || properties) {
+  /**
+   * Property-value exactness:
+   * If `params.exact` is true and a search term is provided, iterate all documents and check if any of the specified properties
+   * (or all string properties if none specified) match the search term exactly (case-insensitive).
+   * This is different from token-based exactness, which is handled by `exactToken`.
+   *
+   * Example:
+   *   - If a document property value is "First Note.md" and the search term is "first" with `exact: true`,
+   *     it will NOT match (property-value is not exactly "first").
+   *   - If a document property value is "first" and the search term is "first" with `exact: true`,
+   *     it WILL match.
+   *
+   * For token-based exactness (matching individual words/tokens), use `exactToken` instead.
+   */
+  if (params.exact && term) {
+    const docs = orama.documentsStore.getAll(orama.data.docs) as Record<InternalDocumentID, TypedDocument<T>>
+    const normalizeTerm= term.toLowerCase()
+
+    uniqueDocsIDs = Object.entries(docs)
+    .filter(([, doc]) => {
+      return propertiesToSearch.some((prop) => {
+        const value = getNested(doc, prop)
+        if (typeof value === 'string') {
+          return value.toLowerCase() === normalizeTerm
+        }
+        if (Array.isArray(value)) {
+          return value.some((v) => typeof v === 'string' && v.toLowerCase() === normalizeTerm)
+        }
+        return false
+      })
+    })
+    .map(([id,]) => [+id, 0] as TokenScore)
+  } else if (term || properties) {
     const docsCount = count(orama)
     uniqueDocsIDs = orama.index.search(
       index,

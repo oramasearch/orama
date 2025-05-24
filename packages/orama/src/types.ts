@@ -314,9 +314,26 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
   sortBy?: SortByParams<T, ResultDocument>
 
   /**
-   * Whether to match the term exactly.
+   * Whether to match the term exactly against the entire property value (case-insensitive).
+   *
+   * If true, only documents where the specified property (or all string properties if none specified)
+   * matches the search term exactly (as a whole string, not tokenized) will be returned.
+   *
+   * Example:
+   *   - If a property value is "First Note.md" and the search term is "first", this will NOT match.
+   *   - If a property value is "first" and the search term is "first", this WILL match.
+   *
+   * For token-level exactness (matching individual words/tokens), use `exactToken` instead.
    */
   exact?: boolean
+
+  /**
+   * Whether each token should be matched exactly (token-level exactness).
+   *
+   * If true, only documents where individual tokens (words) in the property match the search term exactly will be returned.
+   * This is different from `exact`, which matches the entire property value.
+   */
+  exactToken?: boolean
 
   /**
    * The maximum [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
