@@ -97,3 +97,60 @@ t.test('filter on string', async t => {
 
     t.equal(result3.count, 0)
 })
+
+t.test('string[] is allowed by this plugin', {only: true}, async t => {
+    const db = create({
+        schema: {
+            title: 'string',
+            category: 'string',
+        },
+        // Without the plugin
+        // plugins: [pluginQPS()],
+    })
+
+    await insertMultiple(db, [
+        {
+            title: `Harry Potter and the Philosopher's Stone`,
+            category: 'movie',
+        },
+        {
+            title: 'Harry Potter and the Chamber of Secrets',
+            category: 'book',
+        },
+    ])
+
+    const found = await search(db, {
+        term: 'Harry',
+        where: {
+            category: ['movie', 'book'],
+        },
+    })
+
+    const db2 = create({
+        schema: {
+            title: 'string',
+            category: 'string',
+        },
+        plugins: [pluginQPS()],
+    })
+
+    await insertMultiple(db2, [
+        {
+            title: `Harry Potter and the Philosopher's Stone`,
+            category: 'movie',
+        },
+        {
+            title: 'Harry Potter and the Chamber of Secrets',
+            category: 'book',
+        },
+    ])
+
+    const found2 = await search(db2, {
+        term: 'Harry',
+        where: {
+            category: ['movie', 'book'],
+        },
+    })
+
+    t.equal(found.count, found2.count)
+})
