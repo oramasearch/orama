@@ -183,13 +183,21 @@ function qpsComponents(schema: AnySchema): Partial<ObjectComponents<any, any, an
         for (const [propName, filter] of stringFiltersList) {
           const f = filter as string | string[]
 
-          const tokens: string[] = []
+          const tokens = new Set<string>()
           if (Array.isArray(f)) {
             for (const item of f) {
-              tokens.push(...tokenizer.tokenize(item, language))
+              const t = tokenizer.tokenize(item, language)
+              const tLength = t.length
+              for (let i = 0; i < tLength; i++) {
+                tokens.add(t[i])
+              }
             }
           } else {
-            tokens.push(...tokenizer.tokenize(f, language))
+            const t = tokenizer.tokenize(f, language)
+            const tLength = t.length
+            for (let i = 0; i < tLength; i++) {
+              tokens.add(t[i])
+            }
           }
 
           const radixTree = index.indexes[propName].node as radix.RadixNode
