@@ -1,6 +1,6 @@
 import { AnyOrama, create, insertMultiple } from '@orama/orama'
-import { IndexConfig, OramaDoc } from './types'
-import { DOCS_PRESET_SCHEMA } from './constants'
+import { IndexConfig, OramaDoc } from './types.js'
+import { DOCS_PRESET_SCHEMA } from './constants.js'
 
 export const restFetcher = async <T = unknown>(url: string, options?: any): Promise<T> => {
   const response = await fetch(url, options)
