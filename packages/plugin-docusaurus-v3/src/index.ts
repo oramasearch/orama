@@ -1,6 +1,6 @@
 import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 import type { Plugin } from '@docusaurus/types'
-import type { LoadContext } from '@docusaurus/types/src/context'
+import type { LoadContext } from '@docusaurus/types';
 import { readFileSync, writeFileSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
@@ -11,8 +11,8 @@ import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
 
-import { createOramaInstance, fetchEndpointConfig, loggedOperation } from './utils'
-import { CloudConfig, DeployType, IndexConfig, OramaData, OramaDoc, PluginOptions } from './types'
+import { createOramaInstance, fetchEndpointConfig, loggedOperation } from './utils.js'
+import { CloudConfig, DeployType, IndexConfig, OramaData, OramaDoc, PluginOptions } from './types.js'
 
 async function generateDocs({
   siteDir,
@@ -133,17 +133,17 @@ async function syncOramaIndex({
 
   const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
 
-  if (deploy) {
-    // Reset index
-    await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
+  // if (deploy) {
+  //   // Reset index
+  //   await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
 
-    // Populate index
-    await insertChunkDocumentsIntoIndex(index, oramaDocs)
+  //   // Populate index
+  //   await insertChunkDocumentsIntoIndex(index, oramaDocs)
 
-    if (cloudConfig.deploy === DeployType.DEFAULT) {
-      await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
-    }
-  }
+  //   if (cloudConfig.deploy === DeployType.DEFAULT) {
+  //     await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
+  //   }
+  // }
 
   return endpointConfig
 }

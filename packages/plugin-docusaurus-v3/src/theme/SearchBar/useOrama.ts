@@ -7,9 +7,9 @@ import { ungzip } from 'pako'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
 
-import { DOCS_PRESET_SCHEMA } from '../../constants'
-import type { OramaCloudData, OramaData, OramaPlugins } from '../../types'
-import { createOramaInstance } from '../../utils'
+import { DOCS_PRESET_SCHEMA } from '../../constants.js'
+import type { OramaCloudData, OramaData, OramaPlugins } from '../../types.js'
+import { createOramaInstance } from '../../utils.js'
 
 function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
   const pluginsArray = []
