@@ -459,8 +459,8 @@ export function search(
   tokenizer: Tokenizer,
   language: string | undefined,
   propertiesToSearch: string[],
-  exact: boolean,
   tolerance: number,
+  exactToken: boolean,
   boost: Record<string, number>,
   relevance: Required<BM25Params>,
   docsCount: number,
@@ -500,7 +500,7 @@ export function search(
     const tokenLength = tokens.length
     for (let i = 0; i < tokenLength; i++) {
       const token = tokens[i]
-      const searchResult = tree.node.find({ term: token, exact, tolerance })
+      const searchResult = tree.node.find({ term: token, exact: exactToken, tolerance })
 
       // See if this token was found (for threshold=0 filtering)
       const termsFound = Object.keys(searchResult)

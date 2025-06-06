@@ -84,11 +84,11 @@ t.test('search method', async (t) => {
       await insert(db, { quote: 'I like cats. They are the best.', author: 'Jane Doe' })
 
       // Exact search
-      const result1 = await search(db, { term: 'fox', exact: true })
+      const result1 = await search(db, { term: 'John Doe', properties: ["author"], exact: true })
       const result2 = await search(db, { term: 'dog', exact: true })
 
       t.equal(result1.count, 2)
-      t.equal(result2.count, 3)
+      t.equal(result2.count, 0)
 
       // Prefix search
       const result3 = await search(db, { term: 'fox', exact: false })
@@ -193,7 +193,7 @@ t.test('search method', async (t) => {
 
       const partialSearch = await search(db, {
         term: 'alr',
-        exact: true
+        exactToken: true
       })
 
       t.equal(partialSearch.count, 0)
@@ -201,7 +201,7 @@ t.test('search method', async (t) => {
 
       const exactSearch = await search(db, {
         term: 'already',
-        exact: true
+        exactToken: true
       })
 
       t.equal(exactSearch.count, 1)
@@ -719,11 +719,11 @@ t.test('search method', async (t) => {
 
     const result1 = await search(db, { term: 'foxes', exact: true })
     const result2 = await search(db, { term: 'cats', exact: true })
-    const result3 = await search(db, { term: 'brown', exact: true })
+    const result3 = await search(db, { term: 'John Doe', exact: true })
 
     t.equal(result1.count, 0)
     t.equal(result2.count, 0)
-    t.equal(result3.count, 1)
+    t.equal(result3.count, 2)
     t.end()
   })
 
