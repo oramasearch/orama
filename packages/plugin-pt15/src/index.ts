@@ -110,11 +110,11 @@ function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any,
       removeDocumentScoreParameters: () => {throw new Error()},
       removeTokenScoreParameters: () => {throw new Error()},
       calculateResultScores: () => {throw new Error()},
-      search: function search<T extends AnyOrama>(index: PT15IndexStore, term: string, tokenizer: Tokenizer, language: string | undefined, propertiesToSearch: string[], exact: boolean, tolerance: number, boost: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>, relevance: Required<BM25Params>, docsCount: number, whereFiltersIDs: Set<InternalDocumentID> | undefined): TokenScore[] {
+      search: function search<T extends AnyOrama>(index: PT15IndexStore, term: string, tokenizer: Tokenizer, language: string | undefined, propertiesToSearch: string[], tolerance: number, exactToken: boolean, boost: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>, relevance: Required<BM25Params>, docsCount: number, whereFiltersIDs: Set<InternalDocumentID> | undefined): TokenScore[] {
         if (tolerance !== 0) {
           throw new Error('Tolerance not implemented yet')
         }
-        if (exact === true) {
+        if (exactToken === true) {
           throw new Error('Exact not implemented yet')
         }
 
