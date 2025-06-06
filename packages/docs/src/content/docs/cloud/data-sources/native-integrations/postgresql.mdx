@@ -1,0 +1,166 @@
+---
+title: Connect to PostgreSQL
+description: Learn how to connect Orama Cloud to your PostgreSQL database.
+editUrl: false
+---
+
+### Basic Configuration
+
+#### Create a dedicated read-only Postgres user
+
+These steps create a dedicated read-only user for replicating data. Alternatively, you can use an existing Postgres user in your database.
+
+The following commands will create a new user:
+```sql
+CREATE USER <user_name> PASSWORD 'your_password_here';
+```
+Now, provide this user with read-only access to relevant schemas and tables. Re-run this command for each schema you expect to replicate data from:
+
+```sql
+GRANT USAGE ON SCHEMA <schema_name> TO <user_name>;
+GRANT SELECT ON ALL TABLES IN SCHEMA <schema_name> TO <user_name>;
+ALTER DEFAULT PRIVILEGES IN SCHEMA <schema_name> GRANT SELECT ON TABLES TO <user_name>;
+```
+
+### Advanced Configuration using CDC
+
+Orama Cloud uses [logical replication](https://www.postgresql.org/docs/10/logical-replication.html) of the Postgres write-ahead log (WAL) to incrementally capture deletes using a replication plugin:
+
+We recommend configuring your Postgres source with CDC when:
+
+- You need a record of deletions.
+- You have a very large database (500 GB or more).
+- Your table has a primary key but doesn't have a reasonable cursor field for incremental syncing (`updated_at`).
+
+These are the additional steps required to configure your Postgres source using CDC:
+
+1. Provide additional `REPLICATION` permissions to read-only user
+2. Enable logical replication on your Postgres database
+3. Create a replication slot on your Postgres database
+4. Create publication and replication identities for each Postgres table
+5. Add slot and publication to the Orama Cloud data source configuration
+
+#### Step 1: Prepopulate your Postgres source configuration
+
+For CDC, you must connect to primary/master databases. Pointing the data source configuration to replica database hosts for CDC will lead to failures.
+
+#### Step 2: Provide additional permissions to read-only user
+
+To configure CDC for the Postgres data source, grant `REPLICATION` permissions to the user created in the [basic configuration step](#create-a-dedicated-read-only-postgres-user):
+
+```
+ALTER USER <user_name> REPLICATION;
+```
+
+#### Step 3: Enable logical replication on your Postgres database
+
+To enable logical replication, follow these steps based on your deployment environment.
+
+##### Bare Metal, VMs, and Docker
+
+To enable logical replication on bare metal, VMs (EC2/GCE/etc), or Docker, configure the following parameters in the [postgresql.conf file](https://www.postgresql.org/docs/current/config-setting.html) for your Postgres database.
+
+| Parameter             | Description                                                                    | Set value to                                                                                                                             |
+|-----------------------|--------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| wal_level             | Type of coding used within the Postgres write-ahead log                        | `logical`                                                                                                                                |
+| max_wal_senders       | The maximum number of processes used for handling WAL changes                  | `min: 1`                                                                                                                                 |
+| max_replication_slots | The maximum number of replication slots that are allowed to stream WAL changes | `1` (if Orama Cloud is the only service reading subscribing to WAL changes. More than 1 if other services are also reading from the WAL) |
+
+##### AWS Postgres RDS or Aurora
+
+1. Go to the Configuration tab for your DB cluster.
+2. Find your cluster parameter group. Either edit the parameters for this group or create a copy of this parameter group to edit. If you create a  copy, change your cluster's parameter group before restarting.
+3. Within the parameter group page, search for `rds.logical_replication`. Select this row and click Edit parameters. Set this value to `1`.
+4. Wait for a maintenance window to automatically restart the instance or restart it manually.
+
+:::note 
+AWS Aurora implements a [CDC caching layer](https://aws.amazon.com/blogs/database/achieve-up-to-17x-lower-replication-lag-with-the-new-write-through-cache-for-aurora-postgresql/) that is incompatible with Orama Cloud's CDC implementation. To use Orama with AWS Aurora, disable the CDC caching layer. Disable CDC caching by setting the [`rds.logical_wal_cache`](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Replication.Logical.html) parameter to `0` in the AWS Aurora parameter group.
+:::
+
+##### Azure Database for Postgres
+
+Change the replication mode of your Postgres DB on Azure to `logical` using the replication menu of your PostgreSQL instance in the Azure Portal. Alternatively, use the Azure CLI to run the following command:
+
+```
+az postgres server configuration set --resource-group group --server-name server --name azure.replication_support --value logical
+az postgres server restart --resource-group group --name server
+```
+#### Step 4: Create a replication slot on your Postgres database
+
+Orama Cloud requires a replication slot configured only for its use. Only one source should be configured that uses this replication slot.
+
+For this step, Orama Cloud requires use of the pgoutput plugin. To create a replication slot called `orama_slot` using pgoutput, run as the user with the newly granted `REPLICATION` role:
+
+```
+SELECT pg_create_logical_replication_slot('orama_slot', 'pgoutput');
+```
+
+The output of this command will include the name of the replication slot to fill into the Orama Cloud data source setup page.
+
+#### Step 5: Create publication and replication identities for each Postgres table
+
+For each table you want to replicate with CDC, follow the steps below:
+
+1. Add the replication identity (the method of distinguishing between rows) for each table you want to replicate:
+
+```
+ALTER TABLE tbl1 REPLICA IDENTITY DEFAULT;
+```
+In rare cases, if your tables use data types that support [TOAST](https://www.postgresql.org/docs/current/storage-toast.html) or have very large field values, consider instead using replica identity type full: `
+ALTER TABLE tbl1 REPLICA IDENTITY FULL;`.  Ensure that TOAST-able tables use non-TOAST-able primary keys (integers, varchars, etc.), and there will only be a [modest increase in resource utilization, in addition to increased WAL storage size](https://xata.io/blog/replica-identity-full-performance).
+
+2. Create the Postgres publication. You should include all tables you want to replicate as part of the publication:
+
+```
+CREATE PUBLICATION orama_publication FOR TABLE <tbl1, tbl2, tbl3>;`
+```
+
+The publication name is customizable. Refer to the [Postgres docs](https://www.postgresql.org/docs/10/sql-alterpublication.html) if you need to add or remove tables from your publication in the future.
+
+### Connecting with SSL or SSH Tunneling
+
+#### SSL Modes
+Here is a breakdown of available SSL connection modes:
+
+- `disable` to disable encrypted communication between Orama Cloud and the source
+- `allow` to enable encrypted communication only when required by the source
+- `prefer` to allow unencrypted communication only when the source doesn't support encryption
+- `require` to always require encryption. Note: The connection will fail if the source doesn't support encryption.
+- `verify-ca` to always require encryption and verify that the source has a valid SSL certificate
+- `verify-full` to always require encryption and verify the identity of the source
+
+#### SSH Tunneling
+
+For SSH Tunnel Method, select:
+
+- `No Tunnel` for a direct connection to the database
+- `SSH Key Authentication` to use an RSA Private as your secret for establishing the SSH tunnel
+- `Password Authentication` to use a password as your secret for establishing the SSH tunnel
+
+##### Connect via SSH Tunnel
+
+You can connect to a Postgres instance via an SSH tunnel.
+
+When using an SSH tunnel, you are configuring Orama Cloud to connect to an intermediate server (also called a bastion or a jump server) that has direct access to the database. Orama Cloud connects to the bastion and then asks the bastion to connect directly to the server.
+
+To connect to a Postgres instance via an SSH tunnel:
+
+1. While setting up the Postgres data source, from the SSH tunnel dropdown, select:
+   - SSH Key Authentication to use a private as your secret for establishing the SSH tunnel
+   - Password Authentication to use a password as your secret for establishing the SSH Tunnel
+2. For **SSH Tunnel Jump Server Host**, enter the hostname or IP address for the intermediate (bastion) server that Orama Cloud will connect to.
+3. For **SSH Connection Port**, enter the port on the bastion server. The default port for SSH connections is 22.
+4. For **SSH Login Username**, enter the username to use when connecting to the bastion server. **Note:** This is the operating system username and not the Postgres username.
+5. For authentication:
+   - If you selected **SSH Key Authentication**, set the **SSH Private Key** to the [private Key](#generating-a-private-key-for-ssh-tunneling) that you are using to create the SSH connection.
+   - If you selected **Password Authentication**, enter the password for the operating system user to connect to the bastion server. **Note:** This is the operating system password and not the Postgres password.
+
+##### Generating a private key for SSH Tunneling
+
+The data source supports any SSH compatible key format such as RSA or Ed25519. To generate an RSA key, for example, run:
+
+```
+ssh-keygen -t rsa -m PEM -f myuser_rsa
+```
+
+The command produces the private key in PEM format and the public key remains in the standard format used by the `authorized_keys` file on your bastion server. Add the public key to your bastion host to the user you want to use with Orama Cloud. The private key is provided via copy-and-paste to the Orama Cloud data source configuration screen to allow it to log into the bastion server.
