@@ -47,7 +47,7 @@ export async function fetchEndpointConfig(baseUrl: string, APIKey: string, index
     'Orama: Fetch index endpoint config (success)'
   )
 
-  return { endpoint: result?.api_endpoint, api_key: result?.api_key }
+  return { endpoint: result?.api_endpoint, api_key: result?.api_key, collection_id: '' }
 }
 
 export async function createOramaInstance(oramaDocs: OramaDoc[]): Promise<AnyOrama> {

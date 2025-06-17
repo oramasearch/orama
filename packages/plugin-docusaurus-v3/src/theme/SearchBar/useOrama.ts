@@ -6,6 +6,7 @@ import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
+import { CollectionManager } from '@orama/core';
 
 import { DOCS_PRESET_SCHEMA } from '../../constants.js'
 import type { OramaCloudData, OramaData, OramaPlugins } from '../../types.js'
@@ -60,7 +61,7 @@ function isCloudData(data: OramaData): data is OramaCloudData {
 }
 
 export default function useOrama() {
-  const [searchBoxConfig, setSearchBoxConfig] = useState<{
+  const [searchBoxConfig, setSearchBoxConfig] = useState < {
     basic: Record<string, any>
     custom: Record<string, any>
   }>({
@@ -77,13 +78,27 @@ export default function useOrama() {
     async function loadOrama() {
       let oramaInstance
       let searchBoxBasicConfig = {}
-      
+
       if (isCloudData(oramaData)) {
+        const collectionId = oramaData.indexConfig.collection_id
+        const apiKey = oramaData.indexConfig.api_key
+
+        let collectionManager;
+
+        if(collectionId) { // Note: collectionId is ONLY available in OramaCore
+          collectionManager = new CollectionManager({
+            url: oramaData.indexConfig.endpoint,
+            collectionID: collectionId,
+            readAPIKey: apiKey
+          })
+        }
+
         searchBoxBasicConfig = {
           index: {
             endpoint: oramaData.indexConfig.endpoint,
             api_key: oramaData.indexConfig.api_key
-          }
+          },
+          collectionManager: collectionManager
         }
       } else if (oramaData.oramaDocs) {
         oramaInstance = await createOramaInstance(oramaData.oramaDocs)
@@ -92,7 +107,7 @@ export default function useOrama() {
         oramaInstance = await getOramaLocalData(indexGzipURL, oramaData.plugins)
         searchBoxBasicConfig = { clientInstance: oramaInstance }
       }
-      
+
       setSearchBoxConfig({
         basic: {
           ...searchBoxBasicConfig,

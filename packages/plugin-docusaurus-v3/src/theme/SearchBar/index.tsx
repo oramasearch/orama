@@ -17,18 +17,24 @@ const LazyOramaSearchBox: React.LazyExoticComponent<React.ComponentProps<typeof 
 import useOrama from './useOrama.js'
 import { OramaData } from '../../types.js'
 
-const collectionId = "o1a6pniok8xff8hw02c8zlvj"
-const endpoint = "https://collections.orama.com"
-const apiKey = "XpZXhp2MY9l8oVyg0ZVNLoPke7416Ef2"
+// Add `where` when collectionManager is provided
+// Handles different query APIs
+function formatSearchParams(versionName: string,
+                            collectionManager: CollectionManager | undefined) {
+  if(collectionManager) {
+    return {
+      version: versionName
+    }
+  }
+
+  return {
+    version: { eq: versionName } as any
+  }
+}
 
 export function OramaSearchNoDocs() {
   const { searchBoxConfig, searchBtnConfig = {}, colorMode } = useOrama()
-
-  const collectionManager = new CollectionManager({
-    url: endpoint,
-    collectionID: collectionId,
-    readAPIKey: apiKey
-  })
+  const collectionManager = searchBoxConfig.basic?.collectionManager
 
   return (
     <div>
@@ -41,19 +47,13 @@ export function OramaSearchNoDocs() {
                   {searchBtnConfig?.text || 'Search'}
                 </LazyOramaSearchButton>
                 <LazyOramaSearchBox
-                  // {...searchBoxConfig.basic}
-                  // {...searchBoxConfig.custom}
+                  {...(collectionManager ? {} : searchBoxConfig.basic)}
+                  {...searchBoxConfig.custom}
                   oramaCoreClientInstance={collectionManager}
                   colorScheme={colorMode}
-                  // where={{
-                  //   source: 'docusaurus'
-                  // }}
-                  // searchParams={{
-                  //   where: {
-                  //     source: 'docusaurus'
-                  //   }
-                  // }}
-                  datasourceIDs={['docusaurus']}
+                  searchParams={{
+                    where: formatSearchParams('current', collectionManager)
+                  }}
                 />
               </React.Fragment>
             </React.Suspense>
@@ -70,16 +70,11 @@ export function OramaSearchWithDocs({ pluginId }: { pluginId: string }) {
   const { preferredVersion } = useDocsPreferredVersion(pluginId) as { preferredVersion: string }
   const currentVersion = activeVersion || preferredVersion || versions[0]
   const { searchBoxConfig, searchBtnConfig, colorMode } = useOrama()
-
-  const collectionManager = new CollectionManager({
-    url: endpoint,
-    collectionID: collectionId,
-    readAPIKey: apiKey
-  })
+  const collectionManager = searchBoxConfig.basic?.collectionManager
 
   const searchParams = {
     ...(currentVersion && {
-      
+      ...formatSearchParams(currentVersion.name, collectionManager)
     })
   }
 
@@ -99,19 +94,13 @@ export function OramaSearchWithDocs({ pluginId }: { pluginId: string }) {
               </LazyOramaSearchButton>
               {searchBoxConfig.basic && (
                 <LazyOramaSearchBox
-                  // {...searchBoxConfig.basic}
-                  // {...searchBoxConfig.custom}
+                  {...(collectionManager ? {} : searchBoxConfig.basic)}
+                  {...searchBoxConfig.custom}
                   oramaCoreClientInstance={collectionManager}
                   colorScheme={colorMode}
-                  // searchParams={{
-                  //   where: {
-                  //     source: 'docusaurus'
-                  //   },
-                  // }}
-                  where={{
-                    source: 'docusaurus'
+                  searchParams={{
+                    where: searchParams
                   }}
-                  datasourceIDs={['docusaurus']}
                 />
               )}
             </React.Fragment>
