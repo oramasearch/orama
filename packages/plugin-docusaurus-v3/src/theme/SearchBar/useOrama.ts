@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import useIsBrowser from '@docusaurus/useIsBrowser'
-import { useColorMode } from '@docusaurus/theme-common'
 import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
 import { create, insertMultiple } from '@orama/orama'
@@ -9,7 +8,7 @@ import { pluginAnalytics } from '@orama/plugin-analytics'
 import { CollectionManager } from '@orama/core';
 
 import { DOCS_PRESET_SCHEMA } from '../../constants.js'
-import type { OramaCloudData, OramaData, OramaPlugins } from '../../types.js'
+import type {OramaCloudData, OramaData, OramaDoc, OramaPlugins} from '../../types.js'
 import { createOramaInstance } from '../../utils.js'
 
 function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
@@ -46,8 +45,8 @@ async function getOramaLocalData(indexGzipURL: string, plugins: OramaPlugins | u
 			plugins: getOramaPlugins(plugins)
 		});
 
-		const documents: Record<string, unknown>[] = Object.values(parsedData.docs.docs);
-		await insertMultiple(db, documents);
+		const documents = Object.values(parsedData.docs.docs);
+		await insertMultiple(db, documents as OramaDoc[]);
 
 		return db;
 	} catch (error) {
@@ -68,7 +67,6 @@ export default function useOrama() {
     basic: {},
     custom: {}
   })
-  const { colorMode } = useColorMode()
   const oramaData: OramaData = usePluginData('@orama/plugin-docusaurus-v3') as OramaData
 
   const indexGzipURL = useBaseUrl('orama-search-index-current.json.gz')
@@ -127,5 +125,5 @@ export default function useOrama() {
     })
   }, [isBrowser])
 
-  return { searchBoxConfig, searchBtnConfig: oramaData.searchButton, colorMode }
+  return { searchBoxConfig, searchBtnConfig: oramaData.searchButton }
 }
