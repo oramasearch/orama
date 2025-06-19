@@ -11,7 +11,17 @@ export default defineConfig({
   site: 'https://docs.orama.com',
   vite: {
     ssr: {
-      noExternal: ['nanoid']
+      noExternal: ['nanoid', 'hastscript', 'hast-util-parse-selector']
+    },
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true,
+        namedExports: {
+          'hastscript': ['h'],
+          'hastscript/svg': ['s'],
+          'hast-util-parse-selector': ['parseSelector']
+        }
+      }
     }
   },
   redirects: {

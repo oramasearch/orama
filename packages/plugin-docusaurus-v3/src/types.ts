@@ -5,10 +5,12 @@ export enum DeployType {
   DEFAULT = 'default'
 }
 
+// Support backward compatibility by allowing a given indexId to be used (old naming)
 export type CloudConfig = {
   deploy?: DeployType
   indexId: string
   apiKey: string
+  collectionId: string
 }
 
 export type OramaPlugins = {
@@ -25,6 +27,7 @@ export type PluginOptions = {
 export type IndexConfig = {
   endpoint: string
   api_key: string
+  collection_id: string
 }
 
 export interface OramaDoc {

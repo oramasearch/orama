@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  hastscript: ^9.0.1
+
 importers:
 
   .:
@@ -442,6 +445,9 @@ importers:
       '@docusaurus/utils':
         specifier: ^3
         version: 3.7.0(@swc/core@1.11.24)(acorn@8.14.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@orama/core':
+        specifier: ^0.1.8
+        version: 0.1.8
       '@orama/highlight':
         specifier: ^0.1.5
         version: 0.1.9
@@ -455,8 +461,8 @@ importers:
         specifier: workspace:*
         version: link:../plugin-parsedoc
       '@orama/react-components':
-        specifier: ^0.7.0
-        version: 0.7.0(@stencil/core@4.27.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 0.8.0
+        version: 0.8.0(@stencil/core@4.30.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oramacloud/client':
         specifier: ^2.1.4
         version: 2.1.4
@@ -3590,8 +3596,8 @@ packages:
       react: ^17.0.0 || ^18.3.1
       react-dom: ^17.0.0 || ^18.3.1
 
-  '@orama/react-components@0.7.0':
-    resolution: {integrity: sha512-YAUkFwqKqYdL2Lh0VhQM+bQOx3vfZwxUurOX9+fS85/k+KIGPG18l5iDjWMAsA4WC96SEvV1xfSA67XMXEgwrA==}
+  '@orama/react-components@0.8.0':
+    resolution: {integrity: sha512-TVqjHS/Oa7EIe6srqu64DbkJshmotH0m+uGubV7hcUWHiABI8yQdYp1OhdLhsFNPnL+QnaaAh71yM5amBsJPNg==}
     peerDependencies:
       react: '>=17.0.0 <20.0.0'
       react-dom: '>=17.0.0 <20.0.0'
@@ -3617,8 +3623,8 @@ packages:
   '@orama/wc-components@0.0.28':
     resolution: {integrity: sha512-caxCZ2MdoEC92BKbN9Ki7R+icTQnpL3SAzKX2J8k4eFSMvt0svujGxogSbo1stQYtWGaQx2Rf1ucNMI/z7mQhw==}
 
-  '@orama/wc-components@0.7.0':
-    resolution: {integrity: sha512-PuDxF4evv8al91lFLVDHC9i+ow4m4+p69WGEzCa/UhV5c7sifV4Bd4d7A0yATuyEJTuaQUtEtn4kM3EEfK994g==}
+  '@orama/wc-components@0.8.0':
+    resolution: {integrity: sha512-G0PUACezU7atmD8BlydqqUtIznOSfZ2rzf2oJ9jDfTtx4Nrzuo4mWdAOTqcsEZRxzIOjzgZkjLPJLFsOugfjqQ==}
 
   '@oramacloud/client@1.3.14':
     resolution: {integrity: sha512-lD8i0+52W+RX5mDVfEEEdp38NvVCi5fX7GHLUlVTkKGnb5W8u2lEJlYnVhq9Lt0A5Qs3T9NYIczgTvUzD3jzpA==}
@@ -4057,11 +4063,6 @@ packages:
   '@slorber/static-site-generator-webpack-plugin@4.0.7':
     resolution: {integrity: sha512-Ug7x6z5lwrz0WqdnNFOMYrDQNTPAprvHLSh6+/fmml3qUiz6l5eq+2MzLKWtn/q5K5NpSiFsZTP/fck/3vjSxA==}
     engines: {node: '>=14'}
-
-  '@stencil/core@4.27.0':
-    resolution: {integrity: sha512-GOA+pvSpwL734yijTB8+LHesqPq3o/K6IaCrNoZybNVpe6lgVfvciDwPeP1XOj6JZpA/Lp8Uh3U9znoS8qgwOA==}
-    engines: {node: '>=16.0.0', npm: '>=7.10.0'}
-    hasBin: true
 
   '@stencil/core@4.30.0':
     resolution: {integrity: sha512-rInn2BaN3ISgtz+yfOeiTvAvY+xjz8g5v9hDtQMIP6uefjO6JHXGhUJw2CujnuEOWjYeVR/BYdZJTi0dWN9/vQ==}
@@ -7737,12 +7738,6 @@ packages:
   hast-util-minify-whitespace@1.0.1:
     resolution: {integrity: sha512-L96fPOVpnclQE0xzdWb/D12VT5FabA7SnZOUMtL1DbXmYiHJMXZvFkIZfiMmTCNJHUeO2K9UYNXoVyfz+QHuOw==}
 
-  hast-util-parse-selector@2.2.5:
-    resolution: {integrity: sha512-7j6mrk/qqkSehsM92wQjdIgWM2/BW61u/53G6xmC8i1OmEdKLHbk419QKQUjz6LglWsfqoiHmyMRkP1BGjecNQ==}
-
-  hast-util-parse-selector@3.1.1:
-    resolution: {integrity: sha512-jdlwBjEexy1oGz0aJ2f4GKMaVKkA9jwjr4MjAAI22E5fM/TXVZHuS5OpONtdeIkRKqAaryQ2E9xNQxijoThSZA==}
-
   hast-util-parse-selector@4.0.0:
     resolution: {integrity: sha512-wkQCkSYoOGCRKERFWcxMVMOcYE2K1AaNLU8DXS9arxnLOUEWbOXKXiJUNzEpqZ3JOKpnha3jkFrumEjVliDe7A==}
 
@@ -7799,12 +7794,6 @@ packages:
 
   hast-util-whitespace@3.0.0:
     resolution: {integrity: sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==}
-
-  hastscript@6.0.0:
-    resolution: {integrity: sha512-nDM6bvd7lIqDUiYEiu5Sl/+6ReP0BMk/2f4U/Rooccxkj0P5nm+acM5PrGJ/t5I8qPGiqZSE6hVAwZEdZIvP4w==}
-
-  hastscript@7.2.0:
-    resolution: {integrity: sha512-TtYPq24IldU8iKoJQqvZOuhi5CyCQRAbvDOX0x1eW6rsHSxa/1i2CCiptNTotGHJ3VoHRGmqiv6/D3q113ikkw==}
 
   hastscript@9.0.1:
     resolution: {integrity: sha512-g7df9rMFX/SPi34tyGCyUBREQoKkapwdY/T04Qn9TDWfHhAYt4/I0gMVirzK5wEzeUqIjEB+LXC/ypb7Aqno5w==}
@@ -15310,7 +15299,7 @@ snapshots:
       '@babel/preset-env': 7.26.9(@babel/core@7.26.10)
       '@babel/preset-react': 7.26.3(@babel/core@7.26.10)
       '@babel/preset-typescript': 7.27.0(@babel/core@7.26.10)
-      '@babel/runtime': 7.27.0
+      '@babel/runtime': 7.27.1
       '@babel/runtime-corejs3': 7.27.0
       '@babel/traverse': 7.27.0
       '@docusaurus/logger': 3.6.3
@@ -17941,10 +17930,10 @@ snapshots:
       - ws
       - zod
 
-  '@orama/react-components@0.7.0(@stencil/core@4.27.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@orama/react-components@0.8.0(@stencil/core@4.30.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@orama/wc-components': 0.7.0
-      '@stencil/react-output-target': 0.8.2(@stencil/core@4.27.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@orama/wc-components': 0.8.0
+      '@stencil/react-output-target': 0.8.2(@stencil/core@4.30.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
@@ -17994,7 +17983,7 @@ snapshots:
       - ws
       - zod
 
-  '@orama/wc-components@0.7.0':
+  '@orama/wc-components@0.8.0':
     dependencies:
       '@orama/core': 0.1.8
       '@orama/highlight': 0.1.9
@@ -18002,8 +17991,8 @@ snapshots:
       '@orama/switch': 3.1.6(@orama/core@0.1.8)(@orama/orama@3.1.6)(@oramacloud/client@2.1.4)
       '@oramacloud/client': 2.1.4
       '@phosphor-icons/webcomponents': 2.1.5
-      '@stencil/core': 4.27.0
-      '@stencil/store': 2.1.3(@stencil/core@4.27.0)
+      '@stencil/core': 4.30.0
+      '@stencil/store': 2.1.3(@stencil/core@4.30.0)
       dompurify: 3.2.5
       highlight.js: 11.11.1
       markdown-it: 14.1.0
@@ -18401,8 +18390,6 @@ snapshots:
       p-map: 4.0.0
       webpack-sources: 3.2.3
 
-  '@stencil/core@4.27.0': {}
-
   '@stencil/core@4.30.0':
     optionalDependencies:
       '@rollup/rollup-darwin-arm64': 4.34.9
@@ -18414,10 +18401,10 @@ snapshots:
       '@rollup/rollup-win32-arm64-msvc': 4.34.9
       '@rollup/rollup-win32-x64-msvc': 4.34.9
 
-  '@stencil/react-output-target@0.8.2(@stencil/core@4.27.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@stencil/react-output-target@0.8.2(@stencil/core@4.30.0)(@types/react@18.3.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@lit/react': 1.0.7(@types/react@18.3.21)
-      '@stencil/core': 4.27.0
+      '@stencil/core': 4.30.0
       html-react-parser: 5.2.5(@types/react@18.3.21)(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -18425,10 +18412,6 @@ snapshots:
       ts-morph: 22.0.0
     transitivePeerDependencies:
       - '@types/react'
-
-  '@stencil/store@2.1.3(@stencil/core@4.27.0)':
-    dependencies:
-      '@stencil/core': 4.27.0
 
   '@stencil/store@2.1.3(@stencil/core@4.30.0)':
     dependencies:
@@ -19495,7 +19478,7 @@ snapshots:
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.1.4
+      '@types/react': 18.3.21
 
   '@types/react@18.3.20':
     dependencies:
@@ -23205,7 +23188,7 @@ snapshots:
   hast-util-from-parse5@6.0.1:
     dependencies:
       '@types/parse5': 5.0.3
-      hastscript: 6.0.0
+      hastscript: 9.0.1
       property-information: 5.6.0
       vfile: 4.2.1
       vfile-location: 3.2.0
@@ -23215,7 +23198,7 @@ snapshots:
     dependencies:
       '@types/hast': 2.3.10
       '@types/unist': 2.0.11
-      hastscript: 7.2.0
+      hastscript: 9.0.1
       property-information: 6.5.0
       vfile: 5.3.7
       vfile-location: 4.1.0
@@ -23282,12 +23265,6 @@ snapshots:
       hast-util-is-element: 3.0.0
       hast-util-whitespace: 3.0.0
       unist-util-is: 6.0.0
-
-  hast-util-parse-selector@2.2.5: {}
-
-  hast-util-parse-selector@3.1.1:
-    dependencies:
-      '@types/hast': 2.3.10
 
   hast-util-parse-selector@4.0.0:
     dependencies:
@@ -23497,22 +23474,6 @@ snapshots:
     dependencies:
       '@types/hast': 3.0.4
 
-  hastscript@6.0.0:
-    dependencies:
-      '@types/hast': 2.3.10
-      comma-separated-tokens: 1.0.8
-      hast-util-parse-selector: 2.2.5
-      property-information: 5.6.0
-      space-separated-tokens: 1.1.5
-
-  hastscript@7.2.0:
-    dependencies:
-      '@types/hast': 2.3.10
-      comma-separated-tokens: 2.0.3
-      hast-util-parse-selector: 3.1.1
-      property-information: 6.5.0
-      space-separated-tokens: 2.0.2
-
   hastscript@9.0.1:
     dependencies:
       '@types/hast': 3.0.4
@@ -23534,7 +23495,7 @@ snapshots:
 
   history@4.10.1:
     dependencies:
-      '@babel/runtime': 7.27.0
+      '@babel/runtime': 7.27.1
       loose-envify: 1.4.0
       resolve-pathname: 3.0.0
       tiny-invariant: 1.3.3
@@ -27677,7 +27638,7 @@ snapshots:
   rehype-document@6.1.0:
     dependencies:
       '@types/hast': 2.3.10
-      hastscript: 7.2.0
+      hastscript: 9.0.1
       unified: 10.1.2
 
   rehype-expressive-code@0.35.6:
