@@ -1,21 +1,14 @@
 import React from 'react'
 import {useLocation} from '@docusaurus/router'
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import {useActiveVersion, useVersions} from '@docusaurus/plugin-content-docs/client'
 import {usePluginData} from '@docusaurus/useGlobalData'
-import BrowserOnly from '@docusaurus/BrowserOnly';
 import {OramaSearchBox, OramaSearchButton} from '@orama/react-components';
 import {CollectionManager} from '@orama/core';
 
 import useOrama from './useOrama.js'
 import {OramaData} from '../../types.js'
 import {getColorMode, getPreferredVersion} from "./utils.js";
-
-const LazyOramaSearchButton: React.LazyExoticComponent<React.ComponentProps<typeof OramaSearchButton>> = React.lazy(() =>
-	import('@orama/react-components').then(module => ({default: module.OramaSearchButton}))
-);
-const LazyOramaSearchBox: React.LazyExoticComponent<React.ComponentProps<typeof OramaSearchBox>> = React.lazy(() =>
-	import('@orama/react-components').then(module => ({default: module.OramaSearchBox}))
-);
 
 // Add `where` when collectionManager is provided
 // Handles different query APIs
@@ -39,22 +32,24 @@ export function OramaSearchNoDocs() {
 	const collectionManager = searchBoxConfig.basic?.collectionManager
 
 	return (
-		<React.Suspense fallback={<div>Loading search components...</div>}>
-			<React.Fragment>
-				<LazyOramaSearchButton colorScheme={colorMode} className="DocSearch-Button" {...searchBtnConfig}>
-					{searchBtnConfig?.text || 'Search'}
-				</LazyOramaSearchButton>
-				<LazyOramaSearchBox
-					{...(collectionManager ? {} : searchBoxConfig.basic)}
-					{...searchBoxConfig.custom}
-					oramaCoreClientInstance={collectionManager}
-					colorScheme={colorMode}
-					searchParams={{
-						where: formatSearchParams('current', collectionManager)
-					}}
-				/>
-			</React.Fragment>
-		</React.Suspense>
+		<React.Fragment>
+			<OramaSearchButton
+				colorScheme={colorMode}
+				className="DocSearch-Button"
+				{...searchBtnConfig}
+			>
+				{searchBtnConfig?.text || 'Search'}
+			</OramaSearchButton>
+			<OramaSearchBox
+				{...(collectionManager ? {} : searchBoxConfig.basic)}
+				{...searchBoxConfig.custom}
+				oramaCoreClientInstance={collectionManager}
+				colorScheme={colorMode}
+				searchParams={{
+					where: formatSearchParams('current', collectionManager)
+				}}
+			/>
+		</React.Fragment>
 	)
 }
 
@@ -73,30 +68,25 @@ export function OramaSearchWithDocs({pluginId}: { pluginId: string }) {
 		})
 	}
 
-	/**
-	 * [] SearchBar missing
-	 * [] Where clause is not working
-	 */
-
 	return (
-		<React.Suspense fallback={<div>Loading search components...</div>}>
-			<React.Fragment>
-				<LazyOramaSearchButton colorScheme={colorMode} className="DocSearch-Button" {...searchBtnConfig}>
-					{searchBtnConfig?.text || 'Search'}
-				</LazyOramaSearchButton>
-				{searchBoxConfig.basic && (
-					<LazyOramaSearchBox
-						{...(collectionManager ? {} : searchBoxConfig.basic)}
-						{...searchBoxConfig.custom}
-						oramaCoreClientInstance={collectionManager}
-						colorScheme={colorMode}
-						searchParams={{
-							where: searchParams
-						}}
-					/>
-				)}
-			</React.Fragment>
-		</React.Suspense>
+		<React.Fragment>
+			<OramaSearchButton
+				colorScheme={colorMode}
+				className="DocSearch-Button"
+				{...searchBtnConfig}
+			>
+				{searchBtnConfig?.text || 'Search'}
+			</OramaSearchButton>
+			<OramaSearchBox
+				{...(collectionManager ? {} : searchBoxConfig.basic)}
+				{...searchBoxConfig.custom}
+				oramaCoreClientInstance={collectionManager}
+				colorScheme={colorMode}
+				searchParams={{
+					where: searchParams
+				}}
+			/>
+		</React.Fragment>
 	)
 }
 
