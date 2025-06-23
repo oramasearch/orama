@@ -28,9 +28,9 @@
   "dependencies": {
     "@orama/core": "^0.1.8",
     "@orama/highlight": "^0.1.5",
-    "@orama/orama": "^3.1.7",
-    "@orama/plugin-analytics": "^3.1.7",
-    "@orama/plugin-parsedoc": "^3.1.7",
+    "@orama/orama": "workspace:*",
+    "@orama/plugin-analytics": "workspace:*",
+    "@orama/plugin-parsedoc": "workspace:*",
     "@orama/react-components": "0.8.1",
     "@oramacloud/client": "^2.1.4",
     "github-slugger": "^2.0.0",
