@@ -72,6 +72,9 @@
         "eslint",
         "typescript"
       ]
+    },
+    "overrides": {
+      "hastscript": "^9.0.1"
     }
   },
   "engines": {
