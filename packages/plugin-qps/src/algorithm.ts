@@ -1,18 +1,20 @@
-import { AnyIndexStore, AnyOrama, SearchableType, Tokenizer } from "@orama/orama"
+import { AnyIndexStore, AnyOrama, SearchableType, Tokenizer } from '@orama/orama'
 import { avl, bkd, flat, radix, bool, vector } from '@orama/orama/trees'
-import {
-  getVectorSize, index as Index, internalDocumentIDStore, isVectorType } from '@orama/orama/components'
+import { getVectorSize, index as Index, internalDocumentIDStore, isVectorType } from '@orama/orama/components'
 
-type InternalDocumentID = internalDocumentIDStore.InternalDocumentID;
+type InternalDocumentID = internalDocumentIDStore.InternalDocumentID
 
 export interface QPSIndex extends AnyIndexStore {
   indexes: Record<string, Index.Tree>
   searchableProperties: string[]
   searchablePropertiesWithTypes: Record<string, SearchableType>
-  stats: Record<string, {
-    tokenQuantums: Record<InternalDocumentID, Record<string, number>>
-    tokensLength: Map<InternalDocumentID, number>
-  }>
+  stats: Record<
+    string,
+    {
+      tokenQuantums: Record<InternalDocumentID, Record<string, number>>
+      tokensLength: Map<InternalDocumentID, number>
+    }
+  >
 }
 
 export function recursiveCreate<T extends AnyOrama>(indexDatastore: QPSIndex, schema: T['schema'], prefix: string) {
@@ -33,7 +35,7 @@ export function recursiveCreate<T extends AnyOrama>(indexDatastore: QPSIndex, sc
       indexDatastore.vectorIndexes[path] = {
         type: 'Vector',
         node: new vector.VectorIndex(getVectorSize(type)),
-        isArray: false,
+        isArray: false
       }
     } else {
       const isArray = /\[/.test(type as string)
@@ -44,7 +46,11 @@ export function recursiveCreate<T extends AnyOrama>(indexDatastore: QPSIndex, sc
           break
         case 'number':
         case 'number[]':
-          indexDatastore.indexes[path] = { type: 'AVL', node: new avl.AVLTree<number, InternalDocumentID>(0, []), isArray }
+          indexDatastore.indexes[path] = {
+            type: 'AVL',
+            node: new avl.AVLTree<number, InternalDocumentID>(0, []),
+            isArray
+          }
           break
         case 'string':
         case 'string[]':
@@ -66,10 +72,9 @@ export function recursiveCreate<T extends AnyOrama>(indexDatastore: QPSIndex, sc
     }
   }
 }
-  
-  
+
 const BIT_MASK_20 = 0b11111111111111111111
-  
+
 export function calculateTokenQuantum(prevValue: number, bit: number) {
   // if (prevValue < 0) {
   //   throw new Error("Overflow")
@@ -83,7 +88,7 @@ export function calculateTokenQuantum(prevValue: number, bit: number) {
   const newSentenceMask = currentSentenceMask | (1 << bit)
   return ((currentCount + 1) << 20) | newSentenceMask
 }
-  
+
 export function insertString(
   value: string,
   radixTree: radix.RadixTree,
@@ -91,7 +96,7 @@ export function insertString(
   prop: string,
   internalId: InternalDocumentID,
   language: string | undefined,
-  tokenizer: Tokenizer,
+  tokenizer: Tokenizer
 ) {
   const sentences = value.split(/\.|\?|!/)
 
@@ -107,10 +112,7 @@ export function insertString(
         stats[token] = 0
       }
 
-      const tokenBitIndex = Math.min(
-        quantumIndex,
-        20
-      )
+      const tokenBitIndex = Math.min(quantumIndex, 20)
 
       stats.tokenQuantums[internalId][token] = calculateTokenQuantum(
         stats.tokenQuantums[internalId][token],
@@ -130,17 +132,17 @@ export function insertString(
 }
 
 export function searchString(prop: {
-  tokens: string[],
-  radixNode: radix.RadixNode,
-  exact: boolean,
-  tolerance: number,
+  tokens: string[]
+  radixNode: radix.RadixNode
+  exact: boolean
+  tolerance: number
   stats: {
-    tokensLength: Map<number, number>,
-    tokenQuantums: Record<number, Record<string, number>>,
-  },
-  boostPerProp: number,
-  resultMap: Map<number, [number, number]>,
-  whereFiltersIDs: Set<number> | undefined,
+    tokensLength: Map<number, number>
+    tokenQuantums: Record<number, Record<string, number>>
+  }
+  boostPerProp: number
+  resultMap: Map<number, [number, number]>
+  whereFiltersIDs: Set<number> | undefined
 }) {
   const tokens = prop.tokens
   const radixNode = prop.radixNode
@@ -156,7 +158,7 @@ export function searchString(prop: {
   const findParam = {
     term: '',
     exact,
-    tolerance,
+    tolerance
   }
 
   let foundWords = {} as Record<string, number[]>
@@ -191,7 +193,7 @@ export function searchString(prop: {
 
       const occurrence = count(tokenQuantumDescriptor)
       const bitMask = bitmask_20(tokenQuantumDescriptor)
-      const score = (occurrence * occurrence / numberOfQuantums + (isExactMatch ? 1 : 0)) * boostPerProp
+      const score = ((occurrence * occurrence) / numberOfQuantums + (isExactMatch ? 1 : 0)) * boostPerProp
 
       if (!resultMap.has(docId)) {
         resultMap.set(docId, [score, bitMask])
@@ -200,9 +202,7 @@ export function searchString(prop: {
 
       const current = resultMap.get(docId)!
 
-      const totalScore = current[0]
-        + numberOfOnes(current[1] & bitMask) * 2
-        + score
+      const totalScore = current[0] + numberOfOnes(current[1] & bitMask) * 2 + score
 
       current[0] = totalScore
       current[1] = current[1] | bitMask
@@ -218,11 +218,13 @@ export function count(n: number) {
 }
 
 export function numberOfOnes(n: number) {
-  let i = 0;
+  let i = 0
   do {
-      if (n&1) { ++i }
-  // eslint-disable-next-line no-cond-assign
-  } while (n>>=1)
+    if (n & 1) {
+      ++i
+    }
+    // eslint-disable-next-line no-cond-assign
+  } while ((n >>= 1))
   return i
 }
 
@@ -234,9 +236,9 @@ export function removeString(
   tokenizer: Tokenizer,
   language: string | undefined,
   stats: {
-    tokensLength: Map<number, number>,
-    tokenQuantums: Record<number, Record<string, number>>,
-  },
+    tokensLength: Map<number, number>
+    tokenQuantums: Record<number, Record<string, number>>
+  }
 ) {
   const tokensLength = stats.tokensLength
   const tokenQuantums = stats.tokenQuantums

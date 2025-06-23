@@ -19,7 +19,7 @@ t.test('create should support array of string', async (t) => {
     { id: '3', name: ['Lily', 'Lily', 'Lily', 'Lily', 'Evans', 'Potter'] }
   ])
 
-  await checkSearchTerm(t, db, 'Albus', [albusId])  
+  await checkSearchTerm(t, db, 'Albus', [albusId])
   await checkSearchTerm(t, db, 'Harry', [harryId])
   await checkSearchTerm(t, db, 'James', [harryId, jamesId])
   await checkSearchTerm(t, db, 'Potter', [harryId, jamesId, lilyId])

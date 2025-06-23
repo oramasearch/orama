@@ -130,7 +130,7 @@ export function Search() {
         open={isOpen}
         suggestions={suggestions}
         searchPlaceholder={`Search ${currentCategory === 'Open Source' ? 'Open Source' : 'Orama Cloud'}`}
-        chatPlaceholder='Ask me anything about Orama'
+        chatPlaceholder="Ask me anything about Orama"
       />
 
       <OramaSearchButton

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://jsr.io/schema/config-file.v1.json",
+  "name": "@orama/orama",
+  "version": "3.0.8",
+  "publish": {
+    "include": ["README.md", "LICENSE.md", "dist/esm/**/*.js", "dist/esm/**/*.d.ts", "dist/esm/**/*.map"],
+    "exclude": ["!dist/esm"]
+  },
+  "exports": {
+    ".": "./dist/esm/index.js",
+    "./internals": "./dist/esm/internals.js",
+    "./components": "./dist/esm/components.js",
+    "./trees": "./dist/esm/trees.js"
+  }
+}

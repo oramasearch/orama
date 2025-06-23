@@ -82,7 +82,6 @@ t.test('search with groupBy', async (t) => {
 
       t.end()
     })
-
   })
 
   t.test('should group by a 2 properties', async (t) => {
