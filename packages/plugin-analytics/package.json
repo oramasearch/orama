@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-analytics",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "Orama plugin for providing analytics data on your searches",
   "keywords": ["orama", "analytics", "telemetry"],
   "license": "Apache-2.0",

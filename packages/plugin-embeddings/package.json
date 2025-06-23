@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-embeddings",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "Orama plugin for generating embeddings locally",
   "keywords": ["orama", "embeddings", "secure proxy", "vector search"],
   "license": "Apache-2.0",

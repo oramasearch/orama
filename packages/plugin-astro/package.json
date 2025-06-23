@@ -1,7 +1,7 @@
 {
   "name": "@orama/plugin-astro",
   "description": "An Astro integration for Orama",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "keywords": ["astro", "astro-component", "cms", "orama", "search"],
   "repository": "https://github.com/oramasearch/orama",
   "author": {
