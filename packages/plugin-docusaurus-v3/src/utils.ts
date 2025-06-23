@@ -1,6 +1,6 @@
 import { AnyOrama, create, insertMultiple } from '@orama/orama'
-import { IndexConfig, OramaDoc } from './types'
-import { DOCS_PRESET_SCHEMA } from './constants'
+import { IndexConfig, OramaDoc } from './types.js'
+import { DOCS_PRESET_SCHEMA } from './constants.js'
 
 export const restFetcher = async <T = unknown>(url: string, options?: any): Promise<T> => {
   const response = await fetch(url, options)
@@ -47,7 +47,7 @@ export async function fetchEndpointConfig(baseUrl: string, APIKey: string, index
     'Orama: Fetch index endpoint config (success)'
   )
 
-  return { endpoint: result?.api_endpoint, api_key: result?.api_key }
+  return { endpoint: result?.api_endpoint, api_key: result?.api_key, collection_id: '' }
 }
 
 export async function createOramaInstance(oramaDocs: OramaDoc[]): Promise<AnyOrama> {
