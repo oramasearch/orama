@@ -1,12 +1,11 @@
 import { AnyDocument, AnyOrama, insertMultiple } from '@orama/orama'
-import glob from 'glob'
+import { glob } from 'glob'
 import { Content, Element, Parent, Properties, Root } from 'hast'
 import { fromHtml } from 'hast-util-from-html'
 import { fromString } from 'hast-util-from-string'
 import { toHtml } from 'hast-util-to-html'
 import { toString } from 'hast-util-to-string'
 import { readFile } from 'node:fs/promises'
-import { promisify } from 'node:util'
 import { rehype } from 'rehype'
 import rehypeDocument from 'rehype-document'
 import rehypePresetMinify from 'rehype-preset-minify'
@@ -40,14 +39,13 @@ interface PopulateFromGlobOptions {
 type PopulateOptions = PopulateFromGlobOptions & { basePath?: string }
 
 type FileType = 'html' | 'md'
-const asyncGlob = promisify(glob)
 
 export async function populateFromGlob<T extends AnyOrama>(
   db: T,
   pattern: string,
   options?: PopulateFromGlobOptions
 ): Promise<void> {
-  const files = await asyncGlob(pattern)
+  const files = await glob(pattern)
   await Promise.all(files.map(async (filename) => populateFromFile(db, filename, options)))
 }
 
