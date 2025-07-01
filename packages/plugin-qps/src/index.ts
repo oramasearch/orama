@@ -56,7 +56,7 @@ function search<T extends AnyOrama>(index: QPSIndexStorage, term: string, tokeni
   return res
 }
 
-export function pluginQPS(): OramaPluginSync {
+export function pluginQPS(): OramaPluginSync<unknown> {
   return {
     name: 'qps',
     getComponents(schema: AnySchema) {
