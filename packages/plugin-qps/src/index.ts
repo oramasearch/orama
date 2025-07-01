@@ -181,7 +181,16 @@ function qpsComponents(schema: AnySchema): Partial<ObjectComponents<any, any, an
 
         let idsFromStringFilters: Set<InternalDocumentID> | undefined
         for (const [propName, filter] of stringFiltersList) {
-          const tokens = tokenizer.tokenize(filter as string, language)
+          let tokens: string[] = [];
+
+          if (Array.isArray(filter)) {
+            for (const item of filter) {
+              const token = tokenizer.tokenize(item as string, language)?.[0]
+              tokens.push(token)
+            }
+          } else {
+            tokens = tokenizer.tokenize(filter as string, language)
+          }
 
           const radixTree = index.indexes[propName].node as radix.RadixNode
           const propIds = new Set<InternalDocumentID>()          
