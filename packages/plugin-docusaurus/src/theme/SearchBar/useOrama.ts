@@ -14,9 +14,9 @@ import { DOCS_PRESET_SCHEMA } from '../../utils'
 export interface PluginData {
   searchData: {
     current: { data: ArrayBuffer } | null
-  },
-  searchBoxCustomConfig?: { [key:string]: any }
-  searchBtnConfig?: { [key:string]: any }
+  }
+  searchBoxCustomConfig?: { [key: string]: any }
+  searchBtnConfig?: { [key: string]: any }
   endpoint: { url: string; key: string } | null
   analytics: { apiKey: string; indexId: string; enabled: boolean } | null
   docsInstances: string[]
@@ -28,7 +28,9 @@ export const useOrama = () => {
     custom: null
   })
   const { colorMode } = useColorMode()
-  const { searchData, endpoint, analytics, searchBoxCustomConfig, searchBtnConfig }: PluginData = usePluginData('@orama/plugin-docusaurus') as PluginData
+  const { searchData, endpoint, analytics, searchBoxCustomConfig, searchBtnConfig }: PluginData = usePluginData(
+    '@orama/plugin-docusaurus'
+  ) as PluginData
 
   const baseURL = useBaseUrl('orama-search-index-current.json.gz')
   const isBrowser = useIsBrowser()

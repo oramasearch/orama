@@ -1,0 +1,21 @@
+{
+    "$schema": "https://jsr.io/schema/config-file.v1.json",
+    "name": "@orama/tokenizers",
+    "version": "3.0.8",
+    "publish": {
+        "include": [
+            "README.md",
+            "LICENSE.md",
+            "build/*.js",
+            "build/*.d.ts",
+            "build/*.js.map"
+        ],
+        "exclude": [
+            "!dist"
+        ]
+    },
+    "exports": {
+        "./japanese": "./build/tokenizer-japanese/tokenizer.js",
+        "./mandarin": "./build/tokenizer-mandarin/tokenizer.js"
+    }
+}

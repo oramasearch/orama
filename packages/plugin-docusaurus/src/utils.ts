@@ -1,4 +1,4 @@
-import { AnySchema } from "@orama/orama";
+import { AnySchema } from '@orama/orama'
 
 export const restFetcher = async <T = unknown>(url: string, options?: any): Promise<T> => {
   const response = await fetch(url, options)
