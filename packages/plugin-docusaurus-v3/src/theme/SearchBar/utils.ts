@@ -14,7 +14,11 @@ export function getPreferredVersion(index: unknown) {
 			activePlugin?.pluginId ?? "default"
 		) as { preferredVersion: { name:string; } };
 
-		return preferredVersion.name
+		if (!preferredVersion) {
+			throw new ReactContextError("Not using versioned docs");
+		}
+
+		return preferredVersion.name;
 	} catch (e: unknown) {
 		if (index) {
 			if (e instanceof ReactContextError) {

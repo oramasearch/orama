@@ -114,7 +114,11 @@ export default function OramaSearchWrapper() {
 
 	return <BrowserOnly fallback={<div>Loading Search...</div>}>
 		{() => {
-			return pluginId ? <OramaSearchWithDocs pluginId={pluginId}/> : <OramaSearchNoDocs/>
+			if (pluginId) {
+				return <OramaSearchWithDocs pluginId={pluginId} />
+			} else {
+				return <OramaSearchNoDocs />
+			}
 		}}
 	</BrowserOnly>
 }
