@@ -93,10 +93,10 @@ export function create<
       continue
     }
     if (typeof plugin.getComponents !== 'function') {
-      continue;
+      continue
     }
 
-    const pluginComponents = plugin.getComponents(schema) as Partial<ObjectComponents<TIndex, TDocumentStore, TSorter>>;
+    const pluginComponents = plugin.getComponents(schema) as Partial<ObjectComponents<TIndex, TDocumentStore, TSorter>>
 
     const keys = Object.keys(pluginComponents)
     for (const key of keys) {
@@ -165,14 +165,18 @@ export function create<
     afterRemove: [],
     beforeUpdate: [],
     afterUpdate: [],
+    beforeUpsert: [],
+    afterUpsert: [],
     beforeSearch: [],
     afterSearch: [],
     beforeInsertMultiple: [],
     afterInsertMultiple: [],
     beforeRemoveMultiple: [],
     afterRemoveMultiple: [],
-    afterUpdateMultiple: [],
     beforeUpdateMultiple: [],
+    afterUpdateMultiple: [],
+    beforeUpsertMultiple: [],
+    afterUpsertMultiple: [],
     afterCreate: [],
     formatElapsedTime,
     id,
