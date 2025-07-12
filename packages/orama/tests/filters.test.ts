@@ -67,7 +67,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('greater than or equal to', async (t) => {
-    const [db, [id1,,id3]] = await createSimpleDB()
+    const [db, [id1, , id3]] = await createSimpleDB()
 
     const r1_gte = await search(db, {
       term: 'coffee',
@@ -84,7 +84,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('less than', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lt = await search(db, {
       term: 'coffee',
@@ -100,7 +100,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('less than or equal to', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -116,7 +116,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('equal', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -132,7 +132,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('between', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -148,7 +148,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('multiple filters', async (t) => {
-    const [db, [,,id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -167,7 +167,7 @@ t.test('filters', async (t) => {
   })
 
   t.test('multiple filters, and operation', async (t) => {
-    const [db, [,, id3]] = await createSimpleDB()
+    const [db, [, , id3]] = await createSimpleDB()
 
     const r1_lte = await search(db, {
       term: 'coffee',
@@ -186,6 +186,100 @@ t.test('filters', async (t) => {
 
     t.equal(r1_lte.count, 1)
     t.equal(r1_lte.hits[0].id, id3)
+  })
+
+  t.test('explicit and operator', async (t) => {
+    const [db, [, , id3]] = await createSimpleDB()
+
+    const r1_lte = await search(db, {
+      term: 'coffee',
+      where: {
+        and: [{ rating: { between: [1, 4] } }, { price: { lte: 40 } }, { 'meta.sales': { eq: 25 } }]
+      }
+    })
+
+    t.equal(r1_lte.count, 1)
+    t.equal(r1_lte.hits[0].id, id3)
+  })
+
+  t.test('or operator', async (t) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [db, [id1, id2, id3]] = await createSimpleDB()
+
+    const r1_or = await search(db, {
+      term: 'coffee',
+      where: {
+        or: [{ rating: { gt: 4 } }, { price: { lt: 30 } }]
+      }
+    })
+
+    t.equal(r1_or.count, 1)
+    const resultIds = r1_or.hits.map((hit) => hit.id).sort()
+    t.strictSame(resultIds, [id1].sort())
+  })
+
+  t.test('not operator', async (t) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [db, [id1, id2, id3]] = await createSimpleDB()
+
+    const r1_not = await search(db, {
+      term: 'coffee',
+      where: {
+        not: { rating: { gt: 4 } }
+      }
+    })
+
+    t.equal(r1_not.count, 1)
+    const resultIds = r1_not.hits.map((hit) => hit.id).sort()
+    t.strictSame(resultIds, [id3].sort())
+  })
+
+  t.test('nested logical operators', async (t) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [db, [id1, id2, id3]] = await createSimpleDB()
+
+    const r1_nested = await search(db, {
+      term: 'coffee',
+      where: {
+        or: [
+          {
+            and: [{ rating: { gt: 4 } }, { price: { gt: 50 } }]
+          },
+          {
+            and: [{ not: { rating: { gt: 4 } } }, { price: { lt: 30 } }]
+          }
+        ]
+      }
+    })
+
+    t.equal(r1_nested.count, 1)
+    t.equal(r1_nested.hits[0].id, id1)
+  })
+
+  t.test('empty and array', async (t) => {
+    const [db] = await createSimpleDB()
+
+    const r1_empty = await search(db, {
+      term: 'coffee',
+      where: {
+        and: []
+      }
+    })
+
+    t.equal(r1_empty.count, 0)
+  })
+
+  t.test('empty or array', async (t) => {
+    const [db] = await createSimpleDB()
+
+    const r1_empty = await search(db, {
+      term: 'coffee',
+      where: {
+        or: []
+      }
+    })
+
+    t.equal(r1_empty.count, 0)
   })
 })
 

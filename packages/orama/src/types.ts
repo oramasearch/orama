@@ -240,9 +240,19 @@ export type Operator<Value> = Value extends 'string'
                 : Value extends 'geopoint'
                   ? GeosearchOperation
                   : never
-export type WhereCondition<TSchema> = {
-  [key in keyof TSchema]?: Operator<TSchema[key]>
-}
+export type WhereCondition<TSchema> =
+  | {
+      [key in keyof TSchema]?: Operator<TSchema[key]>
+    }
+  | {
+      and?: WhereCondition<TSchema>[]
+    }
+  | {
+      or?: WhereCondition<TSchema>[]
+    }
+  | {
+      not?: WhereCondition<TSchema>
+    }
 
 /**
  * A custom sorter function item as [id, score, document].

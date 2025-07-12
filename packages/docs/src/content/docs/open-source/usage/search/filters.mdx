@@ -8,6 +8,110 @@ You can use the `filters` interface to filter the search results.
 Filters are available for numeric, boolean, string, enum, and geopoint properties.
 Depending on the type of the property, you can use different operators.
 
+## Logical Operators
+
+With Orama you can combine multiple filters using logical operators like `and`, `or`, and `not`.
+
+- `and`: this operator accepts an array of filters. All conditions must be true.
+- `or`: this operator accepts an array of filters. At least one condition must be true.
+- `not`: this operator accepts a single filter. The condition must be false.
+
+All operators can be nested.
+
+### Examples
+
+This filter will return all documents that have the category `"electronics"`:
+
+```javascript copy
+const results = search(db, {
+  term: "phone",
+  where: {
+    category: "electronics"
+  }
+})
+```
+
+This filter will return all documents that have the category `"electronics"` and the price less than `100`:
+
+```javascript copy
+const results = search(db, {
+  term: "phone",
+  where: {
+    category: "electronics",
+    price: { lt: 100 }
+  }
+})
+```
+
+With the above filters, you can only filter applying `and` operator implicitly. You can also use the `and` operator explicitly:
+
+```javascript copy
+const results = search(db, {
+  term: "phone",
+  where: {
+    and: [
+      { category: "electronics" },
+      { price: { lt: 100 } }
+    ]
+  }
+})
+```
+
+This filter will return all documents that have:
+- (category = "electronics") OR (price < 100).
+
+```javascript copy
+const results = search(db, {
+  term: "phone",
+  where: {
+    or: [
+      { category: "electronics" },
+      { price: { lt: 100 } }
+    ]
+  }
+})
+```
+
+This filter will return all documents that have:
+- (price < 100) AND NOT (category = "electronics").
+
+```javascript copy
+const results = search(db, {
+  term: "phone",
+  where: {
+    and: [
+      { price: { lt: 100 } },
+      { not: { category: "electronics" } }
+    ]
+  }
+})
+```
+
+This filter will return all documents that have:
+- (  (category = "electronics") AND (price < 100)  ) OR (  NOT (category = "electronics") AND (price < 100)  )
+
+```javascript copy
+const results = search(db, {
+  term: "phone",
+  where: {
+    or: [
+      {
+        and: [
+          { category: "electronics" },
+          { price: { lt: 100 } }
+        ]
+      },
+      {
+        and: [
+          { not: { category: "electronics" } },
+          { price: { lt: 100 } }
+        ]
+      }
+    ]
+  }
+})
+```
+
 ## String operators
 
 On string properties it performs an exact matching on tokens so it is advised to disable stemming for the properties
