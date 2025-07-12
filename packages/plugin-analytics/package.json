@@ -2,7 +2,11 @@
   "name": "@orama/plugin-analytics",
   "version": "3.1.10",
   "description": "Orama plugin for providing analytics data on your searches",
-  "keywords": ["orama", "analytics", "telemetry"],
+  "keywords": [
+    "orama",
+    "analytics",
+    "telemetry"
+  ],
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -24,7 +28,9 @@
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup --config tsup.lib.js",
     "lint": "eslint src --ext .js,.ts,.tsx,.cts",

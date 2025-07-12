@@ -27,6 +27,10 @@ const openSourceMenu = [
             link: '/open-source/usage/update'
           },
           {
+            label: 'Upsert',
+            link: '/open-source/usage/upsert'
+          },
+          {
             label: 'Utilities',
             link: '/open-source/usage/utilities'
           },

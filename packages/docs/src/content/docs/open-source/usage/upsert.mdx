@@ -1,0 +1,302 @@
+---
+title: Upsert Data
+description: Learn how to insert or update data in an Orama database with upsert operations.
+---
+import { Aside } from '@astrojs/starlight/components';
+
+The `upsert` method combines the functionality of both `insert` and `update` operations. It will insert a document if it doesn't exist, or update it if it already exists, eliminating the common "document already exists" error.
+
+Let's say our database and schema look like this:
+
+```javascript copy
+import { create, upsert } from "@orama/orama";
+
+const movieDB = create({
+  schema: {
+    id: "string",
+    title: "string",
+    director: "string",
+    plot: "string",
+    year: "number",
+    isFavorite: "boolean",
+  },
+});
+```
+
+(Read more about database creation on the [create](/open-source/usage/create) page)
+
+## Upsert
+
+The `upsert` method intelligently handles both insertion and updates:
+
+```javascript copy
+// First upsert - will insert the document since it doesn't exist
+const thePrestigeId = upsert(movieDB, {
+  id: "movie-1",
+  title: "The prestige",
+  director: "Christopher Nolan",
+  plot: "Two friends and fellow magicians become bitter enemies after a sudden tragedy.",
+  year: 2006,
+  isFavorite: true,
+});
+
+// Second upsert with same ID - will update the existing document
+const updatedId = upsert(movieDB, {
+  id: "movie-1",
+  title: "The Prestige", // Updated title
+  director: "Christopher Nolan",
+  plot: "An updated plot description with more details.",
+  year: 2006,
+  isFavorite: false, // Updated favorite status
+});
+
+console.log(thePrestigeId === updatedId); // true - same document ID
+```
+
+## Why Use Upsert?
+
+Before upsert, you might have encountered this error:
+
+```javascript
+// This would throw: "A document with id 'movie-1' already exists"
+insert(movieDB, {
+  id: "movie-1",
+  title: "Duplicate Movie"
+});
+```
+
+With upsert, you can safely handle both scenarios without error checking:
+
+```javascript copy
+// Always works - inserts if new, updates if exists
+upsert(movieDB, {
+  id: "movie-1",
+  title: "Safe Operation",
+  director: "Any Director",
+  year: 2023,
+});
+```
+
+<Aside type="tip">
+`upsert` is perfect for data synchronization scenarios where you're not sure if a document already exists in the database.
+</Aside>
+
+## Batch Upsert
+
+For handling multiple documents efficiently, use `upsertMultiple`:
+
+```javascript copy
+const movies = [
+  {
+    id: "movie-1",
+    title: "The Matrix",
+    director: "The Wachowskis",
+    plot: "A computer programmer discovers reality is a simulation.",
+    year: 1999,
+    isFavorite: true,
+  },
+  {
+    id: "movie-2", 
+    title: "Inception",
+    director: "Christopher Nolan",
+    plot: "A thief enters people's dreams to steal secrets.",
+    year: 2010,
+    isFavorite: true,
+  },
+  {
+    id: "movie-3",
+    title: "Interstellar",
+    director: "Christopher Nolan", 
+    plot: "Explorers travel through a wormhole in space.",
+    year: 2014,
+    isFavorite: false,
+  },
+];
+
+// Insert all movies
+const movieIds = upsertMultiple(movieDB, movies);
+
+// Later, update some and add new ones
+const updatedMovies = [
+  {
+    id: "movie-1", // Will update existing
+    title: "The Matrix", 
+    director: "The Wachowskis",
+    plot: "Updated plot description.",
+    year: 1999,
+    isFavorite: false, // Changed favorite status
+  },
+  {
+    id: "movie-4", // Will insert new
+    title: "Blade Runner 2049",
+    director: "Denis Villeneuve",
+    plot: "A young blade runner discovers a secret.",
+    year: 2017,
+    isFavorite: true,
+  },
+];
+
+upsertMultiple(movieDB, updatedMovies);
+```
+
+### Batch Size Control
+
+You can control the batch size for `upsertMultiple` to optimize performance:
+
+```javascript copy
+// Process documents in batches of 500
+upsertMultiple(movieDB, movies, 500);
+```
+
+<Aside type="tip">
+We recommend keeping the batch size relatively low to avoid blocking the event loop, especially when dealing with large datasets.
+</Aside>
+
+## How Upsert Works
+
+Under the hood, `upsert` performs the following logic:
+
+1. **Check if document exists**: Uses the document ID to check if it already exists in the database
+2. **Insert or Update**: 
+   - If the document doesn't exist → calls `insert`
+   - If the document exists → calls `update` (which removes the old document and inserts the new one)
+3. **Return document ID**: Always returns the document ID, whether it was inserted or updated
+
+```javascript copy
+// Conceptually equivalent to:
+function manualUpsert(db, doc) {
+  const existingDoc = getByID(db, doc.id);
+  
+  if (existingDoc) {
+    return update(db, doc.id, doc);
+  } else {
+    return insert(db, doc);
+  }
+}
+```
+
+## Custom Document IDs
+
+`upsert` works seamlessly with Orama's document ID system:
+
+```javascript copy
+// Using explicit ID field
+upsert(movieDB, {
+  id: "custom-id-123",
+  title: "Movie with custom ID",
+  director: "Director Name",
+  year: 2023,
+});
+
+// Using custom getDocumentIndexId function
+const userDB = create({
+  schema: {
+    email: "string",
+    name: "string",
+    age: "number",
+  },
+  components: {
+    getDocumentIndexId(doc) {
+      return doc.email; // Use email as the document ID
+    },
+  },
+});
+
+// This will use the email as the document ID for upsert logic
+upsert(userDB, {
+  email: "john@example.com",
+  name: "John Doe", 
+  age: 30,
+});
+
+// Later update the same user (identified by email)
+upsert(userDB, {
+  email: "john@example.com", // Same email = same document
+  name: "John Smith", // Updated name
+  age: 31, // Updated age
+});
+```
+
+## Error Handling
+
+`upsert` maintains the same validation rules as `insert`:
+
+```javascript copy
+// This will throw a schema validation error
+try {
+  upsert(movieDB, {
+    id: "invalid-movie",
+    title: "Valid Title",
+    year: "invalid-year", // Should be number, not string
+  });
+} catch (error) {
+  console.log(error.code); // "SCHEMA_VALIDATION_FAILURE"
+}
+
+// This will throw an invalid document ID error
+try {
+  upsert(movieDB, {
+    id: 123, // Should be string, not number
+    title: "Valid Title",
+  });
+} catch (error) {
+  console.log(error.code); // "DOCUMENT_ID_MUST_BE_STRING"
+}
+```
+
+## Performance Considerations
+
+- **Single operations**: `upsert` has minimal overhead compared to manual existence checking
+- **Batch operations**: `upsertMultiple` optimizes by separating documents into insert and update batches
+- **Large datasets**: For thousands of documents, consider using smaller batch sizes to avoid blocking the event loop
+
+```javascript copy
+// For large datasets, use smaller batches
+const largeBatch = Array.from({ length: 10000 }, (_, i) => ({
+  id: `doc-${i}`,
+  title: `Document ${i}`,
+  content: `Content for document ${i}`,
+}));
+
+// Process in smaller batches of 100
+upsertMultiple(movieDB, largeBatch, 100);
+```
+
+## Use Cases
+
+`upsert` is particularly useful for:
+
+- **Data synchronization**: When syncing data from external sources
+- **User preferences**: Updating user settings that may or may not exist
+- **Content management**: Managing articles, posts, or documents that might be updated over time
+- **Real-time applications**: Handling real-time updates where you're unsure of document existence
+- **Import operations**: Bulk importing data where some records might already exist
+
+```javascript copy
+// Example: Syncing user preferences
+async function syncUserPreferences(userId, preferences) {
+  return upsert(preferencesDB, {
+    id: userId,
+    theme: preferences.theme,
+    language: preferences.language,
+    notifications: preferences.notifications,
+    lastUpdated: new Date().toISOString(),
+  });
+}
+
+// Example: Content management system
+async function saveArticle(article) {
+  return upsert(articlesDB, {
+    id: article.slug,
+    title: article.title,
+    content: article.content,
+    author: article.author,
+    publishedAt: article.publishedAt,
+    updatedAt: new Date().toISOString(),
+  });
+}
+```
+
+<Aside type="note">
+While `upsert` is very convenient, remember that Orama is optimized for immutable operations. For scenarios with frequent updates, consider whether rebuilding the database might be more appropriate.
+</Aside> 

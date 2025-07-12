@@ -20,14 +20,20 @@
     }
   },
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "swc --delete-dir-on-start -s -w --extensions .ts,.cts -d dist src",
     "build": "swc --delete-dir-on-start --extensions .ts,.cts -d dist src",
     "postbuild": "sh scripts/postbuild.sh",
     "test": "c8 -c test/config/c8.json tap test/*.test.ts"
   },
-  "keywords": ["orama", "disk persistence", "full-text search"],
+  "keywords": [
+    "orama",
+    "disk persistence",
+    "full-text search"
+  ],
   "author": {
     "email": "michele.riva@oramasearch.com",
     "name": "Michele Riva",
