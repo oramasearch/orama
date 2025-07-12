@@ -10,6 +10,8 @@ export const AVAILABLE_PLUGIN_HOOKS = [
   'afterRemove',
   'beforeUpdate',
   'afterUpdate',
+  'beforeUpsert',
+  'afterUpsert',
   'beforeSearch',
   'afterSearch',
   'beforeInsertMultiple',
@@ -18,6 +20,8 @@ export const AVAILABLE_PLUGIN_HOOKS = [
   'afterRemoveMultiple',
   'beforeUpdateMultiple',
   'afterUpdateMultiple',
+  'beforeUpsertMultiple',
+  'afterUpsertMultiple',
   'beforeLoad',
   'afterLoad',
   'afterCreate'
