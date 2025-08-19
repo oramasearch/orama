@@ -16,6 +16,10 @@
         "types": "./dist/browser/index.d.ts",
         "default": "./dist/browser/index.js"
       },
+      "bundle": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/bundle/index.js"
+      },
       "import": {
         "types": "./dist/esm/index.d.ts",
         "default": "./dist/esm/index.js"
@@ -33,6 +37,10 @@
       "browser": {
         "types": "./dist/browser/internals.d.ts",
         "default": "./dist/browser/internals.js"
+      },
+      "bundle": {
+        "types": "./dist/esm/internals.d.ts",
+        "default": "./dist/bundle/internals.js"
       },
       "import": {
         "types": "./dist/esm/internals.d.ts",
@@ -52,6 +60,10 @@
         "types": "./dist/browser/components.d.ts",
         "default": "./dist/browser/components.js"
       },
+      "bundle": {
+        "types": "./dist/esm/components.d.ts",
+        "default": "./dist/bundle/components.js"
+      },
       "import": {
         "types": "./dist/esm/components.d.ts",
         "default": "./dist/esm/components.js"
@@ -69,6 +81,10 @@
       "browser": {
         "types": "./dist/browser/trees.d.ts",
         "default": "./dist/browser/trees.js"
+      },
+      "bundle": {
+        "types": "./dist/esm/trees.d.ts",
+        "default": "./dist/bundle/trees.js"
       },
       "import": {
         "types": "./dist/esm/trees.d.ts",
@@ -97,6 +113,7 @@
     "dev": "swc -s -w --extensions .ts,.cts -d dist src",
     "prebuild": "npm run lint",
     "build": "tshy",
+    "postbuild": "tsx scripts/bundle.ts",
     "lint": "exit 0;",
     "test": "c8 -c tests/config/c8-local.json tap tests/*.test.ts",
     "test:ci": "c8 -c tests/config/c8-ci.json tap --no-color tests/*.test.ts",
@@ -146,6 +163,7 @@
     "auto-changelog": "^2.4.0",
     "c8": "^7.12.0",
     "commitizen": "^4.2.6",
+    "esbuild": "^0.25.9",
     "glob": "^9.2.3",
     "prettier": "^2.8.1",
     "tap": "^21.0.1",
