@@ -2,6 +2,7 @@ import { getFacets } from '../components/facets.js'
 import { getGroups } from '../components/groups.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'
 import { getInternalDocumentId } from '../components/internal-document-id-store.js'
+import { searchByGeoWhereClause } from '../components/index.js'
 import { Language } from '../components/tokenizer/languages.js'
 import { createError } from '../errors.js'
 import type {
@@ -83,12 +84,22 @@ export function innerFullTextSearch<T extends AnyOrama>(
       threshold
     )
   } else {
-    // Tokenizer returns empty array and the search term is empty as well.
-    // We return all the documents.
-    const docIds = whereFiltersIDs
-      ? Array.from(whereFiltersIDs)
-      : Object.keys(orama.documentsStore.getAll(orama.data.docs))
-    uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+    // Check if this is a geosearch-only query first
+    if (hasFilters) {
+      const geoResults = searchByGeoWhereClause(index, params.where!)
+      if (geoResults) {
+        // This is a geosearch-only query with distance scoring
+        uniqueDocsIDs = geoResults
+      } else {
+        // Regular filter query without search term
+        const docIds = whereFiltersIDs ? Array.from(whereFiltersIDs) : []
+        uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+      }
+    } else {
+      // No search term and no filters - return all documents
+      const docIds = Object.keys(orama.documentsStore.getAll(orama.data.docs))
+      uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+    }
   }
 
   return uniqueDocsIDs
