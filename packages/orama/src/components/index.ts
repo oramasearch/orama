@@ -19,6 +19,7 @@ import type {
 } from '../types.js'
 import type { InsertOptions } from '../methods/insert.js'
 import type { Point as BKDGeoPoint } from '../trees/bkd.js'
+import type { Point } from '../trees/bkd.js'
 import { FindResult, RadixNode } from '../trees/radix.js'
 import { createError } from '../errors.js'
 import { AVLTree } from '../trees/avl.js'
@@ -939,6 +940,114 @@ function addGeoResult(
   }
 
   return set
+}
+
+function createGeoTokenScores(
+  ids: Array<{ point: Point; docIDs: InternalDocumentID[] }>,
+  centerPoint: Point,
+  highPrecision = false
+): TokenScore[] {
+  const distanceFn = highPrecision ? BKDTree.vincentyDistance : BKDTree.haversineDistance
+  const results: TokenScore[] = []
+
+  // Calculate distances for all results to find the maximum
+  const distances: number[] = []
+  for (const { point } of ids) {
+    distances.push(distanceFn(centerPoint, point))
+  }
+  const maxDistance = Math.max(...distances)
+
+  // Create results with inverse distance scores (higher score = closer)
+  let index = 0
+  for (const { docIDs } of ids) {
+    const distance = distances[index]
+    // Use inverse score: closer points get higher scores
+    // Add 1 to avoid division by zero for points at exact center
+    const score = maxDistance - distance + 1
+    for (const docID of docIDs) {
+      results.push([docID, score])
+    }
+    index++
+  }
+
+  // Sort by score (higher first - closer points)
+  results.sort((a, b) => b[1] - a[1])
+  return results
+}
+
+function isGeosearchOnlyQuery<T extends AnyOrama>(
+  filters: Partial<WhereCondition<T['schema']>>,
+  index: Index
+): { isGeoOnly: boolean; geoProperty?: string; geoOperation?: any } {
+  const filterKeys = Object.keys(filters)
+
+  if (filterKeys.length !== 1) {
+    return { isGeoOnly: false }
+  }
+
+  const param = filterKeys[0]
+  const operation = filters[param]
+
+  if (typeof index.indexes[param] === 'undefined') {
+    return { isGeoOnly: false }
+  }
+
+  const { type } = index.indexes[param]
+
+  if (type === 'BKD' && operation && ('radius' in operation || 'polygon' in operation)) {
+    return { isGeoOnly: true, geoProperty: param, geoOperation: operation }
+  }
+
+  return { isGeoOnly: false }
+}
+
+export function searchByGeoWhereClause<T extends AnyOrama>(
+  index: AnyIndexStore,
+  filters: Partial<WhereCondition<T['schema']>>
+): TokenScore[] | null {
+  const indexTyped = index as Index
+  const geoInfo = isGeosearchOnlyQuery(filters, indexTyped)
+
+  if (!geoInfo.isGeoOnly || !geoInfo.geoProperty || !geoInfo.geoOperation) {
+    return null
+  }
+
+  const { node } = indexTyped.indexes[geoInfo.geoProperty]
+  const operation = geoInfo.geoOperation
+
+  // Cast node to BKDTree since we already verified it's type 'BKD'
+  const bkdNode = node as BKDTree
+
+  let results: Array<{ point: Point; docIDs: InternalDocumentID[] }>
+
+  if ('radius' in operation) {
+    const {
+      value,
+      coordinates,
+      unit = 'm',
+      inside = true,
+      highPrecision = false
+    } = operation.radius as GeosearchRadiusOperator['radius']
+
+    const centerPoint = coordinates as Point
+    const distanceInMeters = convertDistanceToMeters(value, unit)
+    results = bkdNode.searchByRadius(centerPoint, distanceInMeters, inside, 'asc', highPrecision)
+
+    return createGeoTokenScores(results, centerPoint, highPrecision)
+  } else if ('polygon' in operation) {
+    const {
+      coordinates,
+      inside = true,
+      highPrecision = false
+    } = operation.polygon as GeosearchPolygonOperator['polygon']
+
+    results = bkdNode.searchByPolygon(coordinates as Point[], inside, 'asc', highPrecision)
+    const centroid = BKDTree.calculatePolygonCentroid(coordinates as Point[])
+
+    return createGeoTokenScores(results, centroid, highPrecision)
+  }
+
+  return null
 }
 
 function addFindResult(
