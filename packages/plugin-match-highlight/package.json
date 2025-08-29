@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-match-highlight",
-  "version": "3.1.11",
+  "version": "3.1.12",
   "description": "Orama plugin for search match highlighting",
   "keywords": [
     "full-text search",
