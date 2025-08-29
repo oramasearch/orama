@@ -1,6 +1,6 @@
 import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 import type { Plugin } from '@docusaurus/types'
-import type { LoadContext } from '@docusaurus/types/src/context'
+import type { LoadContext } from '@docusaurus/types';
 import { readFileSync, writeFileSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
@@ -11,8 +11,8 @@ import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
 
-import { createOramaInstance, fetchEndpointConfig, loggedOperation } from './utils'
-import { CloudConfig, DeployType, IndexConfig, OramaData, OramaDoc, PluginOptions } from './types'
+import { createOramaInstance, fetchEndpointConfig, loggedOperation } from './utils.js'
+import { CloudConfig, DeployType, IndexConfig, OramaData, OramaDoc, PluginOptions } from './types.js'
 
 async function generateDocs({
   siteDir,
@@ -120,32 +120,41 @@ async function syncOramaIndex({
   oramaDocs: OramaDoc[]
   cloudConfig: CloudConfig
 }): Promise<IndexConfig> {
-  const { apiKey, indexId, deploy } = cloudConfig
-  
-  const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
-  
-  const cloudManager = new CloudManager({
-    api_key: apiKey!,
-    baseURL: baseUrl
-  })
-  
-  const index = cloudManager.index(indexId)
+  const { apiKey, indexId, deploy, collectionId } = cloudConfig
 
-  const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
+  if(!collectionId) { // NOTE: lack of collectionId means legacy Orama
+    const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
 
-  if (deploy) {
-    // Reset index
-    await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
+    const cloudManager = new CloudManager({
+      api_key: apiKey!,
+      baseURL: baseUrl
+    })
 
-    // Populate index
-    await insertChunkDocumentsIntoIndex(index, oramaDocs)
+    const index = cloudManager.index(indexId)
 
-    if (cloudConfig.deploy === DeployType.DEFAULT) {
-      await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
+    const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
+
+    if (deploy) {
+      await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
+      await insertChunkDocumentsIntoIndex(index, oramaDocs)
+
+      if (cloudConfig.deploy === DeployType.DEFAULT) {
+        await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
+      }
+    }
+
+    // TODO: redo deploy for OramaCore
+    return {
+      ...endpointConfig,
+      collection_id: collectionId
     }
   }
 
-  return endpointConfig
+  return {
+    api_key: apiKey,
+    endpoint: 'https://collections.orama.com',
+    collection_id: collectionId
+  }
 }
 
 export async function insertChunkDocumentsIntoIndex(oramaIndex: any, docs: any[], limit = 50, offset = 0) {
@@ -169,7 +178,7 @@ async function createOramaGzip({
   context: LoadContext
 }) {
   console.debug('Orama: Creating gzipped index file.')
-  
+
   const version = 'current'
   const serializedOrama = JSON.stringify(save(oramaInstance))
   const gzippedOrama = gzip(serializedOrama)
@@ -274,15 +283,15 @@ async function fetchOramaDocs(
 function validateCloudConfiguration(cloudConfig: CloudConfig) {
   let isValid = true
 
-  const { indexId, apiKey, deploy } = cloudConfig
+  const { indexId, apiKey, deploy, collectionId } = cloudConfig
 
-  if (!indexId) {
-    console.error('Orama: Missing indexId in cloud configuration.')
+  if (!indexId && !collectionId) {
+    console.error('Orama: Either indexId or collection are mandatory in cloud configuration.')
     isValid = false
   }
 
   if (!apiKey) {
-    console.error('Orama: Missing oramaCloudAPIKey in cloud configuration.')
+    console.error('Orama: Missing apiKey in cloud configuration.')
     isValid = false
   }
 
@@ -302,6 +311,10 @@ export default function OramaPluginDocusaurus(context: LoadContext, options: Plu
   return {
     name: '@orama/plugin-docusaurus-v3',
 
+    configureWebpack(config, isServer, utils) {
+      return {}
+    },
+
     getThemePath() {
       return '../dist/theme'
     },
@@ -316,7 +329,6 @@ export default function OramaPluginDocusaurus(context: LoadContext, options: Plu
 
     async allContentLoaded({ actions, allContent }) {
       const { cloud: cloudConfig, ...otherOptions } = options
-      
       const searchDataConfig = [
         {
           docs: allContent['docusaurus-plugin-content-docs']

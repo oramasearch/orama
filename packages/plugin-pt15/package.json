@@ -1,8 +1,13 @@
 {
   "name": "@orama/plugin-pt15",
-  "version": "3.1.7",
+  "version": "3.1.11",
   "description": "Performant search algorithm optimized for descriptive texts",
-  "keywords": ["orama", "embeddings", "secure proxy", "vector search"],
+  "keywords": [
+    "orama",
+    "embeddings",
+    "secure proxy",
+    "vector search"
+  ],
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -24,7 +29,9 @@
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup --config tsup.lib.js",
     "lint": "exit 0",

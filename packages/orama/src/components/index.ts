@@ -27,7 +27,7 @@ import { RadixTree } from '../trees/radix.js'
 import { BKDTree } from '../trees/bkd.js'
 import { BoolNode } from '../trees/bool.js'
 
-import { convertDistanceToMeters, setIntersection, setUnion } from '../utils.js'
+import { convertDistanceToMeters, setIntersection, setUnion, setDifference } from '../utils.js'
 import { BM25 } from './algorithms.js'
 import { getInnerType, getVectorSize, isArrayType, isVectorType } from './defaults.js'
 import {
@@ -424,7 +424,7 @@ export function calculateResultScores(
   const oramaFrequencies = index.frequencies[prop]
 
   // oramaOccurrences[term] can be undefined, 0, string, or { [k: string]: number }
-  const termOccurrences = typeof oramaOccurrences[term] === 'number' ? oramaOccurrences[term] ?? 0 : 0
+  const termOccurrences = typeof oramaOccurrences[term] === 'number' ? (oramaOccurrences[term] ?? 0) : 0
 
   // Calculate TF-IDF value for each term, in each document, for each index.
   const documentIDsLength = documentIDs.length
@@ -596,6 +596,44 @@ export function searchByWhereClause<T extends AnyOrama>(
   filters: Partial<WhereCondition<T['schema']>>,
   language: string | undefined
 ): Set<InternalDocumentID> {
+  // Handle logical operators
+  if ('and' in filters && filters.and && Array.isArray(filters.and)) {
+    const andFilters = filters.and
+    if (andFilters.length === 0) {
+      return new Set()
+    }
+
+    const results = andFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language))
+    return setIntersection(...results)
+  }
+
+  if ('or' in filters && filters.or && Array.isArray(filters.or)) {
+    const orFilters = filters.or
+    if (orFilters.length === 0) {
+      return new Set()
+    }
+
+    const results = orFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language))
+    // Use reduce to union all sets
+    return results.reduce((acc, set) => setUnion(acc, set), new Set<InternalDocumentID>())
+  }
+
+  if ('not' in filters && filters.not) {
+    const notFilter = filters.not
+    // Get all document IDs from the internal document store
+    const allDocs = new Set<InternalDocumentID>()
+
+    // Get all document IDs from the internal document store
+    const docsStore = index.sharedInternalDocumentStore
+    for (let i = 1; i <= docsStore.internalIdToId.length; i++) {
+      allDocs.add(i)
+    }
+
+    const notResult = searchByWhereClause(index, tokenizer, notFilter, language)
+    return setDifference(allDocs, notResult)
+  }
+
+  // Handle regular property filters (existing logic)
   const filterKeys = Object.keys(filters)
 
   const filtersMap: Record<string, Set<InternalDocumentID>> = filterKeys.reduce(

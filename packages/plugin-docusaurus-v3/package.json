@@ -1,8 +1,12 @@
 {
   "name": "@orama/plugin-docusaurus-v3",
-  "version": "3.1.7",
+  "version": "3.1.11",
   "description": "Docusaurus plugin for local search powered by Orama",
-  "keywords": ["orama", "docusaurus"],
+  "type": "module",
+  "keywords": [
+    "orama",
+    "docusaurus"
+  ],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/oramasearch/orama/issues"
@@ -16,16 +20,18 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prebuild": "rm -rf dist",
     "build": "tsc",
     "postbuild": "sh scripts/postbuild.sh",
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@orama/core": "^0.1.8",
     "@orama/highlight": "^0.1.5",
     "@orama/orama": "workspace:*",
     "@orama/plugin-analytics": "workspace:*",
     "@orama/plugin-parsedoc": "workspace:*",
-    "@orama/react-components": "^0.7.0",
+    "@orama/react-components": "0.8.1",
     "@oramacloud/client": "^2.1.4",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
@@ -47,8 +53,5 @@
     "@docusaurus/plugin-content-docs": "^3",
     "@docusaurus/theme-common": "^3",
     "@docusaurus/utils": "^3"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@orama/stemmers",
-  "version": "3.1.7",
+  "version": "3.1.11",
   "type": "module",
   "description": "Stemmers for Orama",
   "sideEffects": false,
@@ -148,7 +148,9 @@
       "require": "./dist/sk.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"
@@ -162,7 +164,14 @@
     "test": "exit 0;",
     "ci": "npm run test"
   },
-  "keywords": ["full-text search", "search", "fuzzy search", "typo-tolerant search", "full-text", "stemming"],
+  "keywords": [
+    "full-text search",
+    "search",
+    "fuzzy search",
+    "typo-tolerant search",
+    "full-text",
+    "stemming"
+  ],
   "author": {
     "name": "Michele Riva",
     "email": "michele.riva@oramasearch.com",

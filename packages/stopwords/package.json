@@ -1,6 +1,6 @@
 {
   "name": "@orama/stopwords",
-  "version": "3.1.7",
+  "version": "3.1.11",
   "type": "module",
   "description": "Stop-words for Orama",
   "sideEffects": false,
@@ -163,7 +163,9 @@
       "require": "./dist/sk.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/oramasearch/orama"

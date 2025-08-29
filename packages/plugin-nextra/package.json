@@ -1,8 +1,11 @@
 {
   "name": "@orama/plugin-nextra",
-  "version": "3.1.7",
+  "version": "3.1.11",
   "description": "Nextra plugin for local search powered by orama",
-  "keywords": ["orama", "nextra"],
+  "keywords": [
+    "orama",
+    "nextra"
+  ],
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -16,7 +19,9 @@
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "swc --delete-dir-on-start --extensions .ts,.tsx,.cts -d dist src",
     "lint": "eslint src --ext .js,.ts,.cts"
@@ -25,7 +30,7 @@
     "@orama/orama": "workspace:*",
     "@orama/plugin-match-highlight": "workspace:*",
     "classnames": "^2.5.1",
-    "next": "^14.2.26",
+    "next": "^14.2.30",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

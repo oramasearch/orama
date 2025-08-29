@@ -161,6 +161,8 @@ To provide a custom ID for a document, see the [components](/open-source/interna
 
 <Aside type="danger">
 If you try to insert two documents with the same ID, Orama will throw an error.
+
+For scenarios where you're unsure if a document already exists, consider using the [`upsert`](/open-source/usage/upsert) method instead, which automatically handles both insertion and updates.
 </Aside>
 
 ## Remote document storing

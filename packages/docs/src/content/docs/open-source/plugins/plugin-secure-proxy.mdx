@@ -27,7 +27,7 @@ Now, when creating a new Orama Instance, make sure to install the plugin:
 import { create } from "@orama/orama";
 import { pluginSecureProxy } from "@orama/plugin-secure-proxy";
 
-const secureProxy = secureProxyPlugin({
+const secureProxy = pluginSecureProxy({
   apiKey: "YOUR API KEY",
   defaultProperty: "embeddings",
   model: "openai/text-embedding-ada-002",
