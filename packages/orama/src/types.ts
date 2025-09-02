@@ -144,6 +144,19 @@ export type BM25Params = {
   d?: number
 }
 
+export type BM25FParams = {
+  // Global default parameters
+  k?: number
+  b?: number
+  d?: number
+  // Per-field parameters - field name maps to field-specific parameters
+  fields?: Record<string, {
+    k?: number
+    b?: number
+    weight?: number
+  }>
+}
+
 export type GenericSorting = 'asc' | 'desc' | 'ASC' | 'DESC'
 
 export type FacetSorting = GenericSorting
@@ -335,22 +348,23 @@ export interface SearchParamsFullText<T extends AnyOrama, ResultDocument = Typed
   tolerance?: number
 
   /**
-   * The BM25 parameters to use.
+   * The BM25F parameters to use. Supports both legacy BM25Params and new BM25FParams.
    *
-   * k: Term frequency saturation parameter.
-   * The higher the value, the more important the term frequency becomes.
-   * The default value is 1.2. It should be set to a value between 1.2 and 2.0.
+   * For BM25F:
+   * - k: Global term frequency saturation parameter (default: 1.2)
+   * - b: Global document length saturation impact (default: 0.75)
+   * - fields: Per-field parameters with individual k, b, and weight values
    *
-   * b: Document length saturation impact. The higher the value, the more
-   * important the document length becomes. The default value is 0.75.
+   * For legacy BM25:
+   * - k: Term frequency saturation parameter (default: 1.2)
+   * - b: Document length saturation impact (default: 0.75)
+   * - d: Frequency normalization lower bound (default: 0.5) - deprecated
    *
-   * d: Frequency normalization lower bound. Default value is 0.5.
-   *
-   * Full documentation: https://docs.orama.com/open-source/usage/search/changing-search-algorithm#bm25-best-matching-25
+   * Full documentation: https://docs.orama.com/open-source/usage/search/changing-search-algorithm
    *
    * @see https://en.wikipedia.org/wiki/Okapi_BM25
    */
-  relevance?: BM25Params
+  relevance?: BM25Params | BM25FParams
 
   /**
    * The boost to apply to the properties.
@@ -551,22 +565,23 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
   tolerance?: number
 
   /**
-   * The BM25 parameters to use.
+   * The BM25F parameters to use. Supports both legacy BM25Params and new BM25FParams.
    *
-   * k: Term frequency saturation parameter.
-   * The higher the value, the more important the term frequency becomes.
-   * The default value is 1.2. It should be set to a value between 1.2 and 2.0.
+   * For BM25F:
+   * - k: Global term frequency saturation parameter (default: 1.2)
+   * - b: Global document length saturation impact (default: 0.75)
+   * - fields: Per-field parameters with individual k, b, and weight values
    *
-   * b: Document length saturation impact. The higher the value, the more
-   * important the document length becomes. The default value is 0.75.
+   * For legacy BM25:
+   * - k: Term frequency saturation parameter (default: 1.2)
+   * - b: Document length saturation impact (default: 0.75)
+   * - d: Frequency normalization lower bound (default: 0.5) - deprecated
    *
-   * d: Frequency normalization lower bound. Default value is 0.5.
-   *
-   * Full documentation: https://docs.orama.com/open-source/usage/search/changing-search-algorithm#bm25-best-matching-25
+   * Full documentation: https://docs.orama.com/open-source/usage/search/changing-search-algorithm
    *
    * @see https://en.wikipedia.org/wiki/Okapi_BM25
    */
-  relevance?: BM25Params
+  relevance?: BM25Params | BM25FParams
 
   /**
    * The number of matched documents to return.
@@ -979,7 +994,7 @@ export interface IIndex<I extends AnyIndexStore> {
     term: string,
     ids: InternalDocumentID[],
     docsCount: number,
-    bm25Relevance: Required<BM25Params>,
+    bm25Relevance: Required<BM25Params> | (BM25Params & BM25FParams),
     resultsMap: Map<number, number>,
     boostPerProperty: number,
     whereFiltersIDs: Set<InternalDocumentID> | undefined,
@@ -995,7 +1010,7 @@ export interface IIndex<I extends AnyIndexStore> {
     exact: boolean,
     tolerance: number,
     boost: Partial<Record<OnlyStrings<FlattenSchemaProperty<T>[]>, number>>,
-    relevance: Required<BM25Params>,
+    relevance: Required<BM25Params> | (BM25Params & BM25FParams),
     docsCount: number,
     whereFiltersIDs: Set<InternalDocumentID> | undefined,
     threshold?: number

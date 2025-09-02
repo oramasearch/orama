@@ -8,6 +8,7 @@ import { createError } from '../errors.js'
 import type {
   AnyOrama,
   BM25Params,
+  BM25FParams,
   CustomSorterFunctionItem,
   ElapsedTime,
   Results,
@@ -204,10 +205,26 @@ export const defaultBM25Params: BM25Params = {
   b: 0.75,
   d: 0.5
 }
-function applyDefault(bm25Relevance?: BM25Params): Required<BM25Params> {
+
+export const defaultBM25FParams: BM25FParams = {
+  k: 1.2,
+  b: 0.75,
+  d: 0.5,
+  fields: undefined
+}
+
+function applyDefault(bm25Relevance?: BM25Params | BM25FParams): Required<BM25Params> | (BM25Params & BM25FParams) {
   const r = bm25Relevance ?? {}
-  r.k = r.k ?? defaultBM25Params.k
-  r.b = r.b ?? defaultBM25Params.b
-  r.d = r.d ?? defaultBM25Params.d
-  return r as Required<BM25Params>
+  const result = {
+    k: r.k ?? defaultBM25Params.k!,
+    b: r.b ?? defaultBM25Params.b!,
+    d: r.d ?? defaultBM25Params.d!
+  }
+  
+  // If it's BM25F parameters, preserve the fields
+  if ('fields' in r && r.fields !== undefined) {
+    return { ...result, fields: r.fields } as BM25Params & BM25FParams
+  }
+  
+  return result as Required<BM25Params>
 }

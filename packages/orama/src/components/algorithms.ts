@@ -1,5 +1,5 @@
 import { createError } from '../errors.js'
-import { TokenScore, BM25Params } from '../types.js'
+import { TokenScore, BM25Params, BM25FParams } from '../types.js'
 import { InternalDocumentID } from './internal-document-id-store.js'
 
 export function prioritizeTokenScores(
@@ -122,5 +122,48 @@ export function BM25(
   { k, b, d }: Required<BM25Params>
 ) {
   const idf = Math.log(1 + (docsCount - matchingCount + 0.5) / (matchingCount + 0.5))
-  return (idf * (d + tf * (k + 1))) / (tf + k * (1 - b + (b * fieldLength) / averageFieldLength))
+  // Fixed BM25 formula - removed non-standard 'd' parameter for compatibility
+  return idf * ((tf * (k + 1)) / (tf + k * (1 - b + (b * fieldLength) / averageFieldLength)))
+}
+
+export function BM25F(
+  tf: number,
+  matchingCount: number,
+  docsCount: number,
+  fieldLength: number,
+  averageFieldLength: number,
+  k: number,
+  b: number
+): number {
+  const idf = Math.log(1 + (docsCount - matchingCount + 0.5) / (matchingCount + 0.5))
+  const normalizedTF = (tf * (k + 1)) / (tf + k * (1 - b + (b * fieldLength) / averageFieldLength))
+  return idf * normalizedTF
+}
+
+// Helper function to check if parameters are BM25F
+export function isBM25F(params: BM25Params | BM25FParams): params is BM25FParams {
+  return 'fields' in params && params.fields !== undefined
+}
+
+// Helper function to get field-specific parameters
+export function getFieldParams(
+  params: BM25Params | BM25FParams,
+  fieldName: string,
+  globalDefaults: Required<BM25Params>
+): { k: number; b: number; weight: number } {
+  if (isBM25F(params) && params.fields && params.fields[fieldName]) {
+    const fieldParams = params.fields[fieldName]
+    return {
+      k: fieldParams.k ?? params.k ?? globalDefaults.k,
+      b: fieldParams.b ?? params.b ?? globalDefaults.b,
+      weight: fieldParams.weight ?? 1.0
+    }
+  }
+  
+  // Use global parameters for all fields in legacy BM25 mode
+  return {
+    k: params.k ?? globalDefaults.k,
+    b: params.b ?? globalDefaults.b,
+    weight: 1.0
+  }
 }
