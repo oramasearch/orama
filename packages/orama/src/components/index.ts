@@ -3,7 +3,6 @@ import type {
   AnyOrama,
   ArraySearchableType,
   BM25Params,
-  BM25FParams,
   ComparisonOperator,
   EnumArrComparisonOperator,
   EnumComparisonOperator,
@@ -30,7 +29,7 @@ import { BKDTree } from '../trees/bkd.js'
 import { BoolNode } from '../trees/bool.js'
 
 import { convertDistanceToMeters, setIntersection, setUnion, setDifference } from '../utils.js'
-import { BM25, BM25F, isBM25F, getFieldParams } from './algorithms.js'
+import { BM25 } from './algorithms.js'
 import { getInnerType, getVectorSize, isArrayType, isVectorType } from './defaults.js'
 import {
   DocumentID,
@@ -455,70 +454,6 @@ export function calculateResultScores(
   }
 }
 
-export function calculateResultScoresBM25F(
-  index: Index,
-  prop: string,
-  term: string,
-  ids: InternalDocumentID[],
-  docsCount: number,
-  bm25Relevance: BM25Params | BM25FParams,
-  globalDefaults: Required<BM25Params>,
-  resultsMap: Map<number, number>,
-  boostPerProperty: number,
-  whereFiltersIDs: Set<InternalDocumentID> | undefined,
-  keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
-) {
-  const documentIDs = Array.from(ids)
-
-  const avgFieldLength = index.avgFieldLength[prop]
-  const fieldLengths = index.fieldLengths[prop]
-  const oramaOccurrences = index.tokenOccurrences[prop]
-  const oramaFrequencies = index.frequencies[prop]
-
-  // Get field-specific parameters
-  const fieldParams = getFieldParams(bm25Relevance, prop, globalDefaults)
-
-  // oramaOccurrences[term] can be undefined, 0, string, or { [k: string]: number }
-  const termOccurrences = typeof oramaOccurrences[term] === 'number' ? (oramaOccurrences[term] ?? 0) : 0
-
-  // Calculate BM25F score for each term, in each document, for each field.
-  const documentIDsLength = documentIDs.length
-  for (let k = 0; k < documentIDsLength; k++) {
-    const internalId = documentIDs[k]
-    if (whereFiltersIDs && !whereFiltersIDs.has(internalId)) {
-      continue
-    }
-
-    // Track keyword matches per property
-    if (!keywordMatchesMap.has(internalId)) {
-      keywordMatchesMap.set(internalId, new Map())
-    }
-    const propertyMatches = keywordMatchesMap.get(internalId)!
-    propertyMatches.set(prop, (propertyMatches.get(prop) || 0) + 1)
-
-    const tf = oramaFrequencies?.[internalId]?.[term] ?? 0
-
-    const bm25fScore = BM25F(
-      tf, 
-      termOccurrences, 
-      docsCount, 
-      fieldLengths[internalId]!, 
-      avgFieldLength, 
-      fieldParams.k, 
-      fieldParams.b
-    )
-
-    // Apply field weight and boost
-    const weightedScore = bm25fScore * fieldParams.weight * boostPerProperty
-
-    if (resultsMap.has(internalId)) {
-      resultsMap.set(internalId, resultsMap.get(internalId)! + weightedScore)
-    } else {
-      resultsMap.set(internalId, weightedScore)
-    }
-  }
-}
-
 export function search(
   index: Index,
   term: string,
@@ -528,7 +463,7 @@ export function search(
   exact: boolean,
   tolerance: number,
   boost: Record<string, number>,
-  relevance: Required<BM25Params> | (BM25Params & BM25FParams),
+  relevance: Required<BM25Params>,
   docsCount: number,
   whereFiltersIDs: Set<InternalDocumentID> | undefined,
   threshold = 0
@@ -541,14 +476,6 @@ export function search(
   // Track which tokens were found in the search
   const tokenFoundMap = new Map<string, boolean>()
   const resultsMap = new Map<number, number>()
-
-  // Determine if we're using BM25F
-  const useBM25F = isBM25F(relevance)
-  const globalDefaults: Required<BM25Params> = {
-    k: relevance.k ?? 1.2,
-    b: relevance.b ?? 0.75,
-    d: relevance.d ?? 0.5
-  }
 
   for (const prop of propertiesToSearch) {
     if (!(prop in index.indexes)) {
@@ -587,35 +514,18 @@ export function search(
       for (let j = 0; j < termsFoundLength; j++) {
         const word = termsFound[j]
         const ids = searchResult[word]
-        
-        if (useBM25F) {
-          calculateResultScoresBM25F(
-            index,
-            prop,
-            word,
-            ids,
-            docsCount,
-            relevance,
-            globalDefaults,
-            resultsMap,
-            boostPerProperty,
-            whereFiltersIDs,
-            keywordMatchesMap
-          )
-        } else {
-          calculateResultScores(
-            index,
-            prop,
-            word,
-            ids,
-            docsCount,
-            relevance as Required<BM25Params>,
-            resultsMap,
-            boostPerProperty,
-            whereFiltersIDs,
-            keywordMatchesMap
-          )
-        }
+        calculateResultScores(
+          index,
+          prop,
+          word,
+          ids,
+          docsCount,
+          relevance,
+          resultsMap,
+          boostPerProperty,
+          whereFiltersIDs,
+          keywordMatchesMap
+        )
       }
     }
   }
