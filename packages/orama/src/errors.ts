@@ -29,6 +29,7 @@ const errors = {
   UNKNOWN_GROUP_BY_PROPERTY: `Unknown groupBy property "%s".`,
   INVALID_GROUP_BY_PROPERTY: `Invalid groupBy property "%s". Allowed types: "%s", but given "%s".`,
   UNKNOWN_FILTER_PROPERTY: `Unknown filter property "%s".`,
+  UNKNOWN_VECTOR_PROPERTY: `Unknown vector property "%s". Make sure the property exists in the schema and is configured as a vector.`,
   INVALID_VECTOR_SIZE: `Vector size must be a number greater than 0. Got "%s" instead.`,
   INVALID_VECTOR_VALUE: `Vector value must be a number greater than 0. Got "%s" instead.`,
   INVALID_INPUT_VECTOR: `Property "%s" was declared as a %s-dimensional vector, but got a %s-dimensional vector instead.\nInput vectors must be of the size declared in the schema, as calculating similarity between vectors of different sizes can lead to unexpected results.`,
