@@ -2,6 +2,7 @@ import { getFacets } from '../components/facets.js'
 import { getGroups } from '../components/groups.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'
 import { getInternalDocumentId } from '../components/internal-document-id-store.js'
+import { searchByGeoWhereClause } from '../components/index.js'
 import { Language } from '../components/tokenizer/languages.js'
 import { createError } from '../errors.js'
 import type {
@@ -20,7 +21,10 @@ import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
 
 export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
-  params: Pick<SearchParamsFullText<T>, 'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance'>,
+  params: Pick<
+    SearchParamsFullText<T>,
+    'term' | 'properties' | 'where' | 'exact' | 'tolerance' | 'boost' | 'relevance' | 'threshold'
+  >,
   language: Language | undefined
 ) {
   const { term, properties } = params
@@ -49,7 +53,6 @@ export function innerFullTextSearch<T extends AnyOrama>(
     propertiesToSearch = propertiesToSearch.filter((prop: string) => (properties as string[]).includes(prop))
   }
 
-
   // If filters are enabled, we need to get the IDs of the documents that match the filters.
   const hasFilters = Object.keys(params.where ?? {}).length > 0
   let whereFiltersIDs: Set<number> | undefined
@@ -57,14 +60,14 @@ export function innerFullTextSearch<T extends AnyOrama>(
     whereFiltersIDs = orama.index.searchByWhereClause(index, orama.tokenizer, params.where!, language)
   }
 
-
   let uniqueDocsIDs: TokenScore[]
   // We need to perform the search if:
   // - we have a search term
   // - or we have properties to search
   //   in this case, we need to return all the documents that contains at least one of the given properties
-  if (term || properties) {
+  const threshold = params.threshold !== undefined && params.threshold !== null ? params.threshold : 1
 
+  if (term || properties) {
     const docsCount = count(orama)
     uniqueDocsIDs = orama.index.search(
       index,
@@ -78,17 +81,29 @@ export function innerFullTextSearch<T extends AnyOrama>(
       applyDefault(params.relevance),
       docsCount,
       whereFiltersIDs,
+      threshold
     )
   } else {
-    // Tokenizer returns empty array and the search term is empty as well.
-    // We return all the documents.
-    const docIds = whereFiltersIDs ? Array.from(whereFiltersIDs) : Object.keys(orama.documentsStore.getAll(orama.data.docs))
-    uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+    // Check if this is a geosearch-only query first
+    if (hasFilters) {
+      const geoResults = searchByGeoWhereClause(index, params.where!)
+      if (geoResults) {
+        // This is a geosearch-only query with distance scoring
+        uniqueDocsIDs = geoResults
+      } else {
+        // Regular filter query without search term
+        const docIds = whereFiltersIDs ? Array.from(whereFiltersIDs) : []
+        uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+      }
+    } else {
+      // No search term and no filters - return all documents
+      const docIds = Object.keys(orama.documentsStore.getAll(orama.data.docs))
+      uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+    }
   }
 
   return uniqueDocsIDs
 }
-
 
 export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocument<T>>(
   orama: T,
@@ -184,7 +199,6 @@ export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocumen
   return performSearchLogic()
 }
 
-
 export const defaultBM25Params: BM25Params = {
   k: 1.2,
   b: 0.75,
@@ -192,8 +206,8 @@ export const defaultBM25Params: BM25Params = {
 }
 function applyDefault(bm25Relevance?: BM25Params): Required<BM25Params> {
   const r = bm25Relevance ?? {}
-  r.k = r.k ?? defaultBM25Params.k;
-  r.b = r.b ?? defaultBM25Params.b;
-  r.d = r.d ?? defaultBM25Params.d;
+  r.k = r.k ?? defaultBM25Params.k
+  r.b = r.b ?? defaultBM25Params.b
+  r.d = r.d ?? defaultBM25Params.d
   return r as Required<BM25Params>
 }

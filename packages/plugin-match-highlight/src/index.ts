@@ -11,7 +11,6 @@ import {
   save,
   search
 } from '@orama/orama'
-// @ts-ignore
 import { boundedLevenshtein } from '@orama/orama/internals'
 
 export interface Position {
@@ -69,16 +68,15 @@ async function recursivePositionInsertion<T extends AnyOrama, ResultDocument = T
     }
     orama.data.positions[id][propName] = Object.create(null)
     const text = doc[key] as string
-    let regExResult
+    let regExResult: RegExpExecArray | null
     while ((regExResult = wordRegEx.exec(text)) !== null) {
       const word = regExResult[0].toLowerCase()
       const key = `${orama.tokenizer.language}:${word}`
       let token: string
       if (orama.tokenizer.normalizationCache.has(key)) {
         token = orama.tokenizer.normalizationCache.get(key)!
-        /* c8 ignore next 4 */
       } else {
-        ;[token] = await orama.tokenizer.tokenize(word)
+        ;[token] = orama.tokenizer.tokenize(word)
         orama.tokenizer.normalizationCache.set(key, token)
       }
       if (!Array.isArray(orama.data.positions[id][propName][token])) {
@@ -97,15 +95,15 @@ export async function searchWithHighlight<T extends AnyOrama, ResultDocument = T
   language?: Language
 ): Promise<SearchResultWithHighlight<ResultDocument>> {
   const result = await search(orama, params, language)
-  const queryTokens: string[] = await orama.tokenizer.tokenize(params.term ?? '', language)
+  const queryTokens: string[] = orama.tokenizer.tokenize(params.term ?? '', language)
 
-  let hitsWithPosition = []
+  const hitsWithPosition: ResultWithPositions<ResultDocument>[] = []
   for (const hit of result.hits) {
     const hitPositions = Object.entries<any>((orama as OramaWithHighlight<T>).data.positions[hit.id])
 
-    let hits: AnyDocument[] = []
+    const hits: AnyDocument[] = []
     for (const [propName, tokens] of hitPositions) {
-      const matchWithSearchTokens = []
+      const matchWithSearchTokens: [string, unknown][] = []
 
       const tokenEntries = Object.entries(tokens)
       for (const tokenEntry of tokenEntries) {
@@ -113,7 +111,7 @@ export async function searchWithHighlight<T extends AnyOrama, ResultDocument = T
 
         for (const queryToken of queryTokens) {
           if (params.tolerance) {
-            const distance = await boundedLevenshtein(token, queryToken, params.tolerance)
+            const distance = boundedLevenshtein(token, queryToken, params.tolerance)
             if (distance.isBounded) {
               matchWithSearchTokens.push(tokenEntry)
               break
@@ -132,12 +130,11 @@ export async function searchWithHighlight<T extends AnyOrama, ResultDocument = T
 
   result.hits = hitsWithPosition
 
-  // @ts-ignore
-  return result
+  return result as SearchResultWithHighlight<ResultDocument>
 }
 
-export async function saveWithHighlight<T extends AnyOrama>(orama: T): Promise<RawDataWithPositions> {
-  const data = await save(orama)
+export function saveWithHighlight<T extends AnyOrama>(orama: T): RawDataWithPositions {
+  const data = save(orama)
 
   return {
     ...data,
@@ -145,7 +142,7 @@ export async function saveWithHighlight<T extends AnyOrama>(orama: T): Promise<R
   }
 }
 
-export async function loadWithHighlight<T extends AnyOrama>(orama: T, raw: RawDataWithPositions): Promise<void> {
-  await load(orama, raw)
+export function loadWithHighlight<T extends AnyOrama>(orama: T, raw: RawDataWithPositions): void {
+  load(orama, raw)
   ;(orama as OramaWithHighlight<T>).data.positions = raw.positions
 }

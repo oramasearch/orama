@@ -1,206 +1,18 @@
-import { readFileSync, writeFileSync } from 'node:fs'
+import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 import type { Plugin } from '@docusaurus/types'
+import type { LoadContext } from '@docusaurus/types';
+import { readFileSync, writeFileSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
-import { gzip } from 'pako'
 import { resolve } from 'node:path'
-import { create, insertMultiple, save } from '@orama/orama'
+import { gzip } from 'pako'
+import { AnyOrama, create, insertMultiple, save } from '@orama/orama'
+import { CloudManager } from '@oramacloud/client'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
-import { createSnapshot, deployIndex, DOCS_PRESET_SCHEMA, fetchEndpointConfig } from "./utils.js"
-import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 
-enum DeployType {
-  SNAPSHOT_ONLY = 'snapshot-only',
-  DEFAULT = 'default'
-}
-
-type CloudConfig = {
-  deploy: DeployType | false
-  endpoint: string
-  indexId: string
-  oramaCloudAPIKey?: string
-  public_api_key: string
-}
-
-type PluginOptions = {
-  analytics?: {
-    enabled: boolean
-    apiKey: string
-    indexId: string
-  }
-  cloud?: CloudConfig,
-  searchbox?: { [key:string]: any }
-  searchButton?: { [key:string]: any }
-}
-
-export default function OramaPluginDocusaurus(
-  ctx: {
-    siteDir: any
-    generatedFilesDir: any
-  },
-  options: PluginOptions
-): Plugin {
-  let versions: any[] = []
-
-  return {
-    name: '@orama/plugin-docusaurus-v3',
-
-    getThemePath() {
-      return '../dist/theme'
-    },
-
-    getTypeScriptThemePath() {
-      return '../src/theme'
-    },
-
-    getClientModules() {
-      return ['../dist/theme/SearchBar/index.css']
-    },
-
-    async allContentLoaded({ actions, allContent }) {
-      const isDevelopment =
-        process.env.NODE_ENV === 'development' || !options.cloud?.oramaCloudAPIKey || !options.cloud?.deploy
-      const docsInstances: string[] = []
-      const oramaCloudAPIKey = options.cloud?.oramaCloudAPIKey
-      const searchDataConfig = [
-        {
-          docs: allContent['docusaurus-plugin-content-docs']
-        },
-        {
-          blogs: allContent['docusaurus-plugin-content-blog']
-        },
-        {
-          pages: allContent['docusaurus-plugin-content-pages']
-        }
-      ]
-      const allOramaDocsPromises: Promise<any>[] = []
-
-      searchDataConfig.forEach((config) => {
-        const [key, value] = Object.entries(config)[0]
-        switch (key) {
-          case 'docs':
-            if (!value) break
-            Object.keys(value).forEach((docsInstance: any) => {
-              const loadedVersions = value?.[docsInstance]?.loadedVersions
-              versions = loadedVersions.map((v: any) => v.versionName)
-              docsInstances.push(docsInstance)
-              versions.flatMap(async (version) => {
-                const currentVersion = loadedVersions.find((v: any) => v.versionName === version)
-                if (!currentVersion) return
-                allOramaDocsPromises.push(
-                  ...currentVersion.docs.map((data: any) =>
-                    generateDocs({
-                      siteDir: ctx.siteDir,
-                      version,
-                      category: docsInstance,
-                      data
-                    })
-                  )
-                )
-              })
-            })
-            break
-          case 'blogs':
-            if (!value) break
-            Object.keys(value).forEach(async (instance) => {
-              const loadedInstance = value[instance]
-              if (!loadedInstance) return
-              allOramaDocsPromises.push(
-                ...loadedInstance.blogPosts.map(({ metadata }: any) => {
-                  return generateDocs({
-                    siteDir: ctx.siteDir,
-                    version: 'current',
-                    category: 'blogs',
-                    data: metadata
-                  })
-                })
-              )
-            })
-            break
-          case 'pages':
-            if (!value) break
-            Object.keys(value).forEach(async (instance) => {
-              const loadedInstance = value[instance]
-              if (!loadedInstance) return
-              allOramaDocsPromises.push(
-                ...loadedInstance.map((data: any) =>
-                  generateDocs({
-                    siteDir: ctx.siteDir,
-                    version: 'current',
-                    category: 'pages',
-                    data
-                  })
-                )
-              )
-            })
-
-            break
-        }
-      })
-
-      const oramaDocs = (await Promise.all(allOramaDocsPromises)).flat().reduce((acc, curr) => {
-        if (!!curr.title && !!curr.content) {
-          acc.push({
-            title: curr.title,
-            content: curr.content,
-            section: curr.originalTitle,
-            version: curr.version,
-            path: curr.path,
-            category: curr.category
-          })
-        }
-
-        return acc
-      }, [])
-
-      if (isDevelopment) {
-        await deployData({
-          oramaDocs,
-          generatedFilesDir: ctx.generatedFilesDir,
-          version: 'current'
-        })
-
-        actions.setGlobalData({
-          searchData: Object.fromEntries([['current', readFileSync(indexPath(ctx.generatedFilesDir, 'current'))]]),
-          docsInstances,
-          availableVersions: versions,
-          searchBoxCustomConfig: options.searchbox ?? {},
-          searchBtnConfig: options.searchButton ?? {}
-        })
-      } else {
-        const deployConfig = options.cloud && {
-          indexId: options.cloud.indexId,
-          oramaCloudAPIKey,
-          type: options.cloud.deploy
-        }
-
-        const endpointConfig = await deployData({
-          oramaDocs,
-          generatedFilesDir: ctx.generatedFilesDir,
-          version: 'current',
-          deployConfig
-        })
-
-        actions.setGlobalData({
-          docsInstances,
-          availableVersions: versions,
-          analytics: options.analytics,
-          searchBoxCustomConfig: options.searchbox ?? {},
-          searchBtnConfig: options.searchButton ?? {},
-          endpoint: {
-            url: endpointConfig?.endpoint,
-            key: endpointConfig?.public_api_key
-          }
-        })
-      }
-    },
-
-    async postBuild({ outDir }) {
-      !options.cloud && (await cp(indexPath(ctx.generatedFilesDir, 'current'), indexPath(outDir, 'current')))
-    }
-  }
-}
+import { createOramaInstance, fetchEndpointConfig, loggedOperation } from './utils.js'
+import { CloudConfig, DeployType, IndexConfig, OramaData, OramaDoc, PluginOptions } from './types.js'
 
 async function generateDocs({
   siteDir,
@@ -301,49 +113,267 @@ function indexPath(outDir: string, version: string) {
   return resolve(outDir, 'orama-search-index-@VERSION@.json.gz'.replace('@VERSION@', version))
 }
 
-async function deployData({
+async function syncOramaIndex({
   oramaDocs,
-  generatedFilesDir,
-  version,
-  deployConfig
+  cloudConfig
 }: {
-  oramaDocs: any[]
-  generatedFilesDir: string
-  version: string
-  deployConfig?:
-    {
-      indexId: string
-      oramaCloudAPIKey: string | undefined
-      type: DeployType | false
-    }
-}) {
-  const { ORAMA_CLOUD_BASE_URL } = process.env
-  const baseUrl = ORAMA_CLOUD_BASE_URL || 'https://cloud.orama.com'
+  oramaDocs: OramaDoc[]
+  cloudConfig: CloudConfig
+}): Promise<IndexConfig> {
+  const { apiKey, indexId, deploy, collectionId } = cloudConfig
 
-  if (deployConfig?.type) {
-    if (deployConfig.type === DeployType.DEFAULT || deployConfig.type === DeployType.SNAPSHOT_ONLY) {
-      const endpointConfig = await fetchEndpointConfig(baseUrl, deployConfig.oramaCloudAPIKey!, deployConfig.indexId!)
+  if(!collectionId) { // NOTE: lack of collectionId means legacy Orama
+    const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
 
-      await createSnapshot(baseUrl, deployConfig.oramaCloudAPIKey!, deployConfig.indexId!, oramaDocs)
-
-      if (deployConfig.type === DeployType.DEFAULT) {
-        await deployIndex(baseUrl, deployConfig.oramaCloudAPIKey!, deployConfig.indexId!)
-      }
-      return endpointConfig
-    } else {
-      throw new Error('Invalid deploy type')
-    }
-  } else {
-    const db = await create({
-      schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' }
+    const cloudManager = new CloudManager({
+      api_key: apiKey!,
+      baseURL: baseUrl
     })
 
-    await insertMultiple(db, oramaDocs as any)
+    const index = cloudManager.index(indexId)
 
-    const serializedOrama = JSON.stringify(await save(db))
-    const gzipedOrama = gzip(serializedOrama)
-    writeFileSync(indexPath(generatedFilesDir, version), gzipedOrama)
+    const endpointConfig = await fetchEndpointConfig(baseUrl, apiKey, indexId)
 
-    return undefined
+    if (deploy) {
+      await loggedOperation('Orama: Reset index data', async () => await index.empty(), 'Orama: Index data reset')
+      await insertChunkDocumentsIntoIndex(index, oramaDocs)
+
+      if (cloudConfig.deploy === DeployType.DEFAULT) {
+        await loggedOperation('Orama: Start deployment', async () => await index.deploy(), 'Orama: Deployment started.')
+      }
+    }
+
+    // TODO: redo deploy for OramaCore
+    return {
+      ...endpointConfig,
+      collection_id: collectionId
+    }
+  }
+
+  return {
+    api_key: apiKey,
+    endpoint: 'https://collections.orama.com',
+    collection_id: collectionId
+  }
+}
+
+export async function insertChunkDocumentsIntoIndex(oramaIndex: any, docs: any[], limit = 50, offset = 0) {
+  const chunk = docs.slice(offset, offset + limit)
+
+  if (chunk.length > 0) {
+    await loggedOperation(
+      `Orama: Start documents insertion (range ${offset + 1}-${offset + chunk.length})`,
+      async () => await oramaIndex.insert(chunk),
+      'Orama: insert created successfully'
+    )
+    await insertChunkDocumentsIntoIndex(oramaIndex, docs, limit, offset + limit)
+  }
+}
+
+async function createOramaGzip({
+  oramaInstance,
+  context
+}: {
+  oramaInstance: AnyOrama
+  context: LoadContext
+}) {
+  console.debug('Orama: Creating gzipped index file.')
+
+  const version = 'current'
+  const serializedOrama = JSON.stringify(save(oramaInstance))
+  const gzippedOrama = gzip(serializedOrama)
+  writeFileSync(indexPath(context.generatedFilesDir, version), gzippedOrama)
+
+  console.debug('Orama: Gzipped index file created.')
+}
+
+async function fetchOramaDocs(
+  searchDataConfig: {
+    docs?: any
+    pages?: any
+    blogs?: any
+  }[],
+  context: LoadContext
+) {
+  let versions: string[] = []
+  const docsInstances: string[] = []
+  const allOramaDocsPromises: Promise<any>[] = []
+
+  searchDataConfig.forEach((config) => {
+    const [key, value] = Object.entries(config)[0]
+    switch (key) {
+      case 'docs':
+        if (!value) break
+        Object.keys(value).forEach((docsInstance: any) => {
+          const loadedVersions = value?.[docsInstance]?.loadedVersions
+          versions = loadedVersions.map((v: any) => v.versionName)
+          docsInstances.push(docsInstance)
+          versions.flatMap(async (version) => {
+            const currentVersion = loadedVersions.find((v: any) => v.versionName === version)
+            if (!currentVersion) return
+            allOramaDocsPromises.push(
+              ...currentVersion.docs.map((data: any) =>
+                generateDocs({
+                  siteDir: context.siteDir,
+                  version,
+                  category: docsInstance,
+                  data
+                })
+              )
+            )
+          })
+        })
+        break
+      case 'blogs':
+        if (!value) break
+        Object.keys(value).forEach(async (instance) => {
+          const loadedInstance = value[instance]
+          if (!loadedInstance) return
+          allOramaDocsPromises.push(
+            ...loadedInstance.blogPosts.map(({ metadata }: any) => {
+              return generateDocs({
+                siteDir: context.siteDir,
+                version: 'current',
+                category: 'blogs',
+                data: metadata
+              })
+            })
+          )
+        })
+        break
+      case 'pages':
+        if (!value) break
+        Object.keys(value).forEach(async (instance) => {
+          const loadedInstance = value[instance]
+          if (!loadedInstance) return
+          allOramaDocsPromises.push(
+            ...loadedInstance.map((data: any) =>
+              generateDocs({
+                siteDir: context.siteDir,
+                version: 'current',
+                category: 'pages',
+                data
+              })
+            )
+          )
+        })
+
+        break
+    }
+  })
+
+  const oramaDocs: OramaDoc[] = (await Promise.all(allOramaDocsPromises)).flat().reduce((acc, curr) => {
+    if (!!curr.title && !!curr.content) {
+      acc.push({
+        title: curr.title,
+        content: curr.content,
+        section: curr.originalTitle,
+        version: curr.version,
+        path: curr.path,
+        category: curr.category
+      })
+    }
+
+    return acc
+  }, [])
+
+  return { oramaDocs, versions, docsInstances }
+}
+
+function validateCloudConfiguration(cloudConfig: CloudConfig) {
+  let isValid = true
+
+  const { indexId, apiKey, deploy, collectionId } = cloudConfig
+
+  if (!indexId && !collectionId) {
+    console.error('Orama: Either indexId or collection are mandatory in cloud configuration.')
+    isValid = false
+  }
+
+  if (!apiKey) {
+    console.error('Orama: Missing apiKey in cloud configuration.')
+    isValid = false
+  }
+
+  if (deploy && !Object.values(DeployType).includes(deploy)) {
+    console.error('Orama: Invalid deploy type in cloud configuration.')
+    isValid = false
+  }
+
+  if (!isValid) {
+    throw new Error('Orama: Invalid cloud configuration.')
+  }
+
+  return isValid
+}
+
+export default function OramaPluginDocusaurus(context: LoadContext, options: PluginOptions): Plugin {
+  return {
+    name: '@orama/plugin-docusaurus-v3',
+
+    configureWebpack(config, isServer, utils) {
+      return {}
+    },
+
+    getThemePath() {
+      return '../dist/theme'
+    },
+
+    getTypeScriptThemePath() {
+      return '../src/theme'
+    },
+
+    getClientModules() {
+      return ['../dist/theme/SearchBar/index.css']
+    },
+
+    async allContentLoaded({ actions, allContent }) {
+      const { cloud: cloudConfig, ...otherOptions } = options
+      const searchDataConfig = [
+        {
+          docs: allContent['docusaurus-plugin-content-docs']
+        },
+        {
+          blogs: allContent['docusaurus-plugin-content-blog']
+        },
+        {
+          pages: allContent['docusaurus-plugin-content-pages']
+        }
+      ]
+
+      const { oramaDocs, versions, docsInstances } = await fetchOramaDocs(searchDataConfig, context)
+
+      if (cloudConfig) {
+        validateCloudConfiguration(cloudConfig)
+
+        const indexConfig = await syncOramaIndex({
+          oramaDocs,
+          cloudConfig
+        })
+
+        actions.setGlobalData({
+          oramaMode: 'cloud',
+          indexConfig,
+          docsInstances,
+          ...otherOptions
+        } as OramaData)
+      } else {
+        const oramaInstance = await createOramaInstance(oramaDocs)
+
+        await createOramaGzip({ oramaInstance, context })
+
+        actions.setGlobalData({
+          oramaMode: 'oss',
+          oramaDocs,
+          availableVersions: versions,
+          docsInstances,
+          ...otherOptions
+        } as OramaData)
+      }
+    },
+
+    async postBuild({ outDir }) {
+      !options.cloud && (await cp(indexPath(context.generatedFilesDir, 'current'), indexPath(outDir, 'current')))
+    }
   }
 }

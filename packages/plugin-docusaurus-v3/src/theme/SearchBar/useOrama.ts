@@ -1,93 +1,118 @@
-//@ts-nocheck
 import { useEffect, useState } from 'react'
-import { Switch } from '@orama/switch'
 import useBaseUrl from '@docusaurus/useBaseUrl'
 import useIsBrowser from '@docusaurus/useIsBrowser'
-import { useColorMode } from '@docusaurus/theme-common'
 import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
-import { OramaClient } from '@oramacloud/client'
 import { create, insertMultiple } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
-import { DOCS_PRESET_SCHEMA } from '../../utils'
+import { CollectionManager } from '@orama/core';
 
-export interface PluginData {
-  searchData: {
-    current: { data: ArrayBuffer } | null
-  },
-  searchBoxCustomConfig?: { [key:string]: any }
-  searchBtnConfig?: { [key:string]: any }
-  endpoint: { url: string; key: string } | null
-  analytics: { apiKey: string; indexId: string; enabled: boolean } | null
-  docsInstances: string[]
+import { DOCS_PRESET_SCHEMA } from '../../constants.js'
+import type {OramaCloudData, OramaData, OramaDoc, OramaPlugins} from '../../types.js'
+import { createOramaInstance } from '../../utils.js'
+
+function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
+  const pluginsArray = []
+
+  if (plugins?.analytics) {
+    pluginsArray.push(
+      pluginAnalytics({
+        apiKey: plugins.analytics.apiKey,
+        indexId: plugins.analytics.indexId,
+        enabled: plugins.analytics.enabled
+      })
+    )
+  }
+
+  return pluginsArray
 }
 
-export const useOrama = () => {
-  const [searchBoxConfig, setSearchBoxConfig] = useState({
-    basic: null,
-    custom: null
-  })
-  const { colorMode } = useColorMode()
-  const { searchData, endpoint, analytics, searchBoxCustomConfig, searchBtnConfig }: PluginData = usePluginData('@orama/plugin-docusaurus-v3') as PluginData
+async function getOramaLocalData(indexGzipURL: string, plugins: OramaPlugins | undefined) {
+	try {
+		const searchResponse = await fetch(indexGzipURL);
 
-  const baseURL = useBaseUrl('orama-search-index-current.json.gz')
+		if (!searchResponse.ok) {
+			const errorText = await searchResponse.text();
+			throw new Error(`HTTP error ${searchResponse.status}: ${errorText}`);
+		}
+
+		const buffer = await searchResponse.arrayBuffer();
+		const deflatedString = ungzip(buffer, { to: 'string' });
+		const parsedData = JSON.parse(deflatedString);
+
+		const db = create({
+			schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
+			plugins: getOramaPlugins(plugins)
+		});
+
+		const documents = Object.values(parsedData.docs.docs);
+		await insertMultiple(db, documents as OramaDoc[]);
+
+		return db;
+	} catch (error) {
+		console.error('Error loading search index:', error);
+		throw error;
+	}
+}
+
+function isCloudData(data: OramaData): data is OramaCloudData {
+  return data.oramaMode === 'cloud'
+}
+
+export default function useOrama() {
+  const [searchBoxConfig, setSearchBoxConfig] = useState < {
+    basic: Record<string, any>
+    custom: Record<string, any>
+  }>({
+    basic: {},
+    custom: {}
+  })
+  const oramaData: OramaData = usePluginData('@orama/plugin-docusaurus-v3') as OramaData
+
+  const indexGzipURL = useBaseUrl('orama-search-index-current.json.gz')
   const isBrowser = useIsBrowser()
 
   useEffect(() => {
     async function loadOrama() {
-      let oramaInstance = null
+      let oramaInstance
+      let searchBoxBasicConfig = {}
 
-      if (endpoint?.url) {
-        oramaInstance = new OramaClient({
-          endpoint: endpoint.url,
-          api_key: endpoint.key
-        })
-      } else {
-        let buffer
+      if (isCloudData(oramaData)) {
+        const collectionId = oramaData.indexConfig.collection_id
+        const apiKey = oramaData.indexConfig.api_key
 
-        if (searchData?.current) {
-          buffer = searchData.current.data
-        } else {
-          const searchResponse = await fetch(baseURL)
+        let collectionManager;
 
-          if (searchResponse.status === 0) {
-            throw new Error(`Network error: ${await searchResponse.text()}`)
-          } else if (searchResponse.status !== 200) {
-            throw new Error(`HTTP error ${searchResponse.status}: ${await searchResponse.text()}`)
-          }
-
-          buffer = await searchResponse.arrayBuffer()
+        if(collectionId) { // Note: collectionId is ONLY available in OramaCore
+          collectionManager = new CollectionManager({
+            url: oramaData.indexConfig.endpoint,
+            collectionID: collectionId,
+            readAPIKey: apiKey
+          })
         }
 
-        const deflated = ungzip(buffer, { to: 'string' })
-        const parsedDeflated = JSON.parse(deflated)
-
-        const db = await create({
-          schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
-          plugins: [
-            ...(analytics
-              ? [
-                pluginAnalytics({
-                  apiKey: analytics.apiKey,
-                  indexId: analytics.indexId,
-                  enabled: analytics.enabled
-                })
-              ]
-              : [])
-          ]
-        })
-
-        await insertMultiple(db, Object.values(parsedDeflated.docs.docs))
-
-        oramaInstance = new Switch(db)
+        searchBoxBasicConfig = {
+          index: {
+            endpoint: oramaData.indexConfig.endpoint,
+            api_key: oramaData.indexConfig.api_key
+          },
+          collectionManager: collectionManager
+        }
+      } else if (oramaData.oramaDocs) {
+        oramaInstance = await createOramaInstance(oramaData.oramaDocs)
+        searchBoxBasicConfig = { clientInstance: oramaInstance }
+      } else {
+        oramaInstance = await getOramaLocalData(indexGzipURL, oramaData.plugins)
+        searchBoxBasicConfig = { clientInstance: oramaInstance }
       }
 
       setSearchBoxConfig({
         basic: {
-          clientInstance: oramaInstance,
+          ...searchBoxBasicConfig,
           facetProperty: 'category',
+          disableChat: !isCloudData(oramaData)
         },
-        custom: searchBoxCustomConfig
+        custom: oramaData.searchbox ?? {}
       })
     }
 
@@ -100,5 +125,5 @@ export const useOrama = () => {
     })
   }, [isBrowser])
 
-  return { searchBoxConfig, searchBtnConfig, colorMode, clientMode: endpoint?.url ? 'cloud' : 'oss' }
+  return { searchBoxConfig, searchBtnConfig: oramaData.searchButton }
 }

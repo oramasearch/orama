@@ -1,6 +1,6 @@
 {
   "name": "@orama/stemmers",
-  "version": "3.0.6",
+  "version": "3.1.12",
   "type": "module",
   "description": "Stemmers for Orama",
   "sideEffects": false,
@@ -183,6 +183,6 @@
     "@swc/core": "^1.3.27"
   },
   "engines": {
-    "node": ">= 16.0.0"
+    "node": ">= 20.0.0"
   }
 }

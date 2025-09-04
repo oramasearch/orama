@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-qps",
-  "version": "3.0.6",
+  "version": "3.1.12",
   "description": "Performant search algorithm optimized for descriptive texts",
   "keywords": [
     "orama",

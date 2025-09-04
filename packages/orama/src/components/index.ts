@@ -19,6 +19,7 @@ import type {
 } from '../types.js'
 import type { InsertOptions } from '../methods/insert.js'
 import type { Point as BKDGeoPoint } from '../trees/bkd.js'
+import type { Point } from '../trees/bkd.js'
 import { FindResult, RadixNode } from '../trees/radix.js'
 import { createError } from '../errors.js'
 import { AVLTree } from '../trees/avl.js'
@@ -27,7 +28,7 @@ import { RadixTree } from '../trees/radix.js'
 import { BKDTree } from '../trees/bkd.js'
 import { BoolNode } from '../trees/bool.js'
 
-import { convertDistanceToMeters, setIntersection, setUnion } from '../utils.js'
+import { convertDistanceToMeters, setIntersection, setUnion, setDifference } from '../utils.js'
 import { BM25 } from './algorithms.js'
 import { getInnerType, getVectorSize, isArrayType, isVectorType } from './defaults.js'
 import {
@@ -170,7 +171,7 @@ export function create<T extends AnyOrama, TSchema extends T['schema']>(
       index.vectorIndexes[path] = {
         type: 'Vector',
         node: new VectorIndex(getVectorSize(type)),
-        isArray: false,
+        isArray: false
       }
     } else {
       const isArray = /\[/.test(type as string)
@@ -273,7 +274,16 @@ export function insert(
     return insertVector(index, prop, value as number[] | Float32Array, id, internalId)
   }
 
-  const insertScalar = insertScalarBuilder(implementation, index, prop, internalId, language, tokenizer, docsCount, options)
+  const insertScalar = insertScalarBuilder(
+    implementation,
+    index,
+    prop,
+    internalId,
+    language,
+    tokenizer,
+    docsCount,
+    options
+  )
 
   if (!isArrayType(schemaType)) {
     return insertScalar(value)
@@ -286,7 +296,13 @@ export function insert(
   }
 }
 
-export function insertVector(index: AnyIndexStore, prop: string, value: number[] | VectorType, id: DocumentID, internalDocumentId: InternalDocumentID): void {
+export function insertVector(
+  index: AnyIndexStore,
+  prop: string,
+  value: number[] | VectorType,
+  id: DocumentID,
+  internalDocumentId: InternalDocumentID
+): void {
   index.vectorIndexes[prop].node.add(internalDocumentId, value)
 }
 
@@ -372,7 +388,18 @@ export function remove(
   const elements = value as Array<string | number | boolean>
   const elementsLength = elements.length
   for (let i = 0; i < elementsLength; i++) {
-    removeScalar(implementation, index, prop, id, internalId, elements[i], innerSchemaType, language, tokenizer, docsCount)
+    removeScalar(
+      implementation,
+      index,
+      prop,
+      id,
+      internalId,
+      elements[i],
+      innerSchemaType,
+      language,
+      tokenizer,
+      docsCount
+    )
   }
 
   return true
@@ -387,18 +414,18 @@ export function calculateResultScores(
   bm25Relevance: Required<BM25Params>,
   resultsMap: Map<number, number>,
   boostPerProperty: number,
-  whereFiltersIDs: Set<InternalDocumentID> | undefined
+  whereFiltersIDs: Set<InternalDocumentID> | undefined,
+  keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
 ) {
   const documentIDs = Array.from(ids)
 
-  // Exact fields for TF-IDF
   const avgFieldLength = index.avgFieldLength[prop]
   const fieldLengths = index.fieldLengths[prop]
   const oramaOccurrences = index.tokenOccurrences[prop]
   const oramaFrequencies = index.frequencies[prop]
 
   // oramaOccurrences[term] can be undefined, 0, string, or { [k: string]: number }
-  const termOccurrences = typeof oramaOccurrences[term] === 'number' ? oramaOccurrences[term] ?? 0 : 0
+  const termOccurrences = typeof oramaOccurrences[term] === 'number' ? (oramaOccurrences[term] ?? 0) : 0
 
   // Calculate TF-IDF value for each term, in each document, for each index.
   const documentIDsLength = documentIDs.length
@@ -408,60 +435,21 @@ export function calculateResultScores(
       continue
     }
 
+    // Track keyword matches per property
+    if (!keywordMatchesMap.has(internalId)) {
+      keywordMatchesMap.set(internalId, new Map())
+    }
+    const propertyMatches = keywordMatchesMap.get(internalId)!
+    propertyMatches.set(prop, (propertyMatches.get(prop) || 0) + 1)
+
     const tf = oramaFrequencies?.[internalId]?.[term] ?? 0
 
-    const bm25 = BM25(
-      tf,
-      termOccurrences,
-      docsCount,
-      fieldLengths[internalId]!,
-      avgFieldLength,
-      bm25Relevance,
-    )
+    const bm25 = BM25(tf, termOccurrences, docsCount, fieldLengths[internalId]!, avgFieldLength, bm25Relevance)
 
     if (resultsMap.has(internalId)) {
       resultsMap.set(internalId, resultsMap.get(internalId)! + bm25 * boostPerProperty)
     } else {
       resultsMap.set(internalId, bm25 * boostPerProperty)
-    }
-  }
-}
-
-function searchInProperty(
-  index: Index,
-  tree: RadixTree,
-  prop: string,
-  tokens: string[],
-  exact: boolean,
-  tolerance: number,
-  resultsMap: Map<number, number>,
-  boostPerProperty: number,
-  bm25Relevance: Required<BM25Params>,
-  docsCount: number,
-  whereFiltersIDs: Set<InternalDocumentID> | undefined
-) {
-  const tokenLength = tokens.length;
-  for (let i = 0; i < tokenLength; i++) {
-    const term = tokens[i];
-
-    const searchResult = tree.find({ term, exact, tolerance })
-
-    const termsFound = Object.keys(searchResult)
-    const termsFoundLength = termsFound.length;
-    for (let j = 0; j < termsFoundLength; j++) {
-      const word = termsFound[j]
-      const ids = searchResult[word]
-      calculateResultScores(
-        index,
-        prop,
-        word,
-        ids,
-        docsCount,
-        bm25Relevance,
-        resultsMap,
-        boostPerProperty,
-        whereFiltersIDs,
-      )
     }
   }
 }
@@ -478,10 +466,17 @@ export function search(
   relevance: Required<BM25Params>,
   docsCount: number,
   whereFiltersIDs: Set<InternalDocumentID> | undefined,
+  threshold = 0
 ): TokenScore[] {
   const tokens = tokenizer.tokenize(term, language)
+  const keywordsCount = tokens.length || 1
 
+  // Track keyword matches per document and property
+  const keywordMatchesMap = new Map<InternalDocumentID, Map<string, number>>()
+  // Track which tokens were found in the search
+  const tokenFoundMap = new Map<string, boolean>()
   const resultsMap = new Map<number, number>()
+
   for (const prop of propertiesToSearch) {
     if (!(prop in index.indexes)) {
       continue
@@ -502,22 +497,98 @@ export function search(
       tokens.push('')
     }
 
-    searchInProperty(
-      index,
-      tree.node,
-      prop,
-      tokens,
-      exact,
-      tolerance,
-      resultsMap,
-      boostPerProperty,
-      relevance,
-      docsCount,
-      whereFiltersIDs,
-    )
+    // Process each token in the search term
+    const tokenLength = tokens.length
+    for (let i = 0; i < tokenLength; i++) {
+      const token = tokens[i]
+      const searchResult = tree.node.find({ term: token, exact, tolerance })
+
+      // See if this token was found (for threshold=0 filtering)
+      const termsFound = Object.keys(searchResult)
+      if (termsFound.length > 0) {
+        tokenFoundMap.set(token, true)
+      }
+
+      // Process each matching term
+      const termsFoundLength = termsFound.length
+      for (let j = 0; j < termsFoundLength; j++) {
+        const word = termsFound[j]
+        const ids = searchResult[word]
+        calculateResultScores(
+          index,
+          prop,
+          word,
+          ids,
+          docsCount,
+          relevance,
+          resultsMap,
+          boostPerProperty,
+          whereFiltersIDs,
+          keywordMatchesMap
+        )
+      }
+    }
   }
 
-  return Array.from(resultsMap)
+  // Convert to array and sort by score
+  const results = Array.from(resultsMap.entries())
+    .map(([id, score]): TokenScore => [id, score])
+    .sort((a, b) => b[1] - a[1])
+
+  if (results.length === 0) {
+    return []
+  }
+
+  // If threshold is 1, return all results
+  if (threshold === 1) {
+    return results
+  }
+
+  // For threshold=0, check if all tokens were found
+  if (threshold === 0) {
+    // Quick return for single tokens - already validated
+    if (keywordsCount === 1) {
+      return results
+    }
+
+    // For multiple tokens, verify that ALL tokens were found
+    // If any token wasn't found, return an empty result
+    for (const token of tokens) {
+      if (!tokenFoundMap.get(token)) {
+        return []
+      }
+    }
+
+    // Find documents that have all keywords in at least one property
+    const fullMatches = results.filter(([id]) => {
+      const propertyMatches = keywordMatchesMap.get(id)
+      if (!propertyMatches) return false
+
+      // Check if any property has all keywords
+      return Array.from(propertyMatches.values()).some((matches) => matches === keywordsCount)
+    })
+
+    return fullMatches
+  }
+
+  // Find documents that have all keywords in at least one property
+  const fullMatches = results.filter(([id]) => {
+    const propertyMatches = keywordMatchesMap.get(id)
+    if (!propertyMatches) return false
+
+    // Check if any property has all keywords
+    return Array.from(propertyMatches.values()).some((matches) => matches === keywordsCount)
+  })
+
+  // If we have full matches and threshold < 1, return full matches plus a percentage of partial matches
+  if (fullMatches.length > 0) {
+    const remainingResults = results.filter(([id]) => !fullMatches.some(([fid]) => fid === id))
+    const additionalResults = Math.ceil(remainingResults.length * threshold)
+    return [...fullMatches, ...remainingResults.slice(0, additionalResults)]
+  }
+
+  // If no full matches, return all results
+  return results
 }
 
 export function searchByWhereClause<T extends AnyOrama>(
@@ -526,6 +597,44 @@ export function searchByWhereClause<T extends AnyOrama>(
   filters: Partial<WhereCondition<T['schema']>>,
   language: string | undefined
 ): Set<InternalDocumentID> {
+  // Handle logical operators
+  if ('and' in filters && filters.and && Array.isArray(filters.and)) {
+    const andFilters = filters.and
+    if (andFilters.length === 0) {
+      return new Set()
+    }
+
+    const results = andFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language))
+    return setIntersection(...results)
+  }
+
+  if ('or' in filters && filters.or && Array.isArray(filters.or)) {
+    const orFilters = filters.or
+    if (orFilters.length === 0) {
+      return new Set()
+    }
+
+    const results = orFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language))
+    // Use reduce to union all sets
+    return results.reduce((acc, set) => setUnion(acc, set), new Set<InternalDocumentID>())
+  }
+
+  if ('not' in filters && filters.not) {
+    const notFilter = filters.not
+    // Get all document IDs from the internal document store
+    const allDocs = new Set<InternalDocumentID>()
+
+    // Get all document IDs from the internal document store
+    const docsStore = index.sharedInternalDocumentStore
+    for (let i = 1; i <= docsStore.internalIdToId.length; i++) {
+      allDocs.add(i)
+    }
+
+    const notResult = searchByWhereClause(index, tokenizer, notFilter, language)
+    return setDifference(allDocs, notResult)
+  }
+
+  // Handle regular property filters (existing logic)
   const filterKeys = Object.keys(filters)
 
   const filtersMap: Record<string, Set<InternalDocumentID>> = filterKeys.reduce(
@@ -606,9 +715,11 @@ export function searchByWhereClause<T extends AnyOrama>(
     }
 
     if (type === 'Flat') {
-      const results = new Set(isArray
-        ? node.filterArr(operation as EnumArrComparisonOperator)
-        : node.filter(operation as EnumComparisonOperator))
+      const results = new Set(
+        isArray
+          ? node.filterArr(operation as EnumArrComparisonOperator)
+          : node.filter(operation as EnumComparisonOperator)
+      )
 
       filtersMap[param] = setUnion(filtersMap[param], results)
 
@@ -618,7 +729,7 @@ export function searchByWhereClause<T extends AnyOrama>(
     if (type === 'AVL') {
       const operationOpt = operationKeys[0] as keyof ComparisonOperator
       const operationValue = (operation as ComparisonOperator)[operationOpt]
-      let filteredIDs: Set<InternalDocumentID> 
+      let filteredIDs: Set<InternalDocumentID>
 
       switch (operationOpt) {
         case 'gt': {
@@ -768,12 +879,7 @@ export function save<R = unknown>(index: Index): R {
   const savedIndexes: any = {}
   for (const name of Object.keys(indexes)) {
     const { type, node, isArray } = indexes[name]
-    if (type === 'Flat'
-        || type === 'Radix'
-        || type === 'AVL'
-        || type === 'BKD'
-        || type === 'Bool'
-    ) {
+    if (type === 'Flat' || type === 'Radix' || type === 'AVL' || type === 'BKD' || type === 'Bool') {
       savedIndexes[name] = {
         type,
         node: node.toJSON(),
@@ -816,7 +922,10 @@ export function createIndex(): IIndex<Index> {
   }
 }
 
-function addGeoResult(set: Set<InternalDocumentID> | undefined, ids: Array<{ docIDs: InternalDocumentID[] }>): Set<InternalDocumentID> {
+function addGeoResult(
+  set: Set<InternalDocumentID> | undefined,
+  ids: Array<{ docIDs: InternalDocumentID[] }>
+): Set<InternalDocumentID> {
   if (!set) {
     set = new Set()
   }
@@ -833,7 +942,118 @@ function addGeoResult(set: Set<InternalDocumentID> | undefined, ids: Array<{ doc
   return set
 }
 
-function addFindResult(set: Set<InternalDocumentID> | undefined, filteredIDsResults: FindResult): Set<InternalDocumentID> {
+function createGeoTokenScores(
+  ids: Array<{ point: Point; docIDs: InternalDocumentID[] }>,
+  centerPoint: Point,
+  highPrecision = false
+): TokenScore[] {
+  const distanceFn = highPrecision ? BKDTree.vincentyDistance : BKDTree.haversineDistance
+  const results: TokenScore[] = []
+
+  // Calculate distances for all results to find the maximum
+  const distances: number[] = []
+  for (const { point } of ids) {
+    distances.push(distanceFn(centerPoint, point))
+  }
+  const maxDistance = Math.max(...distances)
+
+  // Create results with inverse distance scores (higher score = closer)
+  let index = 0
+  for (const { docIDs } of ids) {
+    const distance = distances[index]
+    // Use inverse score: closer points get higher scores
+    // Add 1 to avoid division by zero for points at exact center
+    const score = maxDistance - distance + 1
+    for (const docID of docIDs) {
+      results.push([docID, score])
+    }
+    index++
+  }
+
+  // Sort by score (higher first - closer points)
+  results.sort((a, b) => b[1] - a[1])
+  return results
+}
+
+function isGeosearchOnlyQuery<T extends AnyOrama>(
+  filters: Partial<WhereCondition<T['schema']>>,
+  index: Index
+): { isGeoOnly: boolean; geoProperty?: string; geoOperation?: any } {
+  const filterKeys = Object.keys(filters)
+
+  if (filterKeys.length !== 1) {
+    return { isGeoOnly: false }
+  }
+
+  const param = filterKeys[0]
+  const operation = filters[param]
+
+  if (typeof index.indexes[param] === 'undefined') {
+    return { isGeoOnly: false }
+  }
+
+  const { type } = index.indexes[param]
+
+  if (type === 'BKD' && operation && ('radius' in operation || 'polygon' in operation)) {
+    return { isGeoOnly: true, geoProperty: param, geoOperation: operation }
+  }
+
+  return { isGeoOnly: false }
+}
+
+export function searchByGeoWhereClause<T extends AnyOrama>(
+  index: AnyIndexStore,
+  filters: Partial<WhereCondition<T['schema']>>
+): TokenScore[] | null {
+  const indexTyped = index as Index
+  const geoInfo = isGeosearchOnlyQuery(filters, indexTyped)
+
+  if (!geoInfo.isGeoOnly || !geoInfo.geoProperty || !geoInfo.geoOperation) {
+    return null
+  }
+
+  const { node } = indexTyped.indexes[geoInfo.geoProperty]
+  const operation = geoInfo.geoOperation
+
+  // Cast node to BKDTree since we already verified it's type 'BKD'
+  const bkdNode = node as BKDTree
+
+  let results: Array<{ point: Point; docIDs: InternalDocumentID[] }>
+
+  if ('radius' in operation) {
+    const {
+      value,
+      coordinates,
+      unit = 'm',
+      inside = true,
+      highPrecision = false
+    } = operation.radius as GeosearchRadiusOperator['radius']
+
+    const centerPoint = coordinates as Point
+    const distanceInMeters = convertDistanceToMeters(value, unit)
+    results = bkdNode.searchByRadius(centerPoint, distanceInMeters, inside, 'asc', highPrecision)
+
+    return createGeoTokenScores(results, centerPoint, highPrecision)
+  } else if ('polygon' in operation) {
+    const {
+      coordinates,
+      inside = true,
+      highPrecision = false
+    } = operation.polygon as GeosearchPolygonOperator['polygon']
+
+    results = bkdNode.searchByPolygon(coordinates as Point[], inside, 'asc', highPrecision)
+    const centroid = BKDTree.calculatePolygonCentroid(coordinates as Point[])
+
+    return createGeoTokenScores(results, centroid, highPrecision)
+  }
+
+  return null
+}
+
+function addFindResult(
+  set: Set<InternalDocumentID> | undefined,
+  filteredIDsResults: FindResult
+): Set<InternalDocumentID> {
   if (!set) {
     set = new Set()
   }

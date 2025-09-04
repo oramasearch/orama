@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-data-persistence",
-  "version": "3.0.6",
+  "version": "3.1.12",
   "description": "Data persistence plugin for Orama",
   "type": "module",
   "sideEffects": false,
@@ -27,7 +27,8 @@
     "dev": "swc --delete-dir-on-start -s -w --extensions .ts,.cts -d dist src",
     "build": "swc --delete-dir-on-start --extensions .ts,.cts -d dist src",
     "postbuild": "sh scripts/postbuild.sh",
-    "test": "c8 -c test/config/c8.json tap test/*.test.ts"
+    "test": "c8 -c test/config/c8.json tap test/*.test.ts",
+    "benchmark": "tsx benchmark/index.ts"
   },
   "keywords": [
     "orama",
@@ -35,15 +36,16 @@
     "full-text search"
   ],
   "author": {
-    "email": "michele.riva@oramasearch.com",
+    "email": "michele@orama.com",
     "name": "Michele Riva",
     "url": "https://github.com/MicheleRiva"
   },
   "license": "Apache-2.0",
   "dependencies": {
     "@orama/orama": "workspace:*",
-    "@msgpack/msgpack": "^2.7.2",
-    "dpack": "^0.6.22"
+    "@msgpack/msgpack": "^3.1.2",
+    "dpack": "^0.6.22",
+    "seqproto": "^0.2.3"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
@@ -58,6 +60,7 @@
     "tap": "^18.6.1",
     "tap-mocha-reporter": "^5.0.3",
     "tsx": "^3.12.2",
+    "benny": "^3.7.1",
     "typescript": "^5.0.0"
   },
   "publishConfig": {

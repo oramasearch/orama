@@ -1,6 +1,6 @@
 {
   "name": "@orama/orama",
-  "version": "3.0.6",
+  "version": "3.1.12",
   "type": "module",
   "description": "A complete search engine and RAG pipeline in your browser, server, or edge network with support for full-text, vector, and hybrid search in less than 2kb.",
   "sideEffects": false,
@@ -158,7 +158,7 @@
     "typescript": "^5.0.0"
   },
   "engines": {
-    "node": ">= 16.0.0"
+    "node": ">= 20.0.0"
   },
   "tap": {
     "extends": "tests/config/tap.yml"

@@ -240,9 +240,19 @@ export type Operator<Value> = Value extends 'string'
                 : Value extends 'geopoint'
                   ? GeosearchOperation
                   : never
-export type WhereCondition<TSchema> = {
-  [key in keyof TSchema]?: Operator<TSchema[key]>
-}
+export type WhereCondition<TSchema> =
+  | {
+      [key in keyof TSchema]?: Operator<TSchema[key]>
+    }
+  | {
+      and?: WhereCondition<TSchema>[]
+    }
+  | {
+      or?: WhereCondition<TSchema>[]
+    }
+  | {
+      not?: WhereCondition<TSchema>
+    }
 
 /**
  * A custom sorter function item as [id, score, document].
@@ -533,6 +543,12 @@ export interface SearchParamsHybrid<T extends AnyOrama, ResultDocument = TypedDo
    * The properties of the document to search in (for the full-text search part).
    */
   properties?: '*' | FlattenSchemaProperty<T>[]
+
+  /**
+   * The maximum [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
+   * between the term and the searchable property.
+   */
+  tolerance?: number
 
   /**
    * The BM25 parameters to use.
@@ -967,7 +983,8 @@ export interface IIndex<I extends AnyIndexStore> {
     resultsMap: Map<number, number>,
     boostPerProperty: number,
     whereFiltersIDs: Set<InternalDocumentID> | undefined,
-  )
+    keywordMatchesMap: Map<InternalDocumentID, Map<string, number>>
+  ): void
 
   search<T extends AnyOrama>(
     index: AnyIndexStore,
@@ -981,6 +998,7 @@ export interface IIndex<I extends AnyIndexStore> {
     relevance: Required<BM25Params>,
     docsCount: number,
     whereFiltersIDs: Set<InternalDocumentID> | undefined,
+    threshold?: number
   ): TokenScore[]
 
   searchByWhereClause<T extends AnyOrama>(
@@ -1107,6 +1125,14 @@ export interface SingleOrArrayCallbackComponents<T extends AnyOrama> {
    */
   afterUpdate: SingleOrArray<SingleCallbackComponent<T>>
   /**
+   * More details {@link SingleCallbackComponent}
+   */
+  beforeUpsert: SingleOrArray<SingleCallbackComponent<T>>
+  /**
+   * More details {@link SingleCallbackComponent}
+   */
+  afterUpsert: SingleOrArray<SingleCallbackComponent<T>>
+  /**
    * More details {@link BeforeSearch}
    */
   beforeSearch: SingleOrArray<BeforeSearch<T>>
@@ -1139,6 +1165,14 @@ export interface SingleOrArrayCallbackComponents<T extends AnyOrama> {
    */
   afterUpdateMultiple: SingleOrArray<MultipleCallbackComponent<T>>
   /**
+   * More details {@link MultipleCallbackComponent}
+   */
+  beforeUpsertMultiple: SingleOrArray<MultipleCallbackComponent<T>>
+  /**
+   * More details {@link MultipleCallbackComponent}
+   */
+  afterUpsertMultiple: SingleOrArray<MultipleCallbackComponent<T>>
+  /**
    * More details {@link AfterCreate}
    */
   afterCreate: SingleOrArray<AfterCreate<T>>
@@ -1169,6 +1203,14 @@ export interface ArrayCallbackComponents<T extends AnyOrama> {
    * More details {@link SingleCallbackComponent}
    */
   afterUpdate: SingleCallbackComponent<T>[]
+  /**
+   * More details {@link SingleCallbackComponent}
+   */
+  beforeUpsert: SingleCallbackComponent<T>[]
+  /**
+   * More details {@link SingleCallbackComponent}
+   */
+  afterUpsert: SingleCallbackComponent<T>[]
   /**
    * More details {@link BeforeSearch}
    */
@@ -1201,6 +1243,14 @@ export interface ArrayCallbackComponents<T extends AnyOrama> {
    * More details {@link MultipleCallbackComponent}
    */
   afterUpdateMultiple: MultipleCallbackComponent<T>[]
+  /**
+   * More details {@link MultipleCallbackComponent}
+   */
+  beforeUpsertMultiple: MultipleCallbackComponent<T>[]
+  /**
+   * More details {@link MultipleCallbackComponent}
+   */
+  afterUpsertMultiple: MultipleCallbackComponent<T>[]
   /**
    * More details {@link AfterCreate}
    */
@@ -1293,6 +1343,8 @@ export type OramaPluginSync<T = unknown> = {
   afterRemove?: <T extends AnyOrama>(orama: T, id: string, doc: AnyDocument) => SyncOrAsyncValue
   beforeUpdate?: <T extends AnyOrama>(orama: T, id: string, doc: AnyDocument) => SyncOrAsyncValue
   afterUpdate?: <T extends AnyOrama>(orama: T, id: string, doc: AnyDocument) => SyncOrAsyncValue
+  beforeUpsert?: <T extends AnyOrama>(orama: T, id: string, doc: AnyDocument) => SyncOrAsyncValue
+  afterUpsert?: <T extends AnyOrama>(orama: T, id: string, doc: AnyDocument) => SyncOrAsyncValue
   beforeSearch?: <T extends AnyOrama>(
     orama: T,
     params: SearchParams<T>,
@@ -1310,8 +1362,12 @@ export type OramaPluginSync<T = unknown> = {
   afterRemoveMultiple?: <T extends AnyOrama>(orama: T, ids: string[]) => SyncOrAsyncValue
   beforeUpdateMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
   afterUpdateMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
+  beforeUpsertMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
+  afterUpsertMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
   afterCreate?: <T extends AnyOrama>(orama: T) => SyncOrAsyncValue
-  getComponents?: <IndexStore extends AnyIndexStore, TDocumentStore, TSorter>(schema: AnySchema) => SyncOrAsyncValue<Partial<ObjectComponents<IIndex<IndexStore>, TDocumentStore, TSorter>>>
+  getComponents?: <IndexStore extends AnyIndexStore, TDocumentStore, TSorter>(
+    schema: AnySchema
+  ) => SyncOrAsyncValue<Partial<ObjectComponents<IIndex<IndexStore>, TDocumentStore, TSorter>>>
 }
 
 export type OramaPluginAsync<T = unknown> = Promise<OramaPluginSync<T>>

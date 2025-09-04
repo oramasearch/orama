@@ -8,8 +8,8 @@ import {
   searchWithHighlight
 } from '../src/index.js'
 
-t.test('it should store the position of tokens', async (t) => {
-  const db = await create({
+t.test('it should store the position of tokens', async t => {
+  const db = create({
     schema: {
       text: 'string'
     } as const,
@@ -28,14 +28,14 @@ t.test('it should store the position of tokens', async (t) => {
   })
 })
 
-t.test('it should manage nested schemas', async (t) => {
+t.test('it should manage nested schemas', async t => {
   const schema = {
     other: {
       text: 'string'
     }
   } as const
 
-  const db = await create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
+  const db = create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
 
   const id = await insert(db, { other: { text: 'hello world' } })
 
@@ -44,12 +44,12 @@ t.test('it should manage nested schemas', async (t) => {
   })
 })
 
-t.test("it shouldn't stem tokens", async (t) => {
+t.test("it shouldn't stem tokens", async t => {
   const schema = {
     text: 'string'
   } as const
 
-  const db = await create({
+  const db = create({
     schema,
     plugins: [
       {
@@ -67,7 +67,7 @@ t.test("it shouldn't stem tokens", async (t) => {
   })
 })
 
-t.test('should retrieve positions', async (t) => {
+t.test('should retrieve positions', async t => {
   const schema = {
     text: 'string'
   } as const
@@ -80,7 +80,7 @@ t.test('should retrieve positions', async (t) => {
   t.same(results.hits[0].positions, { text: { hello: [{ start: 0, length: 5 }] } })
 })
 
-t.test('should retrieve positions also with typo, if tolerance is used', async (t) => {
+t.test('should retrieve positions also with typo, if tolerance is used', async t => {
   const schema = {
     title: 'string',
     summary: 'string',
@@ -88,7 +88,7 @@ t.test('should retrieve positions also with typo, if tolerance is used', async (
     slug: 'string'
   } as const
 
-  const db = await create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
+  const db = create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
 
   await insert(db, {
     title: 'Introduction to React',
@@ -108,12 +108,12 @@ t.test('should retrieve positions also with typo, if tolerance is used', async (
   })
 })
 
-t.test('should work with texts containing constructor and __proto__ properties', async (t) => {
+t.test('should work with texts containing constructor and __proto__ properties', async t => {
   const schema = {
     text: 'string'
   } as const
 
-  const db = await create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
+  const db = create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
 
   await insert(db, { text: 'constructor __proto__' })
 
@@ -124,20 +124,20 @@ t.test('should work with texts containing constructor and __proto__ properties',
   })
 })
 
-t.test('should correctly save and load data with positions', async (t) => {
+t.test('should correctly save and load data with positions', async t => {
   const schema = {
     text: 'string'
   } as const
 
-  const originalDB = await create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
+  const originalDB = create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
 
   const id = await insert(originalDB, { text: 'hello world' })
 
-  const DBData = await saveWithHighlight(originalDB)
+  const DBData = saveWithHighlight(originalDB)
 
-  const newDB = await create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
+  const newDB = create({ schema, plugins: [{ name: 'highlight', afterInsert }] })
 
-  await loadWithHighlight(newDB, DBData)
+  loadWithHighlight(newDB, DBData)
 
   t.same((newDB as OramaWithHighlight<typeof newDB>).data.positions[id], {
     text: { hello: [{ start: 0, length: 5 }], world: [{ start: 6, length: 5 }] }

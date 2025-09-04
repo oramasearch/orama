@@ -6,6 +6,7 @@ import type { PersistenceFormat, Runtime } from './types.js'
 import * as dpack from 'dpack'
 import { METHOD_MOVED, UNSUPPORTED_FORMAT } from './errors.js'
 import { detectRuntime } from './utils.js'
+import { serializeOramaInstance, deserializeOramaInstance } from './seqproto.js'
 
 const hexFromMap: Record<string, number> = {
   0: 0,
@@ -54,13 +55,13 @@ export async function persist<T extends AnyOrama>(
   db: T,
   format: PersistenceFormat = 'binary',
   runtime?: Runtime
-): Promise<string | Buffer> {
+): Promise<string | Buffer | ArrayBuffer> {
   if (!runtime) {
     runtime = detectRuntime()
   }
 
   const dbExport = await save(db)
-  let serialized: string | Buffer
+  let serialized: string | Buffer | ArrayBuffer
 
   switch (format) {
     case 'json':
@@ -69,17 +70,19 @@ export async function persist<T extends AnyOrama>(
     case 'dpack':
       serialized = dpack.serialize(dbExport)
       break
-    case 'binary':
-      {
-        const msgpack = encode(dbExport)
-        if (runtime === 'node') {
-          serialized = Buffer.from(msgpack.buffer, msgpack.byteOffset, msgpack.byteLength)
-          serialized = serialized.toString('hex')
-          /* c8 ignore next 3 */
-        } else {
-          serialized = slowHexToString(msgpack)
-        }
+    case 'binary': {
+      const msgpack = encode(dbExport)
+      if (runtime === 'node') {
+        serialized = Buffer.from(msgpack.buffer, msgpack.byteOffset, msgpack.byteLength)
+        serialized = serialized.toString('hex')
+        /* c8 ignore next 3 */
+      } else {
+        serialized = slowHexToString(msgpack)
       }
+      break
+    }
+    case 'seqproto':
+      serialized = serializeOramaInstance(db)
       break
     default:
       throw new Error(UNSUPPORTED_FORMAT(format))
@@ -90,7 +93,7 @@ export async function persist<T extends AnyOrama>(
 
 export async function restore<T extends AnyOrama>(
   format: PersistenceFormat,
-  data: string | Buffer,
+  data: string | Buffer | ArrayBuffer,
   runtime?: Runtime
 ): Promise<T> {
   if (!runtime) {
@@ -106,20 +109,45 @@ export async function restore<T extends AnyOrama>(
 
   switch (format) {
     case 'json':
-      deserialized = JSON.parse(data.toString())
+      deserialized = JSON.parse((data as any).toString())
       break
     case 'dpack':
       deserialized = dpack.parse(data)
       break
-    case 'binary':
+    case 'binary': {
       if (runtime === 'node') {
-        data = Buffer.from(data.toString(), 'hex')
+        data = Buffer.from((data as any).toString(), 'hex')
         /* c8 ignore next 3 */
       } else {
         // @ts-ignore
         data = slowHexToBuffer(data as string) as Buffer
       }
       deserialized = decode(data)
+      break
+    }
+    case 'seqproto':
+      {
+        let ab: ArrayBuffer
+        if (data instanceof ArrayBuffer) {
+          ab = data
+        } else if (ArrayBuffer.isView(data)) {
+          const view = data as unknown as Uint8Array
+          const slice = view.buffer.slice(view.byteOffset, view.byteOffset + view.byteLength)
+          const copy = new Uint8Array(view.byteLength)
+          copy.set(new Uint8Array(slice))
+          ab = copy.buffer
+        } else if (typeof (data as any) === 'string') {
+          // If somehow a base64 or hex string is passed (should not happen in current flow)
+          const buf = Buffer.from(data as string, 'binary')
+          const slice = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
+          const copy = new Uint8Array(buf.byteLength)
+          copy.set(new Uint8Array(slice))
+          ab = copy.buffer
+        } else {
+          throw new Error('Unsupported data type for seqproto restore')
+        }
+        deserialized = deserializeOramaInstance(ab)
+      }
       break
     default:
       throw new Error(UNSUPPORTED_FORMAT(format))

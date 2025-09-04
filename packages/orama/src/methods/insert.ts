@@ -2,7 +2,6 @@ import type { AnyOrama, PartialSchemaDeep, SortValue, TypedDocument } from '../t
 import { isArrayType, isGeoPointType, isVectorType } from '../components.js'
 import { isAsyncFunction, sleep } from '../utils.js'
 import { runMultipleHook, runSingleHook } from '../components/hooks.js'
-import { trackInsertion } from '../components/sync-blocking-checker.js'
 import { createError } from '../errors.js'
 import { Point } from '../trees/bkd.js'
 import { getInternalDocumentId } from '../components/internal-document-id-store.js'
@@ -84,8 +83,6 @@ async function innerInsertAsync<T extends AnyOrama>(
     await runSingleHook(orama.afterInsert, orama, id, doc as TypedDocument<T>)
   }
 
-  trackInsertion(orama)
-
   return id
 }
 
@@ -132,8 +129,6 @@ function innerInsertSync<T extends AnyOrama>(
   if (!skipHooks) {
     runSingleHook(orama.afterInsert, orama, id, doc as TypedDocument<T>)
   }
-
-  trackInsertion(orama)
 
   return id
 }
@@ -393,7 +388,6 @@ function innerInsertMultipleSync<T extends AnyOrama>(
 
   return ids
 }
-
 
 export function innerInsertMultiple<T extends AnyOrama>(
   orama: T,

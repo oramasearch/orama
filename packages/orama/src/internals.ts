@@ -8,5 +8,6 @@ export {
   safeArrayPush,
   setIntersection,
   setUnion,
+  setDifference
 } from './utils.js'
 export { normalizeToken } from './components/tokenizer/index.js'

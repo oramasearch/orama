@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
     "target": "ES2019",
-    "module": "commonjs",
+    "module": "nodenext",
     "lib": ["ESNext", "DOM"],
     "declaration": true,
     // "allowJs": true, // causing strange issue
     "skipLibCheck": true,
     "jsx": "react",
+
+    "typeRoots": ["node_modules/@types", "node_modules/@docusaurus"],
 
     /* Strict Type-Checking Options */
     "strict": true,
@@ -23,7 +25,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Module Resolution Options */
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
 
