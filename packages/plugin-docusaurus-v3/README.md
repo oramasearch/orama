@@ -1,6 +1,6 @@
 # Orama Plugin for Docusaurus v3
 
-[Plugin documentation](https://docs.orama.com/open-source/plugins/plugin-docusaurus)
+[Plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-docusaurus)
 
 ## Local Development
 

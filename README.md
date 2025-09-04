@@ -9,19 +9,19 @@ If you need more info, help, or want to provide general feedback on Orama, join 
 
 # Highlighted features
 
-- [Full-Text search](https://docs.orama.com/open-source/usage/search/introduction)
-- [Vector Search](https://docs.orama.com/open-source/usage/search/vector-search)
-- [Hybrid Search](https://docs.orama.com/open-source/usage/search/hybrid-search)
-- [GenAI Chat Sessions](https://docs.orama.com/open-source/usage/answer-engine/introduction)
-- [Search Filters](https://docs.orama.com/open-source/usage/search/filters)
-- [Geosearch](https://docs.orama.com/open-source/usage/search/geosearch)
-- [Facets](https://docs.orama.com/open-source/usage/search/facets)
-- [Fields Boosting](https://docs.orama.com/open-source/usage/search/fields-boosting)
-- [Typo Tolerance](https://docs.orama.com/open-source/usage/search/introduction#typo-tolerance)
-- [Exact Match](https://docs.orama.com/open-source/usage/search/introduction#exact-match)
-- [BM25](https://docs.orama.com/open-source/usage/search/bm25-algorithm)
-- [Stemming and tokenization in 30 languages](https://docs.orama.com/open-source/text-analysis/stemming)
-- [Plugin System](https://docs.orama.com/open-source/plugins/introduction)
+- [Full-Text search](https://docs.orama.com/docs/orama-js/search)
+- [Vector Search](https://docs.orama.com/docs/orama-js/search/vector-search)
+- [Hybrid Search](https://docs.orama.com/docs/orama-js/search/hybrid-search)
+- [GenAI Chat Sessions](https://docs.orama.com/docs/orama-js/answer-engine)
+- [Search Filters](https://docs.orama.com/docs/orama-js/search/filters)
+- [Geosearch](https://docs.orama.com/docs/orama-js/search/geosearch)
+- [Facets](https://docs.orama.com/docs/orama-js/search/facets)
+- [Fields Boosting](https://docs.orama.com/docs/orama-js/search/fields-boosting)
+- [Typo Tolerance](https://docs.orama.com/docs/orama-js/search#typo-tolerance)
+- [Exact Match](https://docs.orama.com/docs/orama-js/search#exact-match)
+- [BM25](https://docs.orama.com/docs/orama-js/search/bm25)
+- [Stemming and tokenization in 30 languages](https://docs.orama.com/docs/orama-js/text-analysis/stemming)
+- [Plugin System](https://docs.orama.com/docs/orama-js/plugins)
 
 # Installation
 
@@ -215,11 +215,11 @@ const searchResults = await search(db, {
 })
 ```
 
-Want to use OpenAI embedding models? Use our [Secure Proxy](https://docs.orama.com/open-source/plugins/plugin-secure-proxy) plugin to call OpenAI from the client-side securely.
+Want to use OpenAI embedding models? Use our [Secure Proxy](https://docs.orama.com/docs/orama-js/plugins/plugin-secure-proxy) plugin to call OpenAI from the client-side securely.
 
 # RAG and Chat Experiences with Orama
 
-Since `v3.0.0`, Orama allows you to create your own ChatGPT/Perplexity/SearchGPT-like experience. You will need to call the OpenAI APIs, so we strongly recommend using the [Secure Proxy Plugin](https://docs.orama.com/open-source/plugins/plugin-secure-proxy) to do that securely from your client side. It's free!
+Since `v3.0.0`, Orama allows you to create your own ChatGPT/Perplexity/SearchGPT-like experience. You will need to call the OpenAI APIs, so we strongly recommend using the [Secure Proxy Plugin](https://docs.orama.com/docs/orama-js/plugins/plugin-secure-proxy) to do that securely from your client side. It's free!
 
 ```js
 import { create, insert } from '@orama/orama'
@@ -260,7 +260,7 @@ const response = await session.ask({
 console.log(response) // Hello, John Doe! How are you doing?
 ```
 
-Read the complete documentation [here](https://docs.orama.com/open-source/usage/answer-engine/introduction).
+Read the complete documentation [here](https://docs.orama.com/docs/orama-js/usage/answer-engine/introduction).
 
 # Official Docs
 
@@ -268,18 +268,18 @@ Read the complete documentation at [https://docs.orama.com/open-source](https://
 
 # Official Orama Plugins
 
-- [Plugin Embeddings](https://docs.orama.com/open-source/plugins/plugin-embeddings)
-- [Plugin Secure Proxy](https://docs.orama.com/open-source/plugins/plugin-secure-proxy)
-- [Plugin Analytics](https://docs.orama.com/open-source/plugins/plugin-analytics)
-- [Plugin Data Persistence](https://docs.orama.com/open-source/plugins/plugin-data-persistence)
-- [Plugin QPS](https://docs.orama.com/open-source/plugins/plugin-qps)
-- [Plugin PT15](https://docs.orama.com/open-source/plugins/plugin-pt15)
-- [Plugin Vitepress](https://docs.orama.com/open-source/plugins/plugin-vitepress)
-- [Plugin Docusaurus](https://docs.orama.com/open-source/plugins/plugin-docusaurus)
-- [Plugin Astro](https://docs.orama.com/open-source/plugins/plugin-astro)
-- [Plugin Nextra](https://docs.orama.com/open-source/plugins/plugin-nextra)
+- [Plugin Embeddings](https://docs.orama.com/docs/orama-js/plugins/plugin-embeddings)
+- [Plugin Secure Proxy](https://docs.orama.com/docs/orama-js/plugins/plugin-secure-proxy)
+- [Plugin Analytics](https://docs.orama.com/docs/orama-js/plugins/plugin-analytics)
+- [Plugin Data Persistence](https://docs.orama.com/docs/orama-js/plugins/plugin-data-persistence)
+- [Plugin QPS](https://docs.orama.com/docs/orama-js/plugins/plugin-qps)
+- [Plugin PT15](https://docs.orama.com/docs/orama-js/plugins/plugin-pt15)
+- [Plugin Vitepress](https://docs.orama.com/docs/orama-js/plugins/plugin-vitepress)
+- [Plugin Docusaurus](https://docs.orama.com/docs/orama-js/plugins/plugin-docusaurus)
+- [Plugin Astro](https://docs.orama.com/docs/orama-js/plugins/plugin-astro)
+- [Plugin Nextra](https://docs.orama.com/docs/orama-js/plugins/plugin-nextra)
 
-Write your own plugin: [https://docs.orama.com/open-source/plugins/writing-your-own-plugins](https://docs.orama.com/open-source/plugins/writing-your-own-plugins)
+Write your own plugin: [https://docs.orama.com/docs/orama-js/plugins/writing-your-own-plugins](https://docs.orama.com/docs/orama-js/plugins/writing-your-own-plugins)
 
 # License
 

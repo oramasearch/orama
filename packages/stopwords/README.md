@@ -46,7 +46,7 @@ const db = create({
 })
 ```
 
-Read more in the official docs: [https://docs.orama.com/open-source/text-analysis/stopwords](https://docs.orama.com/open-source/text-analysis/stopwords).
+Read more in the official docs: [https://docs.orama.com/docs/orama-js/text-analysis/stopwords](https://docs.orama.com/docs/orama-js/text-analysis/stopwords).
 
 # License
 
