@@ -45,8 +45,8 @@ function serializeIndexNode(ser: Ser, type: string, node: any): void {
     ser.serializeString(node.s || '')
     ser.serializeBoolean(node.e || false)
     ser.serializeString(node.k || '')
-    
-    // Serialize array d efficiently
+
+    // Serialize array d
     if (Array.isArray(node.d)) {
       ser.serializeUInt32(node.d.length)
       for (let i = 0; i < node.d.length; i++) {
@@ -55,7 +55,7 @@ function serializeIndexNode(ser: Ser, type: string, node: any): void {
     } else {
       ser.serializeUInt32(0)
     }
-    
+
     // Serialize children c
     if (Array.isArray(node.c)) {
       ser.serializeUInt32(node.c.length)
@@ -76,7 +76,7 @@ function serializeIndexNode(ser: Ser, type: string, node: any): void {
         const [key, ids] = node.numberToDocumentId[i]
         ser.serializeString(String(key))
         // Ensure ids are strings
-        const stringIds = Array.isArray(ids) ? ids.map(id => String(id)) : []
+        const stringIds = Array.isArray(ids) ? ids.map((id) => String(id)) : []
         serializeStringArray(ser, stringIds)
       }
     } else {
@@ -91,7 +91,7 @@ function serializeIndexNode(ser: Ser, type: string, node: any): void {
 
 function deserializeIndexNode(des: Des): any {
   const nodeType = des.deserializeUInt32()
-  
+
   if (nodeType === 1) {
     // Radix node
     const w = des.deserializeString()
@@ -99,7 +99,7 @@ function deserializeIndexNode(des: Des): any {
     const e = des.deserializeBoolean()
     const k = des.deserializeString()
     const d = deserializeNumberArray(des)
-    
+
     const childrenLen = des.deserializeUInt32()
     const c = []
     for (let i = 0; i < childrenLen; i++) {
@@ -107,7 +107,7 @@ function deserializeIndexNode(des: Des): any {
       const child = deserializeIndexNode(des)
       c.push([key, child])
     }
-    
+
     return { w: w || '', s: s || '', e, k: k || '', d, c }
   } else if (nodeType === 2) {
     // Flat node
@@ -128,7 +128,8 @@ function deserializeIndexNode(des: Des): any {
 function serializeStringToNumberMap(ser: Ser, map: Record<string, number>): void {
   const keys = Object.keys(map)
   ser.serializeUInt32(keys.length)
-  for (let i = 0; i < keys.length; i++) {
+  const keysLength = keys.length
+  for (let i = 0; i < keysLength; i++) {
     const key = keys[i]
     ser.serializeString(key)
     ser.serializeNumber(map[key])
@@ -145,6 +146,62 @@ function deserializeStringToNumberMap(des: Des): Record<string, number> {
   return map
 }
 
+// Serialization for frequencies: field -> docId -> token -> number
+function serializeFrequencies(ser: Ser, frequencies: any): void {
+  const fieldKeys = Object.keys(frequencies)
+  const fieldKeysLength = fieldKeys.length
+  ser.serializeUInt32(fieldKeysLength)
+  for (let i = 0; i < fieldKeysLength; i++) {
+    const field = fieldKeys[i]
+    ser.serializeString(field)
+    const docFreqs = frequencies[field] || {}
+    const docIds = Object.keys(docFreqs)
+    ser.serializeUInt32(docIds.length)
+    for (let j = 0; j < docIds.length; j++) {
+      const docId = docIds[j]
+      ser.serializeString(docId)
+      serializeStringToNumberMap(ser, docFreqs[docId] || {})
+    }
+  }
+}
+
+function deserializeFrequencies(des: Des): any {
+  const fieldCount = des.deserializeUInt32()
+  const frequencies: any = {}
+  for (let i = 0; i < fieldCount; i++) {
+    const field = des.deserializeString()
+    const docCount = des.deserializeUInt32()
+    const docFreqs: any = {}
+    for (let j = 0; j < docCount; j++) {
+      const docId = des.deserializeString()
+      docFreqs[docId] = deserializeStringToNumberMap(des)
+    }
+    frequencies[field] = docFreqs
+  }
+  return frequencies
+}
+
+// Serialization for tokenOccurrences: field -> token -> number
+function serializeTokenOccurrences(ser: Ser, tokenOccurrences: any): void {
+  const fieldKeys = Object.keys(tokenOccurrences)
+  ser.serializeUInt32(fieldKeys.length)
+  for (let i = 0; i < fieldKeys.length; i++) {
+    const field = fieldKeys[i]
+    ser.serializeString(field)
+    serializeStringToNumberMap(ser, tokenOccurrences[field] || {})
+  }
+}
+
+function deserializeTokenOccurrences(des: Des): any {
+  const fieldCount = des.deserializeUInt32()
+  const tokenOccurrences: any = {}
+  for (let i = 0; i < fieldCount; i++) {
+    const field = des.deserializeString()
+    tokenOccurrences[field] = deserializeStringToNumberMap(des)
+  }
+  return tokenOccurrences
+}
+
 // Fallback for version 1 compatibility
 function serializeValue(ser: Ser, value: JSONLike): void {
   if (value === null) {
@@ -155,7 +212,7 @@ function serializeValue(ser: Ser, value: JSONLike): void {
     ser.serializeUInt32(1)
     return
   }
-  
+
   const t = typeof value
   if (t === 'string') {
     ser.serializeUInt32(2)
@@ -180,13 +237,14 @@ function serializeValue(ser: Ser, value: JSONLike): void {
     }
     return
   }
-  
+
   // Object
   ser.serializeUInt32(6)
   const obj = value as Record<string, JSONLike>
   const keys = Object.keys(obj)
-  ser.serializeUInt32(keys.length)
-  for (let i = 0; i < keys.length; i++) {
+  const keysLength = keys.length
+  ser.serializeUInt32(keysLength)
+  for (let i = 0; i < keysLength; i++) {
     const key = keys[i]
     ser.serializeString(key)
     serializeValue(ser, obj[key])
@@ -226,30 +284,32 @@ function deserializeValue(des: Des): JSONLike {
 export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
   const raw = save(db) as any
   const ser = createSer()
-  
+
   ser.serializeUInt32(2) // format version 2 for schema-aware
-  
+
   // Serialize internalDocumentIDStore
   serializeStringArray(ser, raw.internalDocumentIDStore?.internalIdToId || [])
-  
-  // Serialize docs efficiently
+
+  // Serialize docs
   ser.serializeUInt32(raw.docs?.count || 0)
   if (raw.docs?.docs) {
     const docKeys = Object.keys(raw.docs.docs)
-    ser.serializeUInt32(docKeys.length)
-    for (let i = 0; i < docKeys.length; i++) {
+    const docKeysLength = docKeys.length
+    ser.serializeUInt32(docKeysLength)
+    for (let i = 0; i < docKeysLength; i++) {
       const docId = docKeys[i]
       const doc = raw.docs.docs[docId]
       ser.serializeString(docId)
-      
-      // Serialize document fields efficiently
+
+      // Serialize document fields
       const docFields = Object.keys(doc)
-      ser.serializeUInt32(docFields.length)
-      for (let j = 0; j < docFields.length; j++) {
+      const docFieldsLength = docFields.length
+      ser.serializeUInt32(docFieldsLength)
+      for (let j = 0; j < docFieldsLength; j++) {
         const field = docFields[j]
         ser.serializeString(field)
         const value = doc[field]
-        
+
         if (Array.isArray(value)) {
           ser.serializeUInt32(1) // array marker
           serializeStringArray(ser, value)
@@ -262,12 +322,13 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
   } else {
     ser.serializeUInt32(0)
   }
-  
-  // Serialize indexes efficiently
+
+  // Serialize indexes
   if (raw.index?.indexes) {
     const indexKeys = Object.keys(raw.index.indexes)
-    ser.serializeUInt32(indexKeys.length)
-    for (let i = 0; i < indexKeys.length; i++) {
+    const indexKeysLength = indexKeys.length
+    ser.serializeUInt32(indexKeysLength)
+    for (let i = 0; i < indexKeysLength; i++) {
       const key = indexKeys[i]
       const index = raw.index.indexes[key]
       ser.serializeString(key)
@@ -278,41 +339,40 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
   } else {
     ser.serializeUInt32(0)
   }
-  
+
   // Serialize other index properties
   serializeStringArray(ser, raw.index?.searchableProperties || [])
-  
+
   // Serialize searchablePropertiesWithTypes
   const propsWithTypes = raw.index?.searchablePropertiesWithTypes || {}
   const propsKeys = Object.keys(propsWithTypes)
-  ser.serializeUInt32(propsKeys.length)
-  for (let i = 0; i < propsKeys.length; i++) {
+  const propsKeysLength = propsKeys.length
+  ser.serializeUInt32(propsKeysLength)
+  for (let i = 0; i < propsKeysLength; i++) {
     const key = propsKeys[i]
     ser.serializeString(key)
     ser.serializeString(propsWithTypes[key])
   }
-  
-  // Serialize complex nested structures using generic serialization
-  serializeValue(ser, raw.index?.frequencies || {})
-  serializeValue(ser, raw.index?.tokenOccurrences || {})
+
+  // Serialize complex nested structures
+  serializeFrequencies(ser, raw.index?.frequencies || {})
+  serializeTokenOccurrences(ser, raw.index?.tokenOccurrences || {})
   serializeStringToNumberMap(ser, raw.index?.avgFieldLength || {})
-  
+
   // Serialize fieldLengths (nested map structure)
   const fieldLengths = raw.index?.fieldLengths || {}
   const fieldKeys = Object.keys(fieldLengths)
-  ser.serializeUInt32(fieldKeys.length)
-  for (let i = 0; i < fieldKeys.length; i++) {
+  const fieldKeysLength = fieldKeys.length
+  ser.serializeUInt32(fieldKeysLength)
+  for (let i = 0; i < fieldKeysLength; i++) {
     const field = fieldKeys[i]
     ser.serializeString(field)
     serializeStringToNumberMap(ser, fieldLengths[field] || {})
   }
-  
+
   // Serialize language
   ser.serializeString(raw.language || '')
-  
-  // Serialize sorting (use fallback to generic serialization for complex structure)
-  serializeValue(ser, raw.sorting || {})
-  
+
   return ser.getBuffer()
 }
 
@@ -322,38 +382,38 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
 export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
   const des = createDes(buffer as any)
   const version = des.deserializeUInt32()
-  
+
   if (version === 1) {
     // Fallback to old generic deserialization
     const raw = deserializeValue(des) as unknown as RawData
     return raw
   }
-  
+
   if (version !== 2) {
     throw new Error(`Unsupported seqproto Orama serialization version: ${version}`)
   }
-  
+
   // Schema-aware deserialization
   const raw: any = {}
-  
+
   // Deserialize internalDocumentIDStore
   const internalIdToId = deserializeStringArray(des)
   raw.internalDocumentIDStore = { internalIdToId }
-  
+
   // Deserialize docs
   const docCount = des.deserializeUInt32()
   const docsLength = des.deserializeUInt32()
   const docs: any = {}
-  
+
   for (let i = 0; i < docsLength; i++) {
     const docId = des.deserializeString()
     const doc: any = {}
-    
+
     const fieldCount = des.deserializeUInt32()
     for (let j = 0; j < fieldCount; j++) {
       const field = des.deserializeString()
       const isArray = des.deserializeUInt32()
-      
+
       if (isArray) {
         doc[field] = deserializeStringArray(des)
       } else {
@@ -362,25 +422,25 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
     }
     docs[docId] = doc
   }
-  
+
   raw.docs = { docs, count: docCount }
-  
+
   // Deserialize indexes
   const indexCount = des.deserializeUInt32()
   const indexes: any = {}
-  
+
   for (let i = 0; i < indexCount; i++) {
     const key = des.deserializeString()
     const type = des.deserializeString()
     const isArray = des.deserializeBoolean()
     const node = deserializeIndexNode(des)
-    
+
     indexes[key] = { type, isArray, node }
   }
-  
+
   // Deserialize other index properties
   const searchableProperties = deserializeStringArray(des)
-  
+
   // Deserialize searchablePropertiesWithTypes
   const propsWithTypesLen = des.deserializeUInt32()
   const searchablePropertiesWithTypes: any = {}
@@ -389,12 +449,12 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
     const value = des.deserializeString()
     searchablePropertiesWithTypes[key] = value
   }
-  
-  // Deserialize complex nested structures  
-  const frequencies = deserializeValue(des) || {}
-  const tokenOccurrences = deserializeValue(des) || {}
+
+  // Deserialize complex nested structures
+  const frequencies = deserializeFrequencies(des)
+  const tokenOccurrences = deserializeTokenOccurrences(des)
   const avgFieldLength = deserializeStringToNumberMap(des)
-  
+
   // Deserialize fieldLengths
   const fieldLengthsLen = des.deserializeUInt32()
   const fieldLengths: any = {}
@@ -402,7 +462,7 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
     const field = des.deserializeString()
     fieldLengths[field] = deserializeStringToNumberMap(des)
   }
-  
+
   raw.index = {
     indexes,
     vectorIndexes: {},
@@ -413,13 +473,13 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
     avgFieldLength,
     fieldLengths
   }
-  
+
   // Deserialize language
   raw.language = des.deserializeString()
-  
-  // Deserialize sorting
-  raw.sorting = deserializeValue(des) || {}
-  
+
+  // Set empty sorting - it will be reconstructed by Orama when needed
+  raw.sorting = {}
+
   return raw as RawData
 }
 
