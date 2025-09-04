@@ -417,7 +417,7 @@ export class RadixNode {
     const node = new RadixNode(json.k, json.s, json.e)
     node.w = json.w
     node.d = new Set(json.d)
-    node.c = new Map(json?.c?.map(([key, nodeJson]: [string, any]) => [key, RadixNode.fromJSON(nodeJson)]))
+    node.c = new Map(json?.c?.map(([key, nodeJson]: [string, any]) => [key, RadixNode.fromJSON(nodeJson)]) || [])
     return node
   }
 }
@@ -434,7 +434,7 @@ export class RadixTree extends RadixNode {
     tree.e = json.e
     tree.k = json.k
     tree.d = new Set(json.d)
-    tree.c = new Map(json.c?.map(([key, nodeJson]: [string, any]) => [key, RadixNode.fromJSON(nodeJson)]))
+    tree.c = new Map(json?.c?.map(([key, nodeJson]: [string, any]) => [key, RadixNode.fromJSON(nodeJson)]) || [])
     return tree
   }
 
