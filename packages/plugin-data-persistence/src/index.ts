@@ -160,7 +160,7 @@ export async function restore<T extends AnyOrama>(
 
 export async function persistToFile<T extends AnyOrama>(
   db: T,
-  format: PersistenceFormat = 'seqproto',
+  format: PersistenceFormat = 'json',
   path?: string,
   runtime?: Runtime
 ): Promise<never> {
@@ -168,7 +168,7 @@ export async function persistToFile<T extends AnyOrama>(
 }
 
 export async function restoreFromFile<T extends AnyOrama>(
-  format: PersistenceFormat = 'seqproto',
+  format: PersistenceFormat = 'json',
   path?: string,
   runtime?: Runtime
 ): Promise<never> {
