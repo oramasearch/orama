@@ -224,8 +224,8 @@ importers:
   packages/plugin-data-persistence:
     dependencies:
       '@msgpack/msgpack':
-        specifier: ^2.7.2
-        version: 2.8.0
+        specifier: ^3.1.2
+        version: 3.1.2
       '@orama/orama':
         specifier: workspace:*
         version: link:../orama
@@ -3295,9 +3295,9 @@ packages:
     resolution: {integrity: sha512-sTGoeZnjI8N4KS+sW2AN95gDBErhAguvkw/tWdCjeM8bvxpz5lqrnd0vOJABA1A+Ic3zED7PYoLP/RANLgVotA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  '@msgpack/msgpack@2.8.0':
-    resolution: {integrity: sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ==}
-    engines: {node: '>= 10'}
+  '@msgpack/msgpack@3.1.2':
+    resolution: {integrity: sha512-JEW4DEtBzfe8HvUYecLU9e6+XJnKDlUAIve8FvPzF3Kzs6Xo/KuZkZJsDH0wJXl/qEZbeeE7edxDNY3kMs39hQ==}
+    engines: {node: '>= 18'}
 
   '@mswjs/interceptors@0.39.6':
     resolution: {integrity: sha512-bndDP83naYYkfayr/qhBHMhk0YGwS1iv6vaEGcr0SQbO0IZtbOPqjKjds/WcG+bJA+1T5vCx6kprKOzn5Bg+Vw==}
@@ -17458,7 +17458,7 @@ snapshots:
       got: 11.8.6
       os-filter-obj: 2.0.0
 
-  '@msgpack/msgpack@2.8.0': {}
+  '@msgpack/msgpack@3.1.2': {}
 
   '@mswjs/interceptors@0.39.6':
     dependencies:

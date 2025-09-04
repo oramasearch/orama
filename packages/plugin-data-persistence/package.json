@@ -35,14 +35,14 @@
     "full-text search"
   ],
   "author": {
-    "email": "michele.riva@oramasearch.com",
+    "email": "michele@orama.com",
     "name": "Michele Riva",
     "url": "https://github.com/MicheleRiva"
   },
   "license": "Apache-2.0",
   "dependencies": {
     "@orama/orama": "workspace:*",
-    "@msgpack/msgpack": "^2.7.2",
+    "@msgpack/msgpack": "^3.1.2",
     "dpack": "^0.6.22",
     "seqproto": "^0.2.3"
   },
