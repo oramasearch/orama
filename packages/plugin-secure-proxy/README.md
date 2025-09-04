@@ -6,7 +6,7 @@ Orama plugin for generating embeddings and performing vector/hybrid search secur
 
 # Usage
 
-For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-secure-proxy).
+For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-secure-proxy).
 
 To use the Orama Secure Proxy Plugin, you will need to sign up for a free account at [https://cloud.orama.com](https://cloud.orama.com)
 
@@ -63,7 +63,7 @@ Available **chat** models:
 
 Mode models coming soon!
 
-For the full configuration guide of this plugin, please follow the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-secure-proxy).
+For the full configuration guide of this plugin, please follow the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-secure-proxy).
 
 # License
 

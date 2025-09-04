@@ -6,7 +6,7 @@ Official plugin to provide analytics data on your searches.
 
 # Usage
 
-For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-analytics).
+For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-analytics).
 
 To use the Orama Analytics Plugin, you will need to sign up for a free account at [https://cloud.orama.com](https://cloud.orama.com)
 
@@ -28,7 +28,7 @@ const db = await create({
 })
 ```
 
-For the full configuration guide of this plugin, please follow the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-analytics).
+For the full configuration guide of this plugin, please follow the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-analytics).
 
 # License
 
