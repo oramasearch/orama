@@ -1,7 +1,6 @@
 /* eslint-disable no-extra-semi */
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { Nullable } from '../types.js'
-import { setUnion } from '../utils.js'
 
 export class AVLNode<K, V> {
   public k: K
@@ -374,7 +373,7 @@ export class AVLTree<K, V> {
   }
 
   public rangeSearch(min: K, max: K): Set<V> {
-    let result: Set<V> = new Set()
+    const result: Set<V> = new Set()
     const stack: Array<AVLNode<K, V>> = []
     let current = this.root
 
@@ -385,7 +384,9 @@ export class AVLTree<K, V> {
       }
       current = stack.pop()!
       if (current.k >= min && current.k <= max) {
-        result = setUnion(result, current.v)
+        for (const value of current.v) {
+          result.add(value)
+        }
       }
       if (current.k > max) {
         break
@@ -397,7 +398,7 @@ export class AVLTree<K, V> {
   }
 
   public greaterThan(key: K, inclusive = false): Set<V> {
-    let result: Set<V> = new Set()
+    const result: Set<V> = new Set()
     const stack: Array<AVLNode<K, V>> = []
     let current = this.root
 
@@ -408,7 +409,9 @@ export class AVLTree<K, V> {
       }
       current = stack.pop()!
       if ((inclusive && current.k >= key) || (!inclusive && current.k > key)) {
-        result = setUnion(result, current.v)
+        for (const value of current.v) {
+          result.add(value)
+        }
       } else if (current.k <= key) {
         break // Since we're traversing in descending order, we can break early
       }
@@ -419,7 +422,7 @@ export class AVLTree<K, V> {
   }
 
   public lessThan(key: K, inclusive = false): Set<V> {
-    let result: Set<V> = new Set()
+    const result: Set<V> = new Set()
     const stack: Array<AVLNode<K, V>> = []
     let current = this.root
 
@@ -430,7 +433,9 @@ export class AVLTree<K, V> {
       }
       current = stack.pop()!
       if ((inclusive && current.k <= key) || (!inclusive && current.k < key)) {
-        result = setUnion(result, current.v)
+        for (const value of current.v) {
+          result.add(value)
+        }
       } else if (current.k > key) {
         break // Since we're traversing in ascending order, we can break early
       }
