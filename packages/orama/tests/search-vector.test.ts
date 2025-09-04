@@ -173,6 +173,31 @@ t.test('search', async (t) => {
     t.same((results2.hits[1].document as any).vectors.embedding_2, [0.2, 0.2, 0.21, 0.21, 0.21, 0.21])
     t.same((results2.hits[2].document as any).vectors.embedding_2, [0.2, 0.02, 0.1, 0.1, 0.1, 0.1])
   })
+
+  t.test('should throw an error when using unknown vector property', async (t) => {
+    const db = await create({
+      schema: {
+        title: 'string',
+        embedding: 'vector[5]'
+      } as const
+    })
+
+    await insertMultiple(db, [{ title: 'foo', embedding: [1, 1, 1, 1, 1] }])
+
+    try {
+      await search(db, {
+        mode: 'vector',
+        vector: {
+          value: [1, 1, 1, 1, 1],
+          property: 'nonexistent_vector'
+        }
+      })
+      t.fail('Should have thrown an error')
+    } catch (err: any) {
+      t.ok(err.message.includes('Unknown vector property "nonexistent_vector"'), 'error message contains property name')
+      t.same(err.code, 'UNKNOWN_VECTOR_PROPERTY', 'correct error code')
+    }
+  })
 })
 
 t.test('vector search with where clause', async (t) => {
