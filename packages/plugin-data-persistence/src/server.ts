@@ -27,8 +27,12 @@ export async function persistToFile<T extends AnyOrama>(
   }
 
   const serialized = await persist(db, format, runtime)
-
-  await _fs.writeFile(path, serialized)
+  let toWrite: any = serialized
+  // Convert ArrayBuffer (seqproto) to Buffer/String for FS
+  if (serialized instanceof ArrayBuffer) {
+    toWrite = Buffer.from(serialized)
+  }
+  await _fs.writeFile(path, toWrite)
 
   return path
 }
@@ -111,6 +115,12 @@ export async function getDefaultFileName(format: PersistenceFormat, runtime?: Ru
       break
     case 'binary':
       extension = 'msp'
+      break
+    case 'seqproto':
+      extension = 'seqp'
+      break
+    default:
+      extension = 'dump'
   }
 
   let dbName: string = DEFAULT_DB_NAME

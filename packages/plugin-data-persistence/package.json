@@ -43,7 +43,8 @@
   "dependencies": {
     "@orama/orama": "workspace:*",
     "@msgpack/msgpack": "^2.7.2",
-    "dpack": "^0.6.22"
+    "dpack": "^0.6.22",
+    "seqproto": "^0.2.3"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
