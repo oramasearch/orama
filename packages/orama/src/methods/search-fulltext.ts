@@ -15,7 +15,7 @@ import type {
   TokenScore,
   TypedDocument
 } from '../types.js'
-import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
+import { getNanosecondsTime, getNested, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
 import { count } from './docs.js'
 import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
 
@@ -119,6 +119,31 @@ export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocumen
     const isPreflight = params.preflight === true
 
     let uniqueDocsArray = innerFullTextSearch(orama, params, language)
+
+    // For exact search, filter results to only include documents where 
+    // at least one searched property exactly matches the search term
+    if (params.exact && params.term) {
+      const searchTerm = params.term.toLowerCase().trim()
+      const searchProperties = params.properties && params.properties !== '*' 
+        ? (params.properties as string[])
+        : orama.index.getSearchableProperties(orama.data.index).filter(prop => 
+            orama.index.getSearchablePropertiesWithTypes(orama.data.index)[prop]?.startsWith('string')
+          )
+
+      uniqueDocsArray = uniqueDocsArray.filter(([internalDocId]) => {
+        const doc = orama.documentsStore.get(orama.data.docs, internalDocId)
+        if (!doc) return false
+
+        // Check if any of the searched properties exactly matches the search term
+        return searchProperties.some(prop => {
+          const value = getNested(doc as object, prop)
+          if (typeof value === 'string') {
+            return value.toLowerCase().trim() === searchTerm
+          }
+          return false
+        })
+      })
+    }
 
     if (params.sortBy) {
       if (typeof params.sortBy === 'function') {
