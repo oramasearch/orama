@@ -87,8 +87,8 @@ t.test('search method', async (t) => {
       const result1 = await search(db, { term: 'fox', exact: true })
       const result2 = await search(db, { term: 'dog', exact: true })
 
-      t.equal(result1.count, 2)
-      t.equal(result2.count, 3)
+      t.equal(result1.count, 0)
+      t.equal(result2.count, 0)
 
       // Prefix search
       const result3 = await search(db, { term: 'fox', exact: false })
@@ -204,9 +204,20 @@ t.test('search method', async (t) => {
         exact: true
       })
 
-      t.equal(exactSearch.count, 1)
+      t.equal(exactSearch.count, 0)
       t.strictSame(
         exactSearch.hits.map((d) => d.id),
+        []
+      )
+
+      const fullQuoteSearch = await search(db, {
+        term: 'Be yourself; everyone else is already taken.',
+        exact: true
+      })
+
+      t.equal(fullQuoteSearch.count, 1)
+      t.strictSame(
+        fullQuoteSearch.hits.map((d) => d.id),
         [id]
       )
     })
