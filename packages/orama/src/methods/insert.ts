@@ -54,15 +54,16 @@ async function innerInsertAsync<T extends AnyOrama>(
   }
 
   const internalId = getInternalDocumentId(orama.internalDocumentIDStore, id)
+  
+  if (!skipHooks) {
+    await runSingleHook(orama.beforeInsert, orama, id, doc as TypedDocument<T>)
+  }
+
   if (!orama.documentsStore.store(docs, id, internalId, doc)) {
     throw createError('DOCUMENT_ALREADY_EXISTS', id)
   }
 
   const docsCount = orama.documentsStore.count(docs)
-
-  if (!skipHooks) {
-    await runSingleHook(orama.beforeInsert, orama, id, doc as TypedDocument<T>)
-  }
 
   const indexableProperties = orama.index.getSearchableProperties(index)
   const indexablePropertiesWithTypes = orama.index.getSearchablePropertiesWithTypes(index)
@@ -101,15 +102,16 @@ function innerInsertSync<T extends AnyOrama>(
   }
 
   const internalId = getInternalDocumentId(orama.internalDocumentIDStore, id)
+
+  if (!skipHooks) {
+    runSingleHook(orama.beforeInsert, orama, id, doc as TypedDocument<T>)
+  }
+  
   if (!orama.documentsStore.store(docs, id, internalId, doc)) {
     throw createError('DOCUMENT_ALREADY_EXISTS', id)
   }
 
   const docsCount = orama.documentsStore.count(docs)
-
-  if (!skipHooks) {
-    runSingleHook(orama.beforeInsert, orama, id, doc as TypedDocument<T>)
-  }
 
   const indexableProperties = orama.index.getSearchableProperties(index)
   const indexablePropertiesWithTypes = orama.index.getSearchablePropertiesWithTypes(index)
