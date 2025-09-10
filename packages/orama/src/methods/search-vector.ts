@@ -21,6 +21,10 @@ export function innerVectorSearch<T extends AnyOrama, ResultDocument = TypedDocu
   }
 
   const vectorIndex = orama.data.index.vectorIndexes[vector!.property]
+  if (!vectorIndex) {
+    throw createError('UNKNOWN_VECTOR_PROPERTY', vector!.property)
+  }
+  
   const vectorSize = vectorIndex.node.size
 
   if (vector?.value.length !== vectorSize) {

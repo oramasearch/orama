@@ -6,7 +6,7 @@ This plugin aims to provide data persistence capabilities to Orama.
 
 # Usage
 
-For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-data-persistence).
+For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-data-persistence).
 
 # License
 

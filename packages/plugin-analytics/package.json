@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-analytics",
-  "version": "3.1.12",
+  "version": "3.1.13",
   "description": "Orama plugin for providing analytics data on your searches",
   "keywords": [
     "orama",

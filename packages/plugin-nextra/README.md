@@ -6,7 +6,7 @@ Official plugin to provide search capabilities through Orama on any Nextra websi
 
 # Usage
 
-For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-nextra).
+For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-nextra).
 
 # License
 

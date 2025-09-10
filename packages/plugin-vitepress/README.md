@@ -6,7 +6,7 @@ Official plugin to provide search capabilities through Orama on any Vitepress we
 
 # Usage
 
-For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/open-source/plugins/plugin-vitepress).
+For the complete usage guide, please refer to the [official plugin documentation](https://docs.orama.com/docs/orama-js/plugins/plugin-vitepress).
 
 # TL;DR
 

@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-pt15",
-  "version": "3.1.12",
+  "version": "3.1.13",
   "description": "Performant search algorithm optimized for descriptive texts",
   "keywords": [
     "orama",
