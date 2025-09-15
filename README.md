@@ -260,7 +260,7 @@ const response = await session.ask({
 console.log(response) // Hello, John Doe! How are you doing?
 ```
 
-Read the complete documentation [here](https://docs.orama.com/docs/orama-js/usage/answer-engine/introduction).
+Read the complete [documentation](https://docs.orama.com/docs/orama-js/answer-engine).
 
 # Official Docs
 
