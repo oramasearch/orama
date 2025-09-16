@@ -76,9 +76,7 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
 
       if (!params.vector) {
         params.vector = {
-          // eslint-disable-next-line
-          // @ts-ignore
-          property: params?.vector?.property ?? pluginParams.embeddings.defaultProperty,
+          property: pluginParams.embeddings.defaultProperty,
           value: normalizeVector(embeddings)
         }
       }
