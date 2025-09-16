@@ -87,8 +87,8 @@ t.test('search method', async (t) => {
       const result1 = await search(db, { term: 'fox', exact: true })
       const result2 = await search(db, { term: 'dog', exact: true })
 
-      t.equal(result1.count, 2)
-      t.equal(result2.count, 3)
+      t.equal(result1.count, 0)
+      t.equal(result2.count, 0)
 
       // Prefix search
       const result3 = await search(db, { term: 'fox', exact: false })
@@ -204,11 +204,78 @@ t.test('search method', async (t) => {
         exact: true
       })
 
-      t.equal(exactSearch.count, 1)
+      t.equal(exactSearch.count, 0)
       t.strictSame(
         exactSearch.hits.map((d) => d.id),
+        []
+      )
+
+      const fullQuoteSearch = await search(db, {
+        term: 'Be yourself; everyone else is already taken.',
+        exact: true
+      })
+
+      t.equal(fullQuoteSearch.count, 1)
+      t.strictSame(
+        fullQuoteSearch.hits.map((d) => d.id),
         [id]
       )
+    })
+
+    t.test('should match entire property value when exact is true', async (t) => {
+      const db = create({
+        schema: {
+          path: 'string',
+          title: 'string'
+        } as const
+      })
+
+      const id1 = await insert(db, { path: 'First Note.md', title: 'First Note' })
+      await insert(db, { path: 'Second Note.md', title: 'Second Note' })
+      const id3 = await insert(db, { path: 'first', title: 'Just first' })
+
+      // Search for "first" in path with exact: true
+      // Should only match the document where path is exactly "first", not "First Note.md"
+      const exactPathSearch = await search(db, {
+        term: 'first',
+        properties: ['path'],
+        exact: true
+      })
+
+      t.equal(exactPathSearch.count, 1)
+      t.strictSame(exactPathSearch.hits.map(d => d.id), [id3])
+
+      // Search for "First Note.md" in path with exact: true
+      // Should match the document where path is exactly "First Note.md"
+      const exactFullPathSearch = await search(db, {
+        term: 'First Note.md',
+        properties: ['path'],
+        exact: true
+      })
+
+      t.equal(exactFullPathSearch.count, 1)
+      t.strictSame(exactFullPathSearch.hits.map(d => d.id), [id1])
+
+      // Search for "first" in title with exact: true  
+      // Should not match "First Note" title
+      const exactTitleSearch = await search(db, {
+        term: 'first',
+        properties: ['title'],
+        exact: true
+      })
+
+      t.equal(exactTitleSearch.count, 0)
+
+      // Search for "First Note" in title with exact: true
+      // Should match the document where title is exactly "First Note"
+      const exactFullTitleSearch = await search(db, {
+        term: 'First Note',
+        properties: ['title'],
+        exact: true
+      })
+
+      t.equal(exactFullTitleSearch.count, 1)
+      t.strictSame(exactFullTitleSearch.hits.map(d => d.id), [id1])
     })
 
     t.end()
