@@ -5,6 +5,7 @@ import { getInternalDocumentId } from '../components/internal-document-id-store.
 import { searchByGeoWhereClause } from '../components/index.js'
 import { Language } from '../components/tokenizer/languages.js'
 import { createError } from '../errors.js'
+import { replaceDiacritics } from '../components/tokenizer/diacritics.js'
 import type {
   AnyOrama,
   BM25Params,
@@ -15,7 +16,7 @@ import type {
   TokenScore,
   TypedDocument
 } from '../types.js'
-import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
+import { getNanosecondsTime, getNested, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
 import { count } from './docs.js'
 import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
 
@@ -99,6 +100,27 @@ export function innerFullTextSearch<T extends AnyOrama>(
       // No search term and no filters - return all documents
       const docIds = Object.keys(orama.documentsStore.getAll(orama.data.docs))
       uniqueDocsIDs = docIds.map((k) => [+k, 0] as TokenScore)
+    }
+  }
+
+  if (params.exact && term) {
+    const normalizedTerm = normalizeForExactMatch(term)
+    if (normalizedTerm) {
+      const propertiesForExact = properties && properties !== '*' ? (properties as string[]) : propertiesToSearch
+
+      if (propertiesForExact.length === 0) {
+        uniqueDocsIDs = []
+      } else {
+        const docsStore = orama.documentsStore
+        const docsData = orama.data.docs
+        uniqueDocsIDs = uniqueDocsIDs.filter(([internalDocId]) => {
+          const doc = docsStore.get(docsData, internalDocId)
+          if (!doc) {
+            return false
+          }
+          return hasExactMatchInProperties(doc as Record<string, unknown>, propertiesForExact, normalizedTerm)
+        })
+      }
     }
   }
 
@@ -197,6 +219,34 @@ export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocumen
   }
 
   return performSearchLogic()
+}
+
+const EXACT_WHITESPACE_REGEX = /\s+/g
+
+function normalizeForExactMatch(value: string): string {
+  return replaceDiacritics(value.toLowerCase().trim().replace(EXACT_WHITESPACE_REGEX, ' '))
+}
+
+function hasExactMatchInProperties(
+  doc: Record<string, unknown>,
+  properties: readonly string[],
+  normalizedTerm: string
+): boolean {
+  for (const prop of properties) {
+    const value = getNested(doc, prop)
+    if (typeof value === 'string') {
+      if (normalizeForExactMatch(value) === normalizedTerm) {
+        return true
+      }
+    } else if (Array.isArray(value)) {
+      for (const item of value) {
+        if (typeof item === 'string' && normalizeForExactMatch(item) === normalizedTerm) {
+          return true
+        }
+      }
+    }
+  }
+  return false
 }
 
 export const defaultBM25Params: BM25Params = {

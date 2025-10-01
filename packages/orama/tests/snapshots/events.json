@@ -1,252 +1,26 @@
 {
   "should perform paginate search-page-1": {
-    "count": 2357,
+    "count": 2753,
     "hits": [
       {
         "id": "",
-        "score": 4.744426329679039,
+        "score": 12.287061566866884,
         "document": {
-          "date": "-89",
-          "description": "Social War:",
+          "date": "1242/04/05",
+          "description": "The diocese of Warmia, Poland is created.",
           "granularity": "year",
           "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
+            "first": "By topic",
+            "second": "Religion"
           }
         }
       },
       {
         "id": "",
-        "score": 4.744426329679039,
+        "score": 10.762550798173166,
         "document": {
-          "date": "-57",
-          "description": "Gallic Wars:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-55",
-          "description": "Gallic War",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-54",
-          "description": "Gallic Wars",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-53",
-          "description": "Parthian war:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-53",
-          "description": "Gallic War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-48",
-          "description": "Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-47",
-          "description": "Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-46",
-          "description": "Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1809/03/13",
-          "description": "Peninsular War",
-          "granularity": "year",
-          "categories": {
-            "first": "January/March",
-            "second": ""
-          }
-        }
-      }
-    ]
-  },
-  "should perform paginate search-page-2": {
-    "count": 2357,
-    "hits": [
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1867/12/02",
-          "description": "Paraguayan War.",
-          "granularity": "year",
-          "categories": {
-            "first": "Ongoing",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1914/12/24",
-          "description": " World War I:",
-          "granularity": "year",
-          "categories": {
-            "first": "December",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1950/02/14",
-          "description": " Cold War:",
-          "granularity": "year",
-          "categories": {
-            "first": "February",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "-113",
-          "description": "War between the Celtiberians and the Romans.",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "-86",
-          "description": "First Mithridatic War",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "630",
-          "description": "The Byzantine-Arab Wars begin.",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Byzantine Empire"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "632/01/27",
-          "description": "Ridda Wars begins",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Asia"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "941",
-          "description": "The Rus'-Byzantine War is fought.",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Asia"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "988",
-          "description": "Rus'–Byzantine War",
+          "date": "1107",
+          "description": "William Warelwast becomes Bishop of Exeter.",
           "granularity": "year",
           "categories": {
             "first": "By place",
@@ -256,13 +30,239 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 10.762550798173166,
         "document": {
-          "date": "1043/10/31",
-          "description": "Rus'-Byzantine War (1043).",
+          "date": "1138",
+          "description": "Robert Warelwast becomes Bishop of Exeter.",
           "granularity": "year",
           "categories": {
             "first": "",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 10.762550798173166,
+        "document": {
+          "date": "1489/12/11",
+          "description": "Lucas Watzenrode becomes bishop of Warmia.",
+          "granularity": "year",
+          "categories": {
+            "first": "Date unknown",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 10.134322507761896,
+        "document": {
+          "date": "1694/09/05",
+          "description": " The Great Fire of Warwick in England.",
+          "granularity": "year",
+          "categories": {
+            "first": "July/December",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 10.03414472088922,
+        "document": {
+          "date": "1948/12/31",
+          "description": "Charles Warrell creates the first I-Spy books.",
+          "granularity": "year",
+          "categories": {
+            "first": "Date unknown",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 10.03414472088922,
+        "document": {
+          "date": "1954/01/15",
+          "description": "Mau Mau leader Waruhiu Itote is captured in Kenya.",
+          "granularity": "year",
+          "categories": {
+            "first": "January",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 9.880940898505417,
+        "document": {
+          "date": "1942/02/19",
+          "description": "Japanese warplanes attack Darwin, Australia.",
+          "granularity": "year",
+          "categories": {
+            "first": "February",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 9.528461559435549,
+        "document": {
+          "date": "1067",
+          "description": "The Wartburg castle, according to legend, is built in Thuringia.",
+          "granularity": "year",
+          "categories": {
+            "first": "",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 9.528461559435549,
+        "document": {
+          "date": "1750/04/04",
+          "description": " A small earthquake hits Warrington, England.",
+          "granularity": "year",
+          "categories": {
+            "first": "January/June",
+            "second": ""
+          }
+        }
+      }
+    ]
+  },
+  "should perform paginate search-page-2": {
+    "count": 2753,
+    "hits": [
+      {
+        "id": "",
+        "score": 8.973359224748545,
+        "document": {
+          "date": "1123/08/09",
+          "description": "The Pactum Warmundi is established between the Republic of Venice and the Kingdom of Jerusalem.",
+          "granularity": "year",
+          "categories": {
+            "first": "Asia",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.96296534456416,
+        "document": {
+          "date": "1764/11/16",
+          "description": "The French government withdraws the wartime taxes.",
+          "granularity": "year",
+          "categories": {
+            "first": "Date unknown",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.747941569617907,
+        "document": {
+          "date": "2003/10/05",
+          "description": " Israeli warplanes strike inside Syrian territory.",
+          "granularity": "year",
+          "categories": {
+            "first": "October",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.670379395892516,
+        "document": {
+          "date": "1609/10/12",
+          "description": "Warsaw becomes the capital of Poland.",
+          "granularity": "year",
+          "categories": {
+            "first": "Date unknown",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.670379395892516,
+        "document": {
+          "date": "1806/11/28",
+          "description": " French troops enter Warsaw.",
+          "granularity": "year",
+          "categories": {
+            "first": "October/December",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.670379395892516,
+        "document": {
+          "date": "1943/01/16",
+          "description": "The Warsaw Ghetto Uprising begins.",
+          "granularity": "year",
+          "categories": {
+            "first": "January",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.670379395892516,
+        "document": {
+          "date": "1944/08/01",
+          "description": " WWII: The Warsaw Uprising begins.",
+          "granularity": "year",
+          "categories": {
+            "first": "August",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.521135663313986,
+        "document": {
+          "date": "2008/12/16",
+          "description": "Ruins of an ancient Wari city are discovered in northern Peru.",
+          "granularity": "year",
+          "categories": {
+            "first": "December",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.257111767919875,
+        "document": {
+          "date": "43",
+          "description": "Warfare begins between the northern and southern Huns.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Asia"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 8.22326361835486,
+        "document": {
+          "date": "1935/12/09",
+          "description": "De La Warr Pavilion, Bexhill on Sea, opens.",
+          "granularity": "year",
+          "categories": {
+            "first": "December",
             "second": ""
           }
         }
@@ -270,53 +270,92 @@
     ]
   },
   "should perform paginate search-page-3": {
-    "count": 2357,
+    "count": 2753,
     "hits": [
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 7.965581920339051,
         "document": {
-          "date": "1447/07/15",
-          "description": "The Albanian-Venetian War of 1447-1448.",
+          "date": "1920/11/11",
+          "description": " The Unknown Warrior is buried in Westminster Abbey.",
           "granularity": "year",
           "categories": {
-            "first": "Date unknown",
+            "first": "November",
             "second": ""
           }
         }
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 7.936848705112639,
         "document": {
-          "date": "1470/10/30",
-          "description": "Start of the Anglo-Hanseatic War.",
+          "date": "1963/12/03",
+          "description": " The Warren Commission begins its investigation.",
           "granularity": "year",
           "categories": {
-            "first": "Date unknown",
+            "first": "December",
             "second": ""
           }
         }
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 7.859039520606469,
         "document": {
-          "date": "1522/12/20",
-          "description": "The Habsburg-Valois Wars begin.",
+          "date": "914/01/02",
+          "description": "The town of Warwick, England is founded on the River Avon.",
           "granularity": "year",
           "categories": {
-            "first": "Date unknown",
+            "first": "By area",
+            "second": "Europe"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 7.625641102054292,
+        "document": {
+          "date": "1950/02/09",
+          "description": "Albert Einstein warns that nuclear war could lead to mutual destruction.",
+          "granularity": "year",
+          "categories": {
+            "first": "February",
             "second": ""
           }
         }
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 7.602140814550885,
         "document": {
-          "date": "1558/01/22",
-          "description": " Beginning of the Livonian War.",
+          "date": "1990/01/10",
+          "description": "Time Warner is formed from the merger of Time Inc. and Warner Communications Inc.",
+          "granularity": "year",
+          "categories": {
+            "first": "January",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 7.594606585138318,
+        "document": {
+          "date": "1943/05/15",
+          "description": "Holocaust: The Warsaw Ghetto Uprising ends.",
+          "granularity": "year",
+          "categories": {
+            "first": "May",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 7.5686020337828035,
+        "document": {
+          "date": "1630/06/06",
+          "description": " Swedish warships depart from Stockholm to Germany.",
           "granularity": "year",
           "categories": {
             "first": "January/June",
@@ -326,78 +365,39 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 7.420886822576992,
         "document": {
-          "date": "1728/10/20",
-          "description": "The Meerkat–Mongoose war.",
+          "date": "69/08/01",
+          "description": "German warbands cross over to join the revolt and attack the fortress at Mainz.",
           "granularity": "year",
           "categories": {
-            "first": "In fiction",
+            "first": "By place",
+            "second": "Roman Empire"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 7.366588548291258,
+        "document": {
+          "date": "1915/05/06",
+          "description": " Babe Ruth hits his first career home run off of Jack Warhop.",
+          "granularity": "year",
+          "categories": {
+            "first": "May",
             "second": ""
           }
         }
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 7.310309010196928,
         "document": {
-          "date": "1830/12/20",
-          "description": "The Java War ends.",
+          "date": "1635/04/13",
+          "description": " Maronite warlord Fah-al-Din II is executed in Constantinople.",
           "granularity": "year",
           "categories": {
-            "first": "Date unknown",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1857/04/04",
-          "description": " End of the Anglo-Persian War.",
-          "granularity": "year",
-          "categories": {
-            "first": "April/June",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1861/04/27",
-          "description": " American Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "April/June",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1879/01/11",
-          "description": " The Anglo-Zulu War begins.",
-          "granularity": "year",
-          "categories": {
-            "first": "January/March",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1919/02/14",
-          "description": " The Polish-Soviet War begins.",
-          "granularity": "year",
-          "categories": {
-            "first": "February",
+            "first": "January/June",
             "second": ""
           }
         }

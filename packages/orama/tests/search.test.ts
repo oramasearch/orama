@@ -87,8 +87,8 @@ t.test('search method', async (t) => {
       const result1 = await search(db, { term: 'fox', exact: true })
       const result2 = await search(db, { term: 'dog', exact: true })
 
-      t.equal(result1.count, 2)
-      t.equal(result2.count, 3)
+      t.equal(result1.count, 0)
+      t.equal(result2.count, 0)
 
       // Prefix search
       const result3 = await search(db, { term: 'fox', exact: false })
@@ -110,6 +110,55 @@ t.test('search method', async (t) => {
 
       t.equal(result7.count, 2)
       t.equal(result8.count, 2)
+    })
+
+    t.test('should require exact property matches when using exact true', async (t) => {
+      const db = create({
+        schema: {
+          path: 'string',
+          tags: 'string[]',
+          meta: {
+            label: 'string'
+          }
+        } as const
+      })
+
+      const docWithExactPath = await insert(db, {
+        path: 'first',
+        tags: ['first note'],
+        meta: { label: 'Library' }
+      })
+      const docWithMatchingTag = await insert(db, {
+        path: 'First Note.md',
+        tags: ['first', 'note'],
+        meta: { label: 'Caf\u00e9' }
+      })
+
+      const looseResults = await search(db, { term: 'first', properties: ['path'] })
+      t.equal(looseResults.count, 2)
+
+      const strictPath = await search(db, { term: 'first', properties: ['path'], exact: true })
+      t.equal(strictPath.count, 1)
+      t.same(strictPath.hits.map((hit) => hit.id), [docWithExactPath])
+
+      const strictTags = await search(db, { term: 'first', properties: ['tags'], exact: true })
+      t.equal(strictTags.count, 1)
+      t.same(strictTags.hits.map((hit) => hit.id), [docWithMatchingTag])
+
+      const strictAll = await search(db, { term: 'first', exact: true })
+      t.equal(strictAll.count, 2)
+      const strictAllIds = strictAll.hits.map((hit) => hit.id).sort()
+      const expectedAllIds = [docWithExactPath, docWithMatchingTag].sort()
+      t.same(strictAllIds, expectedAllIds)
+
+      const diacriticMatch = await search(db, { term: 'cafe', properties: ['meta.label'], exact: true })
+      t.equal(diacriticMatch.count, 1)
+      t.same(diacriticMatch.hits.map((hit) => hit.id), [docWithMatchingTag])
+
+      const noMatch = await search(db, { term: 'first note', properties: ['path'], exact: true })
+      t.equal(noMatch.count, 0)
+
+      t.end()
     })
 
     t.test('should apply term only on indexed fields', async (t) => {
@@ -191,22 +240,43 @@ t.test('search method', async (t) => {
         author: 'Oscar Wilde'
       })
 
-      const partialSearch = await search(db, {
+      const truncatedSearch = await search(db, {
         term: 'alr',
         exact: true
       })
 
-      t.equal(partialSearch.count, 0)
-      t.strictSame(partialSearch.hits, [])
+      t.equal(truncatedSearch.count, 0)
+      t.strictSame(truncatedSearch.hits, [])
 
-      const exactSearch = await search(db, {
+      const wordSearch = await search(db, {
         term: 'already',
+        properties: ['quote'],
         exact: true
       })
 
-      t.equal(exactSearch.count, 1)
+      t.equal(wordSearch.count, 0)
+
+      const authorSearch = await search(db, {
+        term: 'oscar wilde',
+        properties: ['author'],
+        exact: true
+      })
+
+      t.equal(authorSearch.count, 1)
       t.strictSame(
-        exactSearch.hits.map((d) => d.id),
+        authorSearch.hits.map((d) => d.id),
+        [id]
+      )
+
+      const quoteSearch = await search(db, {
+        term: 'Be yourself; everyone else is already taken.',
+        properties: ['quote'],
+        exact: true
+      })
+
+      t.equal(quoteSearch.count, 1)
+      t.strictSame(
+        quoteSearch.hits.map((d) => d.id),
         [id]
       )
     })
@@ -723,7 +793,7 @@ t.test('search method', async (t) => {
 
     t.equal(result1.count, 0)
     t.equal(result2.count, 0)
-    t.equal(result3.count, 1)
+    t.equal(result3.count, 0)
     t.end()
   })
 
