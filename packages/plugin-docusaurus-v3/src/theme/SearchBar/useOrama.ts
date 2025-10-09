@@ -3,12 +3,12 @@ import useBaseUrl from '@docusaurus/useBaseUrl'
 import useIsBrowser from '@docusaurus/useIsBrowser'
 import { usePluginData } from '@docusaurus/useGlobalData'
 import { ungzip } from 'pako'
-import { create, insertMultiple } from '@orama/orama'
+import { create, load } from '@orama/orama'
 import { pluginAnalytics } from '@orama/plugin-analytics'
-import { CollectionManager } from '@orama/core';
+import { CollectionManager } from '@orama/core'
 
 import { DOCS_PRESET_SCHEMA } from '../../constants.js'
-import type {OramaCloudData, OramaData, OramaDoc, OramaPlugins} from '../../types.js'
+import type { OramaCloudData, OramaData, OramaPlugins } from '../../types.js'
 import { createOramaInstance } from '../../utils.js'
 
 function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
@@ -28,31 +28,30 @@ function getOramaPlugins(plugins: OramaPlugins | undefined): any[] {
 }
 
 async function getOramaLocalData(indexGzipURL: string, plugins: OramaPlugins | undefined) {
-	try {
-		const searchResponse = await fetch(indexGzipURL);
+  try {
+    const searchResponse = await fetch(indexGzipURL)
 
-		if (!searchResponse.ok) {
-			const errorText = await searchResponse.text();
-			throw new Error(`HTTP error ${searchResponse.status}: ${errorText}`);
-		}
+    if (!searchResponse.ok) {
+      const errorText = await searchResponse.text()
+      throw new Error(`HTTP error ${searchResponse.status}: ${errorText}`)
+    }
 
-		const buffer = await searchResponse.arrayBuffer();
-		const deflatedString = ungzip(buffer, { to: 'string' });
-		const parsedData = JSON.parse(deflatedString);
+    const buffer = await searchResponse.arrayBuffer()
+    const deflatedString = ungzip(buffer, { to: 'string' })
+    const parsedData = JSON.parse(deflatedString)
 
-		const db = create({
-			schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
-			plugins: getOramaPlugins(plugins)
-		});
+    const db = create({
+      schema: { ...DOCS_PRESET_SCHEMA, version: 'enum' },
+      plugins: getOramaPlugins(plugins)
+    })
 
-		const documents = Object.values(parsedData.docs.docs);
-		await insertMultiple(db, documents as OramaDoc[]);
+    load(db, parsedData)
 
-		return db;
-	} catch (error) {
-		console.error('Error loading search index:', error);
-		throw error;
-	}
+    return db
+  } catch (error) {
+    console.error('Error loading search index:', error)
+    throw error
+  }
 }
 
 function isCloudData(data: OramaData): data is OramaCloudData {
@@ -60,7 +59,7 @@ function isCloudData(data: OramaData): data is OramaCloudData {
 }
 
 export default function useOrama() {
-  const [searchBoxConfig, setSearchBoxConfig] = useState < {
+  const [searchBoxConfig, setSearchBoxConfig] = useState<{
     basic: Record<string, any>
     custom: Record<string, any>
   }>({
@@ -81,13 +80,13 @@ export default function useOrama() {
         const collectionId = oramaData.indexConfig.collection_id
         const apiKey = oramaData.indexConfig.api_key
 
-        let collectionManager;
+        let collectionManager
 
-        if(collectionId) { // Note: collectionId is ONLY available in OramaCore
+        if (collectionId) {
+          // Note: collectionId is ONLY available in OramaCore
           collectionManager = new CollectionManager({
-            url: oramaData.indexConfig.endpoint,
             collectionID: collectionId,
-            readAPIKey: apiKey
+            apiKey
           })
         }
 

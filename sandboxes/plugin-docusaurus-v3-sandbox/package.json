@@ -14,18 +14,18 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
-    "@docusaurus/core": "3.0.1",
-    "@docusaurus/preset-classic": "3.0.1",
-    "@docusaurus/utils": "^3.0.1",
+    "@docusaurus/core": "3.9.1",
+    "@docusaurus/preset-classic": "3.9.1",
+    "@docusaurus/utils": "^3.9.1",
     "@mdx-js/react": "^3.0.0",
     "@orama/plugin-docusaurus-v3": "workspace:*",
     "clsx": "^2.0.0",
-    "jsdom": "^23.0.1",
-    "markdown-it": "^13.0.2",
+    "jsdom": "^27.0.0",
+    "markdown-it": "^14.1.0",
     "pako": "^2.1.0",
     "prism-react-renderer": "^2.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "slugify": "^1.6.6"
   },
   "devDependencies": {
