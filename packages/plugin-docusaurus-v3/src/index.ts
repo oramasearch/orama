@@ -1,11 +1,11 @@
 import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 import type { Plugin } from '@docusaurus/types'
-import type { LoadContext } from '@docusaurus/types';
+import type { LoadContext } from '@docusaurus/types'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { gzip } from 'pako'
-import { AnyOrama, create, insertMultiple, save } from '@orama/orama'
+import { AnyOrama, save } from '@orama/orama'
 import { CloudManager } from '@oramacloud/client'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
@@ -122,7 +122,8 @@ async function syncOramaIndex({
 }): Promise<IndexConfig> {
   const { apiKey, indexId, deploy, collectionId } = cloudConfig
 
-  if(!collectionId) { // NOTE: lack of collectionId means legacy Orama
+  if (!collectionId) {
+    // NOTE: lack of collectionId means legacy Orama
     const baseUrl = process.env.ORAMA_CLOUD_BASE_URL || 'https://cloud.oramasearch.com/api/v1'
 
     const cloudManager = new CloudManager({
