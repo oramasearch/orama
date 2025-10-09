@@ -2,6 +2,9 @@ import {useActivePlugin} from "@docusaurus/plugin-content-docs/client";
 import {ReactContextError, useDocsPreferredVersion} from "@docusaurus/theme-common";
 
 export function getColorMode() {
+	if (typeof document === 'undefined') {
+		return 'light';
+	}
 	const html = document.querySelector("html");
 	return html?.dataset.theme
 }
