@@ -83,12 +83,14 @@ t.test('search method', async (t) => {
       await insert(db, { quote: 'I like dogs. They are the best.', author: 'Jane Doe' })
       await insert(db, { quote: 'I like cats. They are the best.', author: 'Jane Doe' })
 
-      // Exact search
+      // Exact search - now case-sensitive
       const result1 = await search(db, { term: 'fox', exact: true })
       const result2 = await search(db, { term: 'dog', exact: true })
 
-      t.equal(result1.count, 2)
-      t.equal(result2.count, 3)
+      // Only lowercase "fox" matches, not "Foxes"
+      t.equal(result1.count, 1)
+      // "dog" appears in lowercase in 2 documents
+      t.equal(result2.count, 2)
 
       // Prefix search
       const result3 = await search(db, { term: 'fox', exact: false })

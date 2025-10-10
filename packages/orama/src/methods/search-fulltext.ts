@@ -83,6 +83,35 @@ export function innerFullTextSearch<T extends AnyOrama>(
       whereFiltersIDs,
       threshold
     )
+
+    // When exact is true and we have a term, filter results to only include documents
+    // where the original text contains the exact search term (case-sensitive).
+    // This is a highly requested feature and although Orama is not case-sensitive by design,
+    // this is a reasonable compromise.
+    if (params.exact && term) {
+      const searchTerms = term.trim().split(/\s+/)
+      uniqueDocsIDs = uniqueDocsIDs.filter(([docId]) => {
+        const doc = orama.documentsStore.get(orama.data.docs, docId)
+        if (!doc) return false
+
+        // Check if any of the specified properties contain the exact search term
+        for (const prop of propertiesToSearch) {
+          const propValue = getPropValue(doc, prop)
+          if (typeof propValue === 'string') {
+            // Check if all search terms appear as complete words in the property value
+            const hasAllTerms = searchTerms.every((searchTerm) => {
+              // Create a regex that matches the term as a complete word (case-sensitive)
+              const regex = new RegExp(`\\b${escapeRegex(searchTerm)}\\b`)
+              return regex.test(propValue)
+            })
+            if (hasAllTerms) {
+              return true
+            }
+          }
+        }
+        return false
+      })
+    }
   } else {
     // Check if this is a geosearch-only query first
     if (hasFilters) {
@@ -103,6 +132,25 @@ export function innerFullTextSearch<T extends AnyOrama>(
   }
 
   return uniqueDocsIDs
+}
+
+// Helper function to escape regex special characters
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+// Helper function to get nested property value
+function getPropValue(obj: any, path: string): any {
+  const keys = path.split('.')
+  let value = obj
+  for (const key of keys) {
+    if (value && typeof value === 'object' && key in value) {
+      value = value[key]
+    } else {
+      return undefined
+    }
+  }
+  return value
 }
 
 export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocument<T>>(

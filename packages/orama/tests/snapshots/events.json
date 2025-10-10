@@ -1,59 +1,7 @@
 {
   "should perform paginate search-page-1": {
-    "count": 2357,
+    "count": 679,
     "hits": [
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-89",
-          "description": "Social War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-57",
-          "description": "Gallic Wars:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-55",
-          "description": "Gallic War",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-54",
-          "description": "Gallic Wars",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
       {
         "id": "",
         "score": 4.744426329679039,
@@ -64,263 +12,6 @@
           "categories": {
             "first": "By place",
             "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-53",
-          "description": "Gallic War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-48",
-          "description": "Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-47",
-          "description": "Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "-46",
-          "description": "Civil War:",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1809/03/13",
-          "description": "Peninsular War",
-          "granularity": "year",
-          "categories": {
-            "first": "January/March",
-            "second": ""
-          }
-        }
-      }
-    ]
-  },
-  "should perform paginate search-page-2": {
-    "count": 2357,
-    "hits": [
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1867/12/02",
-          "description": "Paraguayan War.",
-          "granularity": "year",
-          "categories": {
-            "first": "Ongoing",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1914/12/24",
-          "description": " World War I:",
-          "granularity": "year",
-          "categories": {
-            "first": "December",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.744426329679039,
-        "document": {
-          "date": "1950/02/14",
-          "description": " Cold War:",
-          "granularity": "year",
-          "categories": {
-            "first": "February",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "-113",
-          "description": "War between the Celtiberians and the Romans.",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "-86",
-          "description": "First Mithridatic War",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Roman Republic"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "630",
-          "description": "The Byzantine-Arab Wars begin.",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Byzantine Empire"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "632/01/27",
-          "description": "Ridda Wars begins",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Asia"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "941",
-          "description": "The Rus'-Byzantine War is fought.",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Asia"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "988",
-          "description": "Rus'–Byzantine War",
-          "granularity": "year",
-          "categories": {
-            "first": "By place",
-            "second": "Europe"
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1043/10/31",
-          "description": "Rus'-Byzantine War (1043).",
-          "granularity": "year",
-          "categories": {
-            "first": "",
-            "second": ""
-          }
-        }
-      }
-    ]
-  },
-  "should perform paginate search-page-3": {
-    "count": 2357,
-    "hits": [
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1447/07/15",
-          "description": "The Albanian-Venetian War of 1447-1448.",
-          "granularity": "year",
-          "categories": {
-            "first": "Date unknown",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1470/10/30",
-          "description": "Start of the Anglo-Hanseatic War.",
-          "granularity": "year",
-          "categories": {
-            "first": "Date unknown",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1522/12/20",
-          "description": "The Habsburg-Valois Wars begin.",
-          "granularity": "year",
-          "categories": {
-            "first": "Date unknown",
-            "second": ""
-          }
-        }
-      },
-      {
-        "id": "",
-        "score": 4.087300377720357,
-        "document": {
-          "date": "1558/01/22",
-          "description": " Beginning of the Livonian War.",
-          "granularity": "year",
-          "categories": {
-            "first": "January/June",
-            "second": ""
           }
         }
       },
@@ -339,10 +30,75 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 3.544022161031509,
         "document": {
-          "date": "1830/12/20",
-          "description": "The Java War ends.",
+          "date": "-156",
+          "description": "The first Dalmatian war begins.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Roman Republic"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "-119",
+          "description": "The second Dalmatian war begins.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Roman Republic"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "-78",
+          "description": "The Third Dalmatian war begins.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Roman Republic"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "599",
+          "description": "The Chinese win the war at Ordos.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Asia"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1027/08/16",
+          "description": "Civil war begins in Japan.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Asia"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1695/12/31",
+          "description": "Russia declares war on Turkey.",
           "granularity": "year",
           "categories": {
             "first": "Date unknown",
@@ -352,10 +108,10 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 3.544022161031509,
         "document": {
-          "date": "1857/04/04",
-          "description": " End of the Anglo-Persian War.",
+          "date": "1792/04/20",
+          "description": " France declares war against Austria.",
           "granularity": "year",
           "categories": {
             "first": "April/June",
@@ -365,10 +121,80 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 3.544022161031509,
         "document": {
-          "date": "1861/04/27",
-          "description": " American Civil War:",
+          "date": "1792/06/04",
+          "description": "Prussia declares war against France.",
+          "granularity": "year",
+          "categories": {
+            "first": "April/June",
+            "second": ""
+          }
+        }
+      }
+    ]
+  },
+  "should perform paginate search-page-2": {
+    "count": 679,
+    "hits": [
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1793/03/07",
+          "description": " France declares war on Spain.",
+          "granularity": "year",
+          "categories": {
+            "first": "January/June",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1804/12/12",
+          "description": " Spain declares war on Britain",
+          "granularity": "year",
+          "categories": {
+            "first": "October/December",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1805/12/26",
+          "description": "Sweden declares war on France.",
+          "granularity": "year",
+          "categories": {
+            "first": "Date unknown",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1823/12/02",
+          "description": "Beginning of the first Anglo-Ashanti war.",
+          "granularity": "year",
+          "categories": {
+            "first": "Date unknown",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1841/04/06",
+          "description": "May ampampndash Start of the Sino-Sikh war.",
           "granularity": "year",
           "categories": {
             "first": "April/June",
@@ -378,10 +204,10 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 3.544022161031509,
         "document": {
-          "date": "1879/01/11",
-          "description": " The Anglo-Zulu War begins.",
+          "date": "1854/03/28",
+          "description": " France declares war on Russia.",
           "granularity": "year",
           "categories": {
             "first": "January/March",
@@ -391,13 +217,187 @@
       },
       {
         "id": "",
-        "score": 4.087300377720357,
+        "score": 3.544022161031509,
         "document": {
-          "date": "1919/02/14",
-          "description": " The Polish-Soviet War begins.",
+          "date": "1878/02/02",
+          "description": " Greece declares war on Turkey.",
           "granularity": "year",
           "categories": {
-            "first": "February",
+            "first": "January/March",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1914/08/04",
+          "description": "Montenegro declares war on Austria-Hungary.",
+          "granularity": "year",
+          "categories": {
+            "first": "August",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1914/08/06",
+          "description": " Austria-Hungary declares war on Russia.",
+          "granularity": "year",
+          "categories": {
+            "first": "August",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1914/08/23",
+          "description": " Japan declares war on Germany.",
+          "granularity": "year",
+          "categories": {
+            "first": "August",
+            "second": ""
+          }
+        }
+      }
+    ]
+  },
+  "should perform paginate search-page-3": {
+    "count": 679,
+    "hits": [
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1933/05/08",
+          "description": "Paraguay declares war on Bolivia.",
+          "granularity": "year",
+          "categories": {
+            "first": "May",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1941/12/07",
+          "description": "Canada declares war on Japan.",
+          "granularity": "year",
+          "categories": {
+            "first": "December",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1943/01/16",
+          "description": " Iraq declares war on the Axis",
+          "granularity": "year",
+          "categories": {
+            "first": "January",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1945/07/14",
+          "description": " Italy declares war on Japan.",
+          "granularity": "year",
+          "categories": {
+            "first": "July",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.544022161031509,
+        "document": {
+          "date": "1962/09/26",
+          "description": " Civil war erupts in Yemen.",
+          "granularity": "year",
+          "categories": {
+            "first": "September",
+            "second": ""
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.1042994560072987,
+        "document": {
+          "date": "17/05/26",
+          "description": "Beginning of a civil war in Germania.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Europe"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.1042994560072987,
+        "document": {
+          "date": "350/12/25",
+          "description": "The Wei-Jie war breaks out in North China.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Asia"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.1042994560072987,
+        "document": {
+          "date": "618",
+          "description": "A civil war begins in Medina.",
+          "granularity": "year",
+          "categories": {
+            "first": "By place",
+            "second": "Asia"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.1042994560072987,
+        "document": {
+          "date": "1240/07/15",
+          "description": "The civil war era in Norway ends.",
+          "granularity": "year",
+          "categories": {
+            "first": "By area",
+            "second": "Europe"
+          }
+        }
+      },
+      {
+        "id": "",
+        "score": 3.1042994560072987,
+        "document": {
+          "date": "1635/04/13",
+          "description": "May ampampndash France declares war on Spain.",
+          "granularity": "year",
+          "categories": {
+            "first": "January/June",
             "second": ""
           }
         }
