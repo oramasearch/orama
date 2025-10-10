@@ -1,6 +1,6 @@
 import t from 'tap'
 import { create, insert, search } from '@orama/orama'
-import { pluginPgvector } from '../src/index.js'
+import { pluginPgvector } from '../dist/index.js'
 
 // Mock embedding function for testing (deterministic)
 function generateMockEmbedding(text, dimension = 384) {
@@ -23,11 +23,11 @@ function generateMockEmbedding(text, dimension = 384) {
 const DIMENSION = 384
 
 // Skip database tests if no connection string (CI-friendly)
-const shouldSkipDbTests = !process.env.NEON_CONNECTION_STRING
+const shouldSkipDbTests = !process.env.CONNECTION_STRING
 
 t.test('plugin-pgvector basic functionality', async (t) => {
   if (shouldSkipDbTests) {
-    t.skip('Skipping - NEON_CONNECTION_STRING not set')
+    t.skip('Skipping - CONNECTION_STRING not set')
     return
   }
 
@@ -40,7 +40,7 @@ t.test('plugin-pgvector basic functionality', async (t) => {
     },
     plugins: [
       pluginPgvector({
-        connectionString: process.env.NEON_CONNECTION_STRING,
+        connectionString: process.env.CONNECTION_STRING,
         tableName: 'test_pgvector_basic',
         dimension: DIMENSION,
         memoryLimit: '50MB',
@@ -56,7 +56,7 @@ t.test('plugin-pgvector basic functionality', async (t) => {
 
 t.test('insert and search with vectors', async (t) => {
   if (shouldSkipDbTests) {
-    t.skip('Skipping - NEON_CONNECTION_STRING not set')
+    t.skip('Skipping - CONNECTION_STRING not set')
     return
   }
 
@@ -69,7 +69,7 @@ t.test('insert and search with vectors', async (t) => {
     },
     plugins: [
       pluginPgvector({
-        connectionString: process.env.NEON_CONNECTION_STRING,
+        connectionString: process.env.CONNECTION_STRING,
         tableName: 'test_pgvector_search',
         dimension: DIMENSION,
         memoryLimit: '50MB',
@@ -114,7 +114,7 @@ t.test('insert and search with vectors', async (t) => {
 
 t.test('plugin hooks are registered', async (t) => {
   if (shouldSkipDbTests) {
-    t.skip('Skipping - NEON_CONNECTION_STRING not set')
+    t.skip('Skipping - CONNECTION_STRING not set')
     return
   }
 
@@ -126,7 +126,7 @@ t.test('plugin hooks are registered', async (t) => {
     },
     plugins: [
       pluginPgvector({
-        connectionString: process.env.NEON_CONNECTION_STRING,
+        connectionString: process.env.CONNECTION_STRING,
         tableName: 'test_pgvector_hooks',
         dimension: DIMENSION,
         memoryLimit: '50MB',
