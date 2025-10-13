@@ -15,6 +15,7 @@ If you need more info, help, or want to provide general feedback on Orama, join 
 - [GenAI Chat Sessions](https://docs.orama.com/docs/orama-js/answer-engine)
 - [Search Filters](https://docs.orama.com/docs/orama-js/search/filters)
 - [Geosearch](https://docs.orama.com/docs/orama-js/search/geosearch)
+- [Pinning Rules (Merchandising)](https://docs.orama.com/docs/orama-js/results-pinning)
 - [Facets](https://docs.orama.com/docs/orama-js/search/facets)
 - [Fields Boosting](https://docs.orama.com/docs/orama-js/search/fields-boosting)
 - [Typo Tolerance](https://docs.orama.com/docs/orama-js/search#typo-tolerance)
