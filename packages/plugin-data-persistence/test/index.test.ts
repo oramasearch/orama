@@ -1,4 +1,4 @@
-import { create, insert, search } from '@orama/orama'
+import { create, insert, search, insertPin, getAllPins } from '@orama/orama'
 import t from 'tap'
 import { UNSUPPORTED_FORMAT, METHOD_MOVED } from '../src/errors.js'
 import {
@@ -736,6 +736,158 @@ t.test('should throw an error when trying to use a deprecated method', async (t)
   } catch ({ message }) {
     t.match(message, METHOD_MOVED('restoreFromFile'))
   }
+})
+
+t.test('pinning rules persistence', (t) => {
+  t.plan(4)
+
+  t.test('should persist and restore pinning rules (binary)', async (t) => {
+    t.plan(3)
+    const db = create({
+      schema: {
+        quote: 'string',
+        author: 'string'
+      } as const
+    })
+
+    const id1 = await insert(db, { id: '1', quote: 'I am a great programmer', author: 'Bill Gates' })
+    const id2 = await insert(db, {
+      id: '2',
+      quote: 'Be yourself; everyone else is already taken.',
+      author: 'Oscar Wilde'
+    })
+
+    // When searching for "great", pin "Oscar Wilde" quote to position 0
+    insertPin(db, {
+      id: 'test-rule-1',
+      conditions: [{ anchoring: 'contains', pattern: 'great' }],
+      consequence: {
+        promote: [{ doc_id: '2', position: 0 }]
+      }
+    })
+
+    // Search - With pinning rule, Oscar Wilde quote should be at position 0
+    const q1 = await search(db, { mode: 'fulltext', term: 'great' })
+    t.same(q1.hits[0].id, '2', 'Pinned document should be first')
+
+    // Persist and restore
+    const path = await persistToFile(db, 'binary', 'test_pinning.bin')
+    t.teardown(rmTeardown(path))
+    const db2 = await restoreFromFile('binary', 'test_pinning.bin')
+
+    // Search on restored database - pinning should still work
+    const qp1 = await search(db2, { mode: 'fulltext', term: 'great' })
+    t.same(qp1.hits[0].id, '2', 'Pinned document should be first after restore')
+
+    const rules = getAllPins(db2)
+    t.same(rules.length, 1, 'Pinning rule should be persisted')
+  })
+
+  t.test('should persist and restore pinning rules (json)', async (t) => {
+    t.plan(3)
+    const db = create({
+      schema: {
+        quote: 'string',
+        author: 'string'
+      } as const
+    })
+
+    await insert(db, { id: '1', quote: 'I am a great programmer', author: 'Bill Gates' })
+    await insert(db, {
+      id: '3',
+      quote: "I have not failed. I've just found 10,000 ways that won't work.",
+      author: 'Thomas A. Edison'
+    })
+
+    insertPin(db, {
+      id: 'test-rule-2',
+      conditions: [{ anchoring: 'starts_with', pattern: 'i' }],
+      consequence: {
+        promote: [{ doc_id: '3', position: 0 }]
+      }
+    })
+
+    const q1 = await search(db, { mode: 'fulltext', term: 'i have' })
+    t.same(q1.hits[0].id, '3', 'Pinned document should be first')
+
+    const path = await persistToFile(db, 'json', 'test_pinning.json')
+    t.teardown(rmTeardown(path))
+    const db2 = await restoreFromFile('json', 'test_pinning.json')
+
+    const qp1 = await search(db2, { mode: 'fulltext', term: 'i have' })
+    t.same(qp1.hits[0].id, '3', 'Pinned document should be first after restore')
+
+    const rules = getAllPins(db2)
+    t.same(rules.length, 1, 'Pinning rule should be persisted')
+  })
+
+  t.test('should persist and restore pinning rules (dpack)', async (t) => {
+    t.plan(3)
+    const db = create({
+      schema: {
+        quote: 'string',
+        author: 'string'
+      } as const
+    })
+
+    await insert(db, { id: '4', quote: 'The only way to do great work is to love what you do.', author: 'Steve Jobs' })
+
+    insertPin(db, {
+      id: 'test-rule-3',
+      conditions: [{ anchoring: 'is', pattern: 'work' }],
+      consequence: {
+        promote: [{ doc_id: '4', position: 0 }]
+      }
+    })
+
+    const q1 = await search(db, { mode: 'fulltext', term: 'work' })
+    t.same(q1.hits[0].id, '4', 'Pinned document should be first')
+
+    const path = await persistToFile(db, 'dpack', 'test_pinning.dpack')
+    t.teardown(rmTeardown(path))
+    const db2 = await restoreFromFile('dpack', 'test_pinning.dpack')
+
+    const qp1 = await search(db2, { mode: 'fulltext', term: 'work' })
+    t.same(qp1.hits[0].id, '4', 'Pinned document should be first after restore')
+
+    const rules = getAllPins(db2)
+    t.same(rules.length, 1, 'Pinning rule should be persisted')
+  })
+
+  t.test('should persist and restore pinning rules (seqproto)', async (t) => {
+    t.plan(3)
+    const db = create({
+      schema: {
+        quote: 'string',
+        author: 'string'
+      } as const
+    })
+
+    await insert(db, { id: '1', quote: 'I am a great programmer', author: 'Bill Gates' })
+    await insert(db, { id: '2', quote: 'Be yourself; everyone else is already taken.', author: 'Oscar Wilde' })
+    await insert(db, { id: '3', quote: 'To be or not to be', author: 'Shakespeare' })
+
+    insertPin(db, {
+      id: 'test-rule-4',
+      conditions: [{ anchoring: 'contains', pattern: 'programmer' }],
+      consequence: {
+        promote: [{ doc_id: '3', position: 0 }] // Pin doc 3, which doesn't match 'programmer'
+      }
+    })
+
+    const q1 = await search(db, { mode: 'fulltext', term: 'programmer' })
+    t.same(q1.hits[0].id, '3', 'Pinned document should be first')
+
+    const path = await persistToFile(db, 'seqproto', 'test_pinning.seqp')
+    t.teardown(rmTeardown(path))
+    const db2 = await restoreFromFile('seqproto', 'test_pinning.seqp')
+
+    const qp1 = await search(db2, { mode: 'fulltext', term: 'programmer' })
+    t.same(qp1.hits[0].id, '3', 'Pinned document should be first after restore')
+
+    const rules = getAllPins(db2)
+    t.same(rules.length, 1, 'Pinning rule should be persisted')
+  })
 })
 
 function rmTeardown(p: string) {

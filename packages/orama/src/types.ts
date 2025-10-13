@@ -1067,6 +1067,23 @@ export interface ISorter<So extends AnySorterStore> {
   getSortablePropertiesWithTypes(sorter: So): Record<string, SortType>
 }
 
+export interface AnyPinningStore {
+  sharedInternalDocumentStore: InternalDocumentIDStore
+  rules: Map<string, any>
+}
+export type AnyPinning = IPinning<AnyPinningStore>
+
+export interface IPinning<Pi extends AnyPinningStore = AnyPinningStore> {
+  create(sharedInternalDocumentStore: InternalDocumentIDStore): Pi
+  addRule(store: Pi, rule: any): void
+  removeRule(store: Pi, ruleId: string): boolean
+  getRule(store: Pi, ruleId: string): any | undefined
+  getAllRules(store: Pi): any[]
+  getMatchingRules(store: Pi, term: string | undefined): any[]
+  load<R = unknown>(sharedInternalDocumentStore: InternalDocumentIDStore, raw: R): Pi
+  save<R = unknown>(store: Pi): R
+}
+
 export type Stemmer = (word: string) => string
 
 export type DefaultTokenizerConfig = {
@@ -1085,11 +1102,12 @@ export interface Tokenizer {
   tokenize: (raw: string, language?: string, prop?: string, withCache?: boolean) => string[]
 }
 
-export interface ObjectComponents<I, D, So> {
+export interface ObjectComponents<I, D, So, Pi> {
   tokenizer: Tokenizer | DefaultTokenizerConfig
   index: I
   documentsStore: D
   sorter: So
+  pinning: Pi
 }
 
 export interface FunctionComponents<S> {
@@ -1257,8 +1275,8 @@ export interface ArrayCallbackComponents<T extends AnyOrama> {
   afterCreate: AfterCreate<T>[]
 }
 
-export type Components<T extends AnyOrama, TSchema, TIndex, TDocumentStore, TSorter> = Partial<
-  ObjectComponents<TIndex, TDocumentStore, TSorter> & FunctionComponents<TSchema> & SingleOrArrayCallbackComponents<T>
+export type Components<T extends AnyOrama, TSchema, TIndex, TDocumentStore, TSorter, TPinning> = Partial<
+  ObjectComponents<TIndex, TDocumentStore, TSorter, TPinning> & FunctionComponents<TSchema> & SingleOrArrayCallbackComponents<T>
 >
 
 export const kInsertions = Symbol('orama.insertions')
@@ -1270,7 +1288,8 @@ type Internals<
   TSchema,
   TIndex extends AnyIndexStore,
   TDocumentStore extends AnyDocumentStore,
-  TSorter extends AnySorterStore
+  TSorter extends AnySorterStore,
+  TPinning extends AnyPinningStore
 > = {
   version: string
   schema: TSchema
@@ -1279,10 +1298,12 @@ type Internals<
   index: IIndex<TIndex>
   documentsStore: IDocumentsStore<TDocumentStore>
   sorter: ISorter<TSorter>
+  pinning: IPinning<TPinning>
   data: {
     index: TIndex
     docs: TDocumentStore
     sorting: TSorter
+    pinning: TPinning
   }
   internalDocumentIDStore: InternalDocumentIDStore
   caches: Record<string, unknown>
@@ -1312,6 +1333,11 @@ export type AnyGenericSorter<T> = T extends ISorter<infer TSorter>
     ? TSorter
     : never
   : AnySorterStore
+export type AnyGenericPinning<T> = T extends IPinning<infer TPinning>
+  ? TPinning extends AnyPinningStore
+    ? TPinning
+    : never
+  : AnyPinningStore
 
 export type PickInferGeneric<T, Default> = T extends AnyGeneric<infer Generic>
   ? Generic extends Default
@@ -1323,14 +1349,15 @@ export type Orama<
   TSchema,
   TIndex = IIndex<Index>,
   TDocumentStore = IDocumentsStore<DocumentsStore>,
-  TSorter = ISorter<Sorter>
+  TSorter = ISorter<Sorter>,
+  TPinning = IPinning<AnyPinningStore>
 > = FunctionComponents<TSchema> &
-  Internals<TSchema, AnyGenericIndex<TIndex>, AnyGenericDocumentStore<TDocumentStore>, AnyGenericSorter<TSorter>> &
+  Internals<TSchema, AnyGenericIndex<TIndex>, AnyGenericDocumentStore<TDocumentStore>, AnyGenericSorter<TSorter>, AnyGenericPinning<TPinning>> &
   ArrayCallbackComponents<any> &
   OramaID & { plugins: OramaPlugin[] }
 
 export type AnyOrama<TSchema = any> = FunctionComponents<TSchema> &
-  Internals<TSchema, AnyIndexStore, AnyDocumentStore, AnySorterStore> &
+  Internals<TSchema, AnyIndexStore, AnyDocumentStore, AnySorterStore, AnyPinningStore> &
   ArrayCallbackComponents<any> &
   OramaID & { plugins: OramaPlugin[] }
 
@@ -1365,9 +1392,9 @@ export type OramaPluginSync<T = unknown> = {
   beforeUpsertMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
   afterUpsertMultiple?: <T extends AnyOrama>(orama: T, docs: AnyDocument[]) => SyncOrAsyncValue
   afterCreate?: <T extends AnyOrama>(orama: T) => SyncOrAsyncValue
-  getComponents?: <IndexStore extends AnyIndexStore, TDocumentStore, TSorter>(
+  getComponents?: <IndexStore extends AnyIndexStore, TDocumentStore, TSorter, TPinning>(
     schema: AnySchema
-  ) => SyncOrAsyncValue<Partial<ObjectComponents<IIndex<IndexStore>, TDocumentStore, TSorter>>>
+  ) => SyncOrAsyncValue<Partial<ObjectComponents<IIndex<IndexStore>, TDocumentStore, TSorter, TPinning>>>
 }
 
 export type OramaPluginAsync<T = unknown> = Promise<OramaPluginSync<T>>

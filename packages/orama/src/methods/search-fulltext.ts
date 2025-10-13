@@ -3,6 +3,7 @@ import { getGroups } from '../components/groups.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'
 import { getInternalDocumentId } from '../components/internal-document-id-store.js'
 import { searchByGeoWhereClause } from '../components/index.js'
+import { applyPinningRules } from '../components/pinning-manager.js'
 import { Language } from '../components/tokenizer/languages.js'
 import { createError } from '../errors.js'
 import type {
@@ -187,6 +188,9 @@ export function fullTextSearch<T extends AnyOrama, ResultDocument = TypedDocumen
     } else {
       uniqueDocsArray = uniqueDocsArray.sort(sortTokenScorePredicate)
     }
+
+    // Apply pinning rules after sorting but before pagination
+    uniqueDocsArray = applyPinningRules(orama, orama.data.pinning, uniqueDocsArray, params.term)
 
     let results
     if (!isPreflight) {

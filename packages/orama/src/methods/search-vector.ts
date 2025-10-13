@@ -8,6 +8,7 @@ import { getDocumentIdFromInternalId } from '../components/internal-document-id-
 import { Language } from '../index.js'
 import { runBeforeSearch, runAfterSearch } from '../components/hooks.js'
 import { DEFAULT_SIMILARITY } from '../trees/vector.js'
+import { applyPinningRules } from '../components/pinning-manager.js'
 
 export function innerVectorSearch<T extends AnyOrama, ResultDocument = TypedDocument<T>>(
   orama: T,
@@ -52,8 +53,11 @@ export function searchVector<T extends AnyOrama, ResultDocument = TypedDocument<
   const timeStart = getNanosecondsTime()
 
   function performSearchLogic(): Results<ResultDocument> {
-    const results = innerVectorSearch(orama, params, language)
+    let results = innerVectorSearch(orama, params, language)
       .sort(sortTokenScorePredicate)
+
+    // Apply pinning rules after sorting but before pagination
+    results = applyPinningRules(orama, orama.data.pinning, results, undefined)
 
     let facetsResults: any = []
 

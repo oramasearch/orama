@@ -6,6 +6,7 @@ import { Index, createIndex } from '../components/index.js'
 import { createInternalDocumentIDStore } from '../components/internal-document-id-store.js'
 import { Sorter, createSorter } from '../components/sorter.js'
 import { createTokenizer } from '../components/tokenizer/index.js'
+import { createPinning } from '../components/pinning.js'
 import { createError } from '../errors.js'
 import {
   AnySchema,
@@ -22,16 +23,17 @@ import {
 } from '../types.js'
 import { uniqueId } from '../utils.js'
 
-interface CreateArguments<OramaSchema, TIndex, TDocumentStore, TSorter> {
+interface CreateArguments<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning> {
   schema: OramaSchema
   sort?: SorterConfig
   language?: string
   components?: Components<
-    Orama<OramaSchema, TIndex, TDocumentStore, TSorter>,
+    Orama<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>,
     OramaSchema,
     TIndex,
     TDocumentStore,
-    TSorter
+    TSorter,
+    TPinning
   >
   plugins?: OramaPlugin[]
   id?: string
@@ -42,8 +44,9 @@ function validateComponents<
   TIndex,
   TDocumentStore,
   TSorter,
-  TOrama extends Orama<OramaSchema, TIndex, TDocumentStore, TSorter>
->(components: Components<TOrama, OramaSchema, TIndex, TDocumentStore, TSorter>) {
+  TPinning,
+  TOrama extends Orama<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>
+>(components: Components<TOrama, OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>) {
   const defaultComponents = {
     formatElapsedTime,
     getDocumentIndexId,
@@ -59,8 +62,7 @@ function validateComponents<
         throw createError('COMPONENT_MUST_BE_FUNCTION', key)
       }
     } else {
-      // @ts-expect-error TSC is unable to resolve this
-      components[key] = defaultComponents[key]
+      components[key] = defaultComponents[key] as any
     }
   }
 
@@ -75,7 +77,8 @@ export function create<
   OramaSchema extends AnySchema,
   TIndex = IIndex<Index>,
   TDocumentStore = IDocumentsStore<DocumentsStore>,
-  TSorter = ISorter<Sorter>
+  TSorter = ISorter<Sorter>,
+  TPinning = any
 >({
   schema,
   sort,
@@ -83,7 +86,7 @@ export function create<
   components,
   id,
   plugins
-}: CreateArguments<OramaSchema, TIndex, TDocumentStore, TSorter>): Orama<OramaSchema, TIndex, TDocumentStore, TSorter> {
+}: CreateArguments<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>): Orama<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning> {
   if (!components) {
     components = {}
   }
@@ -96,7 +99,7 @@ export function create<
       continue
     }
 
-    const pluginComponents = plugin.getComponents(schema) as Partial<ObjectComponents<TIndex, TDocumentStore, TSorter>>
+    const pluginComponents = plugin.getComponents(schema) as Partial<ObjectComponents<TIndex, TDocumentStore, TSorter, TPinning>>
 
     const keys = Object.keys(pluginComponents)
     for (const key of keys) {
@@ -118,6 +121,7 @@ export function create<
   let index: TIndex | undefined = components.index
   let documentsStore: TDocumentStore | undefined = components.documentsStore
   let sorter: TSorter | undefined = components.sorter
+  let pinning = components.pinning
 
   if (!tokenizer) {
     // Use the default tokenizer
@@ -140,6 +144,7 @@ export function create<
   index ||= createIndex() as TIndex
   sorter ||= createSorter() as TSorter
   documentsStore ||= createDocumentsStore() as TDocumentStore
+  pinning ||= createPinning() as any
 
   // Validate all other components
   validateComponents(components)
@@ -155,6 +160,7 @@ export function create<
     index,
     sorter,
     documentsStore,
+    pinning,
     internalDocumentIDStore: internalDocumentStore,
     getDocumentProperties,
     getDocumentIndexId,
@@ -182,12 +188,13 @@ export function create<
     id,
     plugins,
     version: getVersion()
-  } as unknown as Orama<OramaSchema, TIndex, TDocumentStore, TSorter>
+  } as unknown as Orama<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>
 
   orama.data = {
     index: orama.index.create(orama, internalDocumentStore, schema),
     docs: orama.documentsStore.create(orama, internalDocumentStore),
-    sorting: orama.sorter.create(orama, internalDocumentStore, schema, sort)
+    sorting: orama.sorter.create(orama, internalDocumentStore, schema, sort),
+    pinning: orama.pinning.create(internalDocumentStore)
   }
 
   for (const hook of AVAILABLE_PLUGIN_HOOKS) {

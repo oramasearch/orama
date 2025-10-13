@@ -1,6 +1,7 @@
 export { create } from './methods/create.js'
 export { count, getByID } from './methods/docs.js'
 export { insert, insertMultiple } from './methods/insert.js'
+export { insertPin, updatePin, deletePin, getPin, getAllPins } from './methods/pinning.js'
 export { remove, removeMultiple } from './methods/remove.js'
 export { search } from './methods/search.js'
 export { searchVector } from './methods/search-vector.js'
@@ -15,3 +16,4 @@ export * as internals from './internals.js'
 
 export type { RawData } from './methods/serialization.js'
 export type { Language } from './components/tokenizer/languages.js'
+export type { PinRule, PinCondition, PinPromotion, PinAnchoring } from './components/pinning.js'

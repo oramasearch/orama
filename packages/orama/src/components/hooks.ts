@@ -11,7 +11,7 @@ import {
 } from '../types.js'
 import { isAsyncFunction } from '../utils.js'
 
-export const OBJECT_COMPONENTS = ['tokenizer', 'index', 'documentsStore', 'sorter']
+export const OBJECT_COMPONENTS = ['tokenizer', 'index', 'documentsStore', 'sorter', 'pinning']
 
 export const FUNCTION_COMPONENTS = [
   'validateSchema',
