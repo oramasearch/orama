@@ -1,4 +1,4 @@
-import { create, insert, search } from '@orama/orama'
+import { create, insert, search, insertPin, getAllPins } from '@orama/orama'
 import t from 'tap'
 import { UNSUPPORTED_FORMAT, METHOD_MOVED } from '../src/errors.js'
 import {
@@ -751,10 +751,14 @@ t.test('pinning rules persistence', (t) => {
     })
 
     const id1 = await insert(db, { id: '1', quote: 'I am a great programmer', author: 'Bill Gates' })
-    const id2 = await insert(db, { id: '2', quote: 'Be yourself; everyone else is already taken.', author: 'Oscar Wilde' })
+    const id2 = await insert(db, {
+      id: '2',
+      quote: 'Be yourself; everyone else is already taken.',
+      author: 'Oscar Wilde'
+    })
 
     // When searching for "great", pin "Oscar Wilde" quote to position 0
-    ;(db as any).pinning.addRule((db as any).data.pinning, {
+    insertPin(db, {
       id: 'test-rule-1',
       conditions: [{ anchoring: 'contains', pattern: 'great' }],
       consequence: {
@@ -775,7 +779,7 @@ t.test('pinning rules persistence', (t) => {
     const qp1 = await search(db2, { mode: 'fulltext', term: 'great' })
     t.same(qp1.hits[0].id, '2', 'Pinned document should be first after restore')
 
-    const rules = (db2 as any).pinning.getAllRules((db2 as any).data.pinning)
+    const rules = getAllPins(db2)
     t.same(rules.length, 1, 'Pinning rule should be persisted')
   })
 
@@ -789,9 +793,13 @@ t.test('pinning rules persistence', (t) => {
     })
 
     await insert(db, { id: '1', quote: 'I am a great programmer', author: 'Bill Gates' })
-    await insert(db, { id: '3', quote: "I have not failed. I've just found 10,000 ways that won't work.", author: 'Thomas A. Edison' })
+    await insert(db, {
+      id: '3',
+      quote: "I have not failed. I've just found 10,000 ways that won't work.",
+      author: 'Thomas A. Edison'
+    })
 
-    ;(db as any).pinning.addRule((db as any).data.pinning, {
+    insertPin(db, {
       id: 'test-rule-2',
       conditions: [{ anchoring: 'starts_with', pattern: 'i' }],
       consequence: {
@@ -809,7 +817,7 @@ t.test('pinning rules persistence', (t) => {
     const qp1 = await search(db2, { mode: 'fulltext', term: 'i have' })
     t.same(qp1.hits[0].id, '3', 'Pinned document should be first after restore')
 
-    const rules = (db2 as any).pinning.getAllRules((db2 as any).data.pinning)
+    const rules = getAllPins(db2)
     t.same(rules.length, 1, 'Pinning rule should be persisted')
   })
 
@@ -824,7 +832,7 @@ t.test('pinning rules persistence', (t) => {
 
     await insert(db, { id: '4', quote: 'The only way to do great work is to love what you do.', author: 'Steve Jobs' })
 
-    ;(db as any).pinning.addRule((db as any).data.pinning, {
+    insertPin(db, {
       id: 'test-rule-3',
       conditions: [{ anchoring: 'is', pattern: 'work' }],
       consequence: {
@@ -842,7 +850,7 @@ t.test('pinning rules persistence', (t) => {
     const qp1 = await search(db2, { mode: 'fulltext', term: 'work' })
     t.same(qp1.hits[0].id, '4', 'Pinned document should be first after restore')
 
-    const rules = (db2 as any).pinning.getAllRules((db2 as any).data.pinning)
+    const rules = getAllPins(db2)
     t.same(rules.length, 1, 'Pinning rule should be persisted')
   })
 
@@ -859,11 +867,11 @@ t.test('pinning rules persistence', (t) => {
     await insert(db, { id: '2', quote: 'Be yourself; everyone else is already taken.', author: 'Oscar Wilde' })
     await insert(db, { id: '3', quote: 'To be or not to be', author: 'Shakespeare' })
 
-    ;(db as any).pinning.addRule((db as any).data.pinning, {
+    insertPin(db, {
       id: 'test-rule-4',
       conditions: [{ anchoring: 'contains', pattern: 'programmer' }],
       consequence: {
-        promote: [{ doc_id: '3', position: 0 }]  // Pin doc 3, which doesn't match 'programmer'
+        promote: [{ doc_id: '3', position: 0 }] // Pin doc 3, which doesn't match 'programmer'
       }
     })
 
@@ -877,7 +885,7 @@ t.test('pinning rules persistence', (t) => {
     const qp1 = await search(db2, { mode: 'fulltext', term: 'programmer' })
     t.same(qp1.hits[0].id, '3', 'Pinned document should be first after restore')
 
-    const rules = (db2 as any).pinning.getAllRules((db2 as any).data.pinning)
+    const rules = getAllPins(db2)
     t.same(rules.length, 1, 'Pinning rule should be persisted')
   })
 })
