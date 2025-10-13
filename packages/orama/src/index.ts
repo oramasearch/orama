@@ -1,7 +1,7 @@
 export { create } from './methods/create.js'
 export { count, getByID } from './methods/docs.js'
 export { insert, insertMultiple } from './methods/insert.js'
-export { insertPin, deletePin, getPin, getAllPins } from './methods/pinning.js'
+export { insertPin, updatePin, deletePin, getPin, getAllPins } from './methods/pinning.js'
 export { remove, removeMultiple } from './methods/remove.js'
 export { search } from './methods/search.js'
 export { searchVector } from './methods/search-vector.js'

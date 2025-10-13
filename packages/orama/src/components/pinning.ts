@@ -33,6 +33,16 @@ function create(sharedInternalDocumentStore: InternalDocumentIDStore): PinningSt
 }
 
 function addRule(store: PinningStore, rule: PinRule): void {
+  if (store.rules.has(rule.id)) {
+    throw new Error(`PINNING_RULE_ALREADY_EXISTS: A pinning rule with id "${rule.id}" already exists. Use updateRule to modify it.`)
+  }
+  store.rules.set(rule.id, rule)
+}
+
+function updateRule(store: PinningStore, rule: PinRule): void {
+  if (!store.rules.has(rule.id)) {
+    throw new Error(`PINNING_RULE_NOT_FOUND: Cannot update pinning rule with id "${rule.id}" because it does not exist. Use addRule to create it.`)
+  }
   store.rules.set(rule.id, rule)
 }
 
@@ -110,6 +120,7 @@ export function save<R = unknown>(store: PinningStore): R {
 export interface IPinning {
   create(sharedInternalDocumentStore: InternalDocumentIDStore): PinningStore
   addRule(store: PinningStore, rule: PinRule): void
+  updateRule(store: PinningStore, rule: PinRule): void
   removeRule(store: PinningStore, ruleId: string): boolean
   getRule(store: PinningStore, ruleId: string): PinRule | undefined
   getAllRules(store: PinningStore): PinRule[]
@@ -122,6 +133,7 @@ export function createPinning(): IPinning {
   return {
     create,
     addRule,
+    updateRule,
     removeRule,
     getRule,
     getAllRules,

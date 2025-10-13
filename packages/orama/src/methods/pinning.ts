@@ -39,6 +39,32 @@ export function insertPin<T extends AnyOrama>(orama: T, rule: PinRule): void {
 }
 
 /**
+ * Update an existing pinning rule in the database.
+ * If the rule does not exist, an error will be thrown.
+ *
+ * @example
+ * ```typescript
+ * import { updatePin } from '@orama/orama'
+ *
+ * // Update the rule to pin to a different position
+ * updatePin(db, {
+ *   id: 'featured-products',
+ *   conditions: [
+ *     { anchoring: 'contains', pattern: 'featured' }
+ *   ],
+ *   consequence: {
+ *     promote: [
+ *       { doc_id: '3', position: 0 }  // Changed doc_id
+ *     ]
+ *   }
+ * })
+ * ```
+ */
+export function updatePin<T extends AnyOrama>(orama: T, rule: PinRule): void {
+  ;(orama as any).pinning.updateRule((orama as any).data.pinning, rule)
+}
+
+/**
  * Remove a pinning rule from the database by its ID.
  *
  * @example

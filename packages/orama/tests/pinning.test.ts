@@ -1,5 +1,5 @@
 import t from 'tap'
-import { create, insert, insertMultiple, insertPin, deletePin, getPin, getAllPins, search } from '../src/index.js'
+import { create, insert, insertMultiple, insertPin, updatePin, deletePin, getPin, getAllPins, search } from '../src/index.js'
 import type { PinRule } from '../src/components/pinning.js'
 import type { TokenScore } from '../src/types.js'
 import { applyPinningRules } from '../src/components/pinning-manager.js'
@@ -98,6 +98,79 @@ t.test('pinning public API', async (t) => {
     t.equal(allRules.length, 2)
     t.ok(allRules.find((r) => r.id === 'rule1'))
     t.ok(allRules.find((r) => r.id === 'rule2'))
+  })
+
+  t.test('should throw error when inserting duplicate rule ID', async (t) => {
+    const db = create({
+      schema: {
+        title: 'string',
+        description: 'string'
+      } as const
+    })
+
+    const rule: PinRule = {
+      id: 'duplicate_rule',
+      conditions: [{ anchoring: 'is', pattern: 'test' }],
+      consequence: { promote: [{ doc_id: 'doc1', position: 0 }] }
+    }
+
+    insertPin(db, rule)
+
+    // Attempting to insert the same rule ID should throw
+    t.throws(() => {
+      insertPin(db, rule)
+    }, /PINNING_RULE_ALREADY_EXISTS/)
+  })
+
+  t.test('should update existing pin rule with updatePin', async (t) => {
+    const db = create({
+      schema: {
+        title: 'string',
+        description: 'string'
+      } as const
+    })
+
+    const rule: PinRule = {
+      id: 'update_rule',
+      conditions: [{ anchoring: 'is', pattern: 'test' }],
+      consequence: { promote: [{ doc_id: 'doc1', position: 0 }] }
+    }
+
+    insertPin(db, rule)
+
+    // Update the rule
+    const updatedRule: PinRule = {
+      id: 'update_rule',
+      conditions: [{ anchoring: 'contains', pattern: 'updated' }],
+      consequence: { promote: [{ doc_id: 'doc2', position: 1 }] }
+    }
+
+    updatePin(db, updatedRule)
+
+    const retrieved = getPin(db, 'update_rule')
+    t.strictSame(retrieved, updatedRule)
+    t.equal(retrieved?.conditions[0].pattern, 'updated')
+    t.equal(retrieved?.consequence.promote[0].doc_id, 'doc2')
+  })
+
+  t.test('should throw error when updating non-existent rule', async (t) => {
+    const db = create({
+      schema: {
+        title: 'string',
+        description: 'string'
+      } as const
+    })
+
+    const rule: PinRule = {
+      id: 'non_existent',
+      conditions: [{ anchoring: 'is', pattern: 'test' }],
+      consequence: { promote: [{ doc_id: 'doc1', position: 0 }] }
+    }
+
+    // Attempting to update a non-existent rule should throw
+    t.throws(() => {
+      updatePin(db, rule)
+    }, /PINNING_RULE_NOT_FOUND/)
   })
 
   t.end()
