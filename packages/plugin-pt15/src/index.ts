@@ -18,7 +18,7 @@ export function pluginPT15(): OramaPluginSync {
   }
 }
 
-function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any, any>> {
+function createComponents(schema: AnySchema): Partial<ObjectComponents<any, any, any, any>> {
   return {
     index: {
       create: function create() {

@@ -100,7 +100,7 @@ export function pluginQPS(): OramaPluginSync<unknown> {
 
 function qpsComponents(
 	schema: AnySchema,
-): Partial<ObjectComponents<any, any, any>> {
+): Partial<ObjectComponents<any, any, any, any>> {
 	return {
 		index: {
 			create: function create() {

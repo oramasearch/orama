@@ -14,6 +14,7 @@ import { fetchDocuments } from './search.js'
 import { innerFullTextSearch } from './search-fulltext.js'
 import { innerVectorSearch } from './search-vector.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'
+import { applyPinningRules } from '../components/pinning-manager.js'
 
 export function innerHybridSearch<T extends AnyOrama, ResultDocument = TypedDocument<T>>(
   orama: T,
@@ -37,8 +38,11 @@ export function hybridSearch<T extends AnyOrama, ResultDocument = TypedDocument<
   const timeStart = getNanosecondsTime()
 
   function performSearchLogic(): Results<ResultDocument> {
-    const uniqueTokenScores = innerHybridSearch(orama, params, language)
-    
+    let uniqueTokenScores = innerHybridSearch(orama, params, language)
+
+    // Apply pinning rules after merging results but before pagination
+    uniqueTokenScores = applyPinningRules(orama, orama.data.pinning, uniqueTokenScores, params.term)
+
     let facetsResults: any
     const shouldCalculateFacets = params.facets && Object.keys(params.facets).length > 0
     if (shouldCalculateFacets) {

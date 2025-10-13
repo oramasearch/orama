@@ -429,6 +429,16 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
   }
 
   ser.serializeString(raw.language || '')
+
+  // Serialize pinning rules
+  const pinningRules = raw.pinning?.rules || []
+  ser.serializeUInt32(pinningRules.length)
+  for (let i = 0; i < pinningRules.length; i++) {
+    const [ruleId, rule] = pinningRules[i]
+    ser.serializeString(ruleId)
+    serializeValue(ser, rule as JSONLike)
+  }
+
   return ser.getBuffer()
 }
 
@@ -602,6 +612,16 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
 
   // Deserialize language
   raw.language = des.deserializeString()
+
+  // Deserialize pinning rules
+  const pinningRulesLen = des.deserializeUInt32()
+  const pinningRules = new Array(pinningRulesLen)
+  for (let i = 0; i < pinningRulesLen; i++) {
+    const ruleId = des.deserializeString()
+    const rule = deserializeValue(des)
+    pinningRules[i] = [ruleId, rule]
+  }
+  raw.pinning = { rules: pinningRules }
 
   // Set empty sorting - it will be reconstructed by Orama when needed
   raw.sorting = {}
