@@ -7,7 +7,7 @@ import { create, insertMultiple, save } from '@orama/orama'
 import { JSDOM } from 'jsdom'
 import MarkdownIt from 'markdown-it'
 import matter from 'gray-matter'
-import { createSnapshot, deployIndex, DOCS_PRESET_SCHEMA, fetchEndpointConfig } from "./utils.js"
+import { createSnapshot, deployIndex, DOCS_PRESET_SCHEMA, fetchEndpointConfig } from './utils.js'
 import { parseMarkdownHeadingId, writeMarkdownHeadingId } from '@docusaurus/utils'
 
 enum DeployType {
@@ -29,9 +29,9 @@ type PluginOptions = {
     apiKey: string
     indexId: string
   }
-  cloud?: CloudConfig,
-  searchbox?: { [key:string]: any }
-  searchButton?: { [key:string]: any }
+  cloud?: CloudConfig
+  searchbox?: { [key: string]: any }
+  searchButton?: { [key: string]: any }
 }
 
 export default function OramaPluginDocusaurus(
@@ -310,12 +310,11 @@ async function deployData({
   oramaDocs: any[]
   generatedFilesDir: string
   version: string
-  deployConfig?:
-    {
-      indexId: string
-      oramaCloudAPIKey: string | undefined
-      type: DeployType | false
-    }
+  deployConfig?: {
+    indexId: string
+    oramaCloudAPIKey: string | undefined
+    type: DeployType | false
+  }
 }) {
   const { ORAMA_CLOUD_BASE_URL } = process.env
   const baseUrl = ORAMA_CLOUD_BASE_URL || 'https://cloud.orama.com'

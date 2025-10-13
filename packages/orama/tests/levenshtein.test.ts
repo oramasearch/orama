@@ -173,11 +173,14 @@ t.test('syncBoundedLevenshtein substrings are ok even if with tolerance pppppp',
 
   t.match(boundedLevenshtein('Crxy', 'Caig', 3), { isBounded: true, distance: 3 })
 
-  t.match(boundedLevenshtein('Christopher', 'Chris' , 0), { isBounded: false, distance: -1 })
+  t.match(boundedLevenshtein('Christopher', 'Chris', 0), { isBounded: false, distance: -1 })
 
   t.match(boundedLevenshtein('Christopher', 'Chris', 1), { isBounded: false, distance: -1 })
   // To return true, the prefix must be within tolerance
-  t.match(boundedLevenshtein('Christopher', 'Chris', 'Christopher'.length - 'Chris'.length), { isBounded: true, distance: 6 })
+  t.match(boundedLevenshtein('Christopher', 'Chris', 'Christopher'.length - 'Chris'.length), {
+    isBounded: true,
+    distance: 6
+  })
 
   t.end()
 })
@@ -215,45 +218,57 @@ t.test('Issue #744', async (t) => {
     term: searchTerm
   })
   t.equal(s1.count, 2)
-  t.strictSame(s1.hits.map(h => h.id), ['1', '2'])
+  t.strictSame(
+    s1.hits.map((h) => h.id),
+    ['1', '2']
+  )
 
   const s2 = await search(index, {
     term: searchTerm,
-    tolerance: 0,
+    tolerance: 0
   })
   t.equal(s2.count, 2)
-  t.strictSame(s2.hits.map(h => h.id), ['1', '2'])
+  t.strictSame(
+    s2.hits.map((h) => h.id),
+    ['1', '2']
+  )
 
   const s3 = await search(index, {
     term: searchTerm,
-    tolerance: 1,
+    tolerance: 1
   })
   t.equal(s3.count, 2)
-  t.strictSame(s3.hits.map(h => h.id), ['1', '2'])
+  t.strictSame(
+    s3.hits.map((h) => h.id),
+    ['1', '2']
+  )
 
   const s4 = await search(index, {
     term: searchTerm,
-    tolerance: 2,
+    tolerance: 2
   })
   t.equal(s4.count, 4)
-  t.strictSame(s4.hits.map(h => h.id), ['3', '4', '1', '2'])
+  t.strictSame(
+    s4.hits.map((h) => h.id),
+    ['3', '4', '1', '2']
+  )
 })
 
 // https://github.com/oramasearch/orama/issues/797
-t.test('Issue #797', async t => {
+t.test('Issue #797', async (t) => {
   const db = await create({
     schema: {
-        name: 'string'
+      name: 'string'
     } as const
   })
   await insertMultiple(db, [
-    { id: '1', name: "S" },
-    { id: '2', name: "Scroll" },
+    { id: '1', name: 'S' },
+    { id: '2', name: 'Scroll' }
   ])
 
   const res = await search(db, {
-    term: "scrol",
-    tolerance: 1,
+    term: 'scrol',
+    tolerance: 1
   })
 
   t.equal(res.count, 1)

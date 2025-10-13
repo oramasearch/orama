@@ -12,22 +12,22 @@ export type PluginEmbeddingsParams = {
   }
 }
 
-function getPropertyValue (obj: object, path: string) {
-  return path.split('.').reduce((current, key) => 
-    current && current[key] !== undefined ? current[key] : undefined, obj
-  )
+function getPropertyValue(obj: object, path: string) {
+  return path
+    .split('.')
+    .reduce((current, key) => (current && current[key] !== undefined ? current[key] : undefined), obj)
 }
 
 function getPropertiesValues(schema: object, properties: string[]) {
   return properties
-    .map(prop => getPropertyValue(schema, prop))
-    .filter(value => value !== undefined)
+    .map((prop) => getPropertyValue(schema, prop))
+    .filter((value) => value !== undefined)
     .join('. ')
 }
 
 function normalizeVector(v: number[]): number[] {
-  const norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0));
-  return v.map(val => val / norm);
+  const norm = Math.sqrt(v.reduce((sum, val) => sum + val * val, 0))
+  return v.map((val) => val / norm)
 }
 
 export const embeddingsType = 'vector[512]'
@@ -80,7 +80,7 @@ export async function pluginEmbeddings(pluginParams: PluginEmbeddingsParams): Pr
           value: normalizeVector(embeddings)
         }
       }
- 
+
       console.log({
         vector: normalizeVector(embeddings)
       })

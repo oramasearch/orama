@@ -345,7 +345,7 @@ t.test('enum[]', async (t) => {
         })
       }
     })
-    
+
     const testsContainsAny = [
       { values: ['green'], expected: [cGreenBlue, cGreen] },
       { values: ['blue'], expected: [cGreenBlue, cBlue] },

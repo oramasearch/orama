@@ -55,12 +55,12 @@ export async function restoreFromFile<T extends AnyOrama>(
   }
 
   const data = await _fs.readFile(path)
-  
+
   // Handle new binary format that stores data as binary instead of hex
   if (format === 'binary' && data instanceof Buffer) {
     return restoreFromBinaryData(data, runtime)
   }
-  
+
   return restore(format, data, runtime)
 }
 
@@ -150,7 +150,7 @@ async function persistToFileStreaming<T extends AnyOrama>(
   runtime: Runtime
 ): Promise<void> {
   const dbExport = await save(db)
-  
+
   switch (format) {
     case 'json':
       await streamJsonToFile(dbExport, filePath, runtime)
@@ -179,10 +179,10 @@ async function streamJsonToFile(data: any, filePath: string, runtime: Runtime): 
   if (runtime === 'node') {
     const fs = await import('node:fs')
     const { createWriteStream } = fs
-    
+
     return new Promise((resolve, reject) => {
       const stream = createWriteStream(filePath)
-      
+
       // For very large objects, we need to stringify in chunks
       // This is a simplified approach - in production you might want to use
       // a streaming JSON library
@@ -212,17 +212,17 @@ async function streamJsonToFile(data: any, filePath: string, runtime: Runtime): 
 function streamLargeJsonToFile(data: any, stream: any, resolve: () => void, reject: (error: any) => void): void {
   try {
     stream.write('{')
-    
+
     let isFirst = true
     for (const [key, value] of Object.entries(data)) {
       if (!isFirst) {
         stream.write(',')
       }
       isFirst = false
-      
+
       // Write key
       stream.write(`"${key}":`)
-      
+
       // For large values, try to stringify them separately
       try {
         const valueStr = JSON.stringify(value)
@@ -233,7 +233,7 @@ function streamLargeJsonToFile(data: any, stream: any, resolve: () => void, reje
         stream.write('null')
       }
     }
-    
+
     stream.write('}')
     stream.end()
     stream.on('finish', resolve)
@@ -248,14 +248,14 @@ async function streamBinaryToFile(data: any, filePath: string, runtime: Runtime)
   if (runtime === 'node') {
     const fs = await import('node:fs')
     const { createWriteStream } = fs
-    
+
     return new Promise((resolve, reject) => {
       const stream = createWriteStream(filePath)
-      
+
       try {
         // Encode to msgpack first
         const msgpack = encode(data)
-        
+
         // Instead of converting to hex string, write binary data directly
         // This avoids the 2x size increase from hex encoding
         const buffer = Buffer.from(msgpack.buffer, msgpack.byteOffset, msgpack.byteLength)
@@ -276,18 +276,15 @@ async function streamBinaryToFile(data: any, filePath: string, runtime: Runtime)
 }
 
 // Helper function to restore from binary data directly
-async function restoreFromBinaryData<T extends AnyOrama>(
-  data: Buffer,
-  runtime: Runtime
-): Promise<T> {
+async function restoreFromBinaryData<T extends AnyOrama>(data: Buffer, runtime: Runtime): Promise<T> {
   const db = create({
     schema: {
       __placeholder: 'string'
     }
   })
-  
+
   const deserialized = decode(data) as any
   load(db, deserialized)
-  
+
   return db as unknown as T
 }

@@ -1,5 +1,14 @@
 import t from 'tap'
-import { formatBytes, formatNanoseconds, getOwnProperty, getNested, flattenObject, setUnion, setIntersection, isAsyncFunction } from '../src/utils.js'
+import {
+  formatBytes,
+  formatNanoseconds,
+  getOwnProperty,
+  getNested,
+  flattenObject,
+  setUnion,
+  setIntersection,
+  isAsyncFunction
+} from '../src/utils.js'
 
 t.test('utils', async (t) => {
   t.test('should correctly format bytes', async (t) => {
@@ -98,7 +107,7 @@ t.test('utils', async (t) => {
 
   // This test is skipped because the implementation of isAsyncFunction is temporary and will be
   // removed in a future version of Orama.
-  t.skip('should correctly detect an async function', t => {
+  t.skip('should correctly detect an async function', (t) => {
     async function asyncFunction() {
       return 'async'
     }
@@ -119,7 +128,7 @@ t.test('utils', async (t) => {
   })
 })
 
-t.test('setUnion', async t => {
+t.test('setUnion', async (t) => {
   const set1 = new Set([1, 2, 3])
   const set2 = new Set([2, 3, 4])
 
@@ -128,7 +137,7 @@ t.test('setUnion', async t => {
   t.strictSame(setUnion(set2, set1), new Set([1, 2, 3, 4]))
 })
 
-t.test('setIntersection', async t => {
+t.test('setIntersection', async (t) => {
   const set1 = new Set([1, 2, 3])
   const set2 = new Set([2, 3, 4])
   const set3 = new Set([2, 3, 5])

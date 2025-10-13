@@ -336,7 +336,7 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
       ser.serializeString(key)
       ser.serializeString(index.type || '')
       ser.serializeBoolean(index.isArray || false)
-      
+
       // Inline index node serialization
       const node = index.node || {}
       if (index.type === 'Radix') {
@@ -345,13 +345,13 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
         ser.serializeString(node.s || '')
         ser.serializeBoolean(node.e || false)
         ser.serializeString(node.k || '')
-        
+
         const d = node.d || []
         ser.serializeUInt32(d.length)
         for (let j = 0; j < d.length; j++) {
           ser.serializeNumber(d[j])
         }
-        
+
         const c = node.c || []
         ser.serializeUInt32(c.length)
         for (let j = 0; j < c.length; j++) {
@@ -366,7 +366,7 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
         for (let j = 0; j < ntdi.length; j++) {
           const [key, ids] = ntdi[j]
           ser.serializeString(String(key))
-          const stringIds = Array.isArray(ids) ? ids.map(id => String(id)) : []
+          const stringIds = Array.isArray(ids) ? ids.map((id) => String(id)) : []
           ser.serializeUInt32(stringIds.length)
           for (let k = 0; k < stringIds.length; k++) {
             ser.serializeString(stringIds[k])
@@ -400,7 +400,7 @@ export function serializeOramaInstance<T extends AnyOrama>(db: T): ArrayBuffer {
   // Use function calls for the most complex nested structures only
   serializeFrequencies(ser, raw.index?.frequencies || {})
   serializeTokenOccurrences(ser, raw.index?.tokenOccurrences || {})
-  
+
   // Inline serialize avgFieldLength
   const avgFL = raw.index?.avgFieldLength || {}
   const avgKeys = Object.keys(avgFL)
@@ -486,7 +486,7 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
 
       if (arrayInfo & 0x80000000) {
         // High bit set = array
-        const len = arrayInfo & 0x7FFFFFFF
+        const len = arrayInfo & 0x7fffffff
         const arr = new Array(len)
         for (let k = 0; k < len; k++) {
           arr[k] = des.deserializeString()
@@ -509,24 +509,24 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
     const key = des.deserializeString()
     const type = des.deserializeString()
     const isArray = des.deserializeBoolean()
-    
+
     // Inline index node deserialization
     const nodeType = des.deserializeUInt32()
     let node: any
-    
+
     if (nodeType === 1) {
       // Radix node
       const w = des.deserializeString()
       const s = des.deserializeString()
       const e = des.deserializeBoolean()
       const k = des.deserializeString()
-      
+
       const dLen = des.deserializeUInt32()
       const d = new Array(dLen)
       for (let j = 0; j < dLen; j++) {
         d[j] = des.deserializeNumber()
       }
-      
+
       const cLen = des.deserializeUInt32()
       const c = new Array(cLen)
       for (let j = 0; j < cLen; j++) {
@@ -534,7 +534,7 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
         const child = deserializeIndexNode(des) // Keep recursion for children
         c[j] = [cKey, child]
       }
-      
+
       node = { w, s, e, k, d, c }
     } else if (nodeType === 2) {
       // Flat node
@@ -576,7 +576,7 @@ export function deserializeOramaInstance(buffer: ArrayBuffer): RawData {
   // Keep function calls for complex nested structures
   const frequencies = deserializeFrequencies(des)
   const tokenOccurrences = deserializeTokenOccurrences(des)
-  
+
   // Inline deserialize avgFieldLength
   const avgFLLen = des.deserializeUInt32()
   const avgFieldLength: any = {}

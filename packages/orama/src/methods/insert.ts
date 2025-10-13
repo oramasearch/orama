@@ -54,7 +54,7 @@ async function innerInsertAsync<T extends AnyOrama>(
   }
 
   const internalId = getInternalDocumentId(orama.internalDocumentIDStore, id)
-  
+
   if (!skipHooks) {
     await runSingleHook(orama.beforeInsert, orama, id, doc as TypedDocument<T>)
   }
@@ -106,7 +106,7 @@ function innerInsertSync<T extends AnyOrama>(
   if (!skipHooks) {
     runSingleHook(orama.beforeInsert, orama, id, doc as TypedDocument<T>)
   }
-  
+
   if (!orama.documentsStore.store(docs, id, internalId, doc)) {
     throw createError('DOCUMENT_ALREADY_EXISTS', id)
   }

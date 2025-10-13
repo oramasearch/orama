@@ -1,5 +1,15 @@
 import t from 'tap'
-import { create, insert, insertMultiple, insertPin, updatePin, deletePin, getPin, getAllPins, search } from '../src/index.js'
+import {
+  create,
+  insert,
+  insertMultiple,
+  insertPin,
+  updatePin,
+  deletePin,
+  getPin,
+  getAllPins,
+  search
+} from '../src/index.js'
 import type { PinRule } from '../src/components/pinning.js'
 import type { TokenScore } from '../src/types.js'
 import { applyPinningRules } from '../src/components/pinning-manager.js'

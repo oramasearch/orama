@@ -1276,7 +1276,9 @@ export interface ArrayCallbackComponents<T extends AnyOrama> {
 }
 
 export type Components<T extends AnyOrama, TSchema, TIndex, TDocumentStore, TSorter, TPinning> = Partial<
-  ObjectComponents<TIndex, TDocumentStore, TSorter, TPinning> & FunctionComponents<TSchema> & SingleOrArrayCallbackComponents<T>
+  ObjectComponents<TIndex, TDocumentStore, TSorter, TPinning> &
+    FunctionComponents<TSchema> &
+    SingleOrArrayCallbackComponents<T>
 >
 
 export const kInsertions = Symbol('orama.insertions')
@@ -1352,7 +1354,13 @@ export type Orama<
   TSorter = ISorter<Sorter>,
   TPinning = IPinning<AnyPinningStore>
 > = FunctionComponents<TSchema> &
-  Internals<TSchema, AnyGenericIndex<TIndex>, AnyGenericDocumentStore<TDocumentStore>, AnyGenericSorter<TSorter>, AnyGenericPinning<TPinning>> &
+  Internals<
+    TSchema,
+    AnyGenericIndex<TIndex>,
+    AnyGenericDocumentStore<TDocumentStore>,
+    AnyGenericSorter<TSorter>,
+    AnyGenericPinning<TPinning>
+  > &
   ArrayCallbackComponents<any> &
   OramaID & { plugins: OramaPlugin[] }
 

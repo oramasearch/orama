@@ -86,7 +86,13 @@ export function create<
   components,
   id,
   plugins
-}: CreateArguments<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>): Orama<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning> {
+}: CreateArguments<OramaSchema, TIndex, TDocumentStore, TSorter, TPinning>): Orama<
+  OramaSchema,
+  TIndex,
+  TDocumentStore,
+  TSorter,
+  TPinning
+> {
   if (!components) {
     components = {}
   }
@@ -99,7 +105,9 @@ export function create<
       continue
     }
 
-    const pluginComponents = plugin.getComponents(schema) as Partial<ObjectComponents<TIndex, TDocumentStore, TSorter, TPinning>>
+    const pluginComponents = plugin.getComponents(schema) as Partial<
+      ObjectComponents<TIndex, TDocumentStore, TSorter, TPinning>
+    >
 
     const keys = Object.keys(pluginComponents)
     for (const key of keys) {
