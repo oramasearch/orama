@@ -25,7 +25,7 @@ t.test('boosting', async (t) => {
     })
 
     const { hits: hits1 } = await search(db, {
-      term: 'computer for browsing and movies',
+      term: 'computer for browsing and movies'
     })
 
     const { hits: hits2 } = await search(db, {

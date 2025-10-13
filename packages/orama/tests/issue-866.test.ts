@@ -50,7 +50,7 @@ t.test('issue-866: exact search should only match exact terms', async (t) => {
     })
 
     t.equal(result.count, 2, 'Should match exactly two documents with lowercase "first"')
-    const paths = result.hits.map(h => h.document.path).sort()
+    const paths = result.hits.map((h) => h.document.path).sort()
     t.strictSame(paths, ['another first file.md', 'first note.md'], 'Should match only lowercase versions')
   })
 
@@ -101,7 +101,7 @@ t.test('issue-866: exact search should only match exact terms', async (t) => {
     })
 
     t.equal(result.count, 2, 'Should match two documents with lowercase "test"')
-    const names = result.hits.map(h => h.document.name).sort()
+    const names = result.hits.map((h) => h.document.name).sort()
     t.strictSame(names, ['test', 'test again'], 'Should match only lowercase versions')
   })
 })

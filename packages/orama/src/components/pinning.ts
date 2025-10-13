@@ -34,14 +34,18 @@ function create(sharedInternalDocumentStore: InternalDocumentIDStore): PinningSt
 
 function addRule(store: PinningStore, rule: PinRule): void {
   if (store.rules.has(rule.id)) {
-    throw new Error(`PINNING_RULE_ALREADY_EXISTS: A pinning rule with id "${rule.id}" already exists. Use updateRule to modify it.`)
+    throw new Error(
+      `PINNING_RULE_ALREADY_EXISTS: A pinning rule with id "${rule.id}" already exists. Use updateRule to modify it.`
+    )
   }
   store.rules.set(rule.id, rule)
 }
 
 function updateRule(store: PinningStore, rule: PinRule): void {
   if (!store.rules.has(rule.id)) {
-    throw new Error(`PINNING_RULE_NOT_FOUND: Cannot update pinning rule with id "${rule.id}" because it does not exist. Use addRule to create it.`)
+    throw new Error(
+      `PINNING_RULE_NOT_FOUND: Cannot update pinning rule with id "${rule.id}" because it does not exist. Use addRule to create it.`
+    )
   }
   store.rules.set(rule.id, rule)
 }

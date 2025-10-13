@@ -8,7 +8,7 @@ import {
   searchWithHighlight
 } from '../src/index.js'
 
-t.test('it should store the position of tokens', async t => {
+t.test('it should store the position of tokens', async (t) => {
   const db = create({
     schema: {
       text: 'string'
@@ -28,7 +28,7 @@ t.test('it should store the position of tokens', async t => {
   })
 })
 
-t.test('it should manage nested schemas', async t => {
+t.test('it should manage nested schemas', async (t) => {
   const schema = {
     other: {
       text: 'string'
@@ -44,7 +44,7 @@ t.test('it should manage nested schemas', async t => {
   })
 })
 
-t.test("it shouldn't stem tokens", async t => {
+t.test("it shouldn't stem tokens", async (t) => {
   const schema = {
     text: 'string'
   } as const
@@ -67,7 +67,7 @@ t.test("it shouldn't stem tokens", async t => {
   })
 })
 
-t.test('should retrieve positions', async t => {
+t.test('should retrieve positions', async (t) => {
   const schema = {
     text: 'string'
   } as const
@@ -80,7 +80,7 @@ t.test('should retrieve positions', async t => {
   t.same(results.hits[0].positions, { text: { hello: [{ start: 0, length: 5 }] } })
 })
 
-t.test('should retrieve positions also with typo, if tolerance is used', async t => {
+t.test('should retrieve positions also with typo, if tolerance is used', async (t) => {
   const schema = {
     title: 'string',
     summary: 'string',
@@ -108,7 +108,7 @@ t.test('should retrieve positions also with typo, if tolerance is used', async t
   })
 })
 
-t.test('should work with texts containing constructor and __proto__ properties', async t => {
+t.test('should work with texts containing constructor and __proto__ properties', async (t) => {
   const schema = {
     text: 'string'
   } as const
@@ -124,7 +124,7 @@ t.test('should work with texts containing constructor and __proto__ properties',
   })
 })
 
-t.test('should correctly save and load data with positions', async t => {
+t.test('should correctly save and load data with positions', async (t) => {
   const schema = {
     text: 'string'
   } as const

@@ -34,7 +34,6 @@ import { createTokenizer } from '../src/components/tokenizer/index.js'
 
 t.test('Tokenizer', async (t) => {
   t.test('should tokenize and stem correctly in english', async (t) => {
-
     const tokenizer = await createTokenizer({ language: 'english', stopWords: false, stemming: true })
 
     const I1 = 'the quick brown fox jumps over the lazy dog'

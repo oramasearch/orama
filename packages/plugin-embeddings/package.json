@@ -2,12 +2,7 @@
   "name": "@orama/plugin-embeddings",
   "version": "3.1.16",
   "description": "Orama plugin for generating embeddings locally",
-  "keywords": [
-    "orama",
-    "embeddings",
-    "secure proxy",
-    "vector search"
-  ],
+  "keywords": ["orama", "embeddings", "secure proxy", "vector search"],
   "license": "Apache-2.0",
   "main": "./dist/index.js",
   "type": "module",
@@ -29,9 +24,7 @@
   },
   "sideEffects": false,
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup --config tsup.lib.js",
     "lint": "exit 0",

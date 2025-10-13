@@ -2,13 +2,7 @@
   "name": "@orama/plugin-astro",
   "description": "An Astro integration for Orama",
   "version": "3.1.16",
-  "keywords": [
-    "astro",
-    "astro-component",
-    "cms",
-    "orama",
-    "search"
-  ],
+  "keywords": ["astro", "astro-component", "cms", "orama", "search"],
   "repository": "https://github.com/oramasearch/orama",
   "author": {
     "name": "Andres Correa Casablanca",
@@ -29,9 +23,7 @@
     }
   },
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "dev": "swc --delete-dir-on-start -s -w --extensions .ts -d dist src",
     "build": "swc --delete-dir-on-start --extensions .ts -d dist src",

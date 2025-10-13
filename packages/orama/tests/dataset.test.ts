@@ -1,253 +1,240 @@
-import t from "tap";
-import { readFileSync } from "node:fs";
-import { stopwords as englishStopwords } from "@orama/stopwords/english";
-import { DocumentsStore } from "../src/components/documents-store.js";
-import {
-  AnyDocument,
-  create,
-  insertMultiple,
-  remove,
-  Results,
-  search,
-} from "../src/index.js";
+import t from 'tap'
+import { readFileSync } from 'node:fs'
+import { stopwords as englishStopwords } from '@orama/stopwords/english'
+import { DocumentsStore } from '../src/components/documents-store.js'
+import { AnyDocument, create, insertMultiple, remove, Results, search } from '../src/index.js'
 
-const dataset = JSON.parse(
-  readFileSync(new URL("./datasets/events.json", import.meta.url), "utf-8"),
-) as EventJson;
+const dataset = JSON.parse(readFileSync(new URL('./datasets/events.json', import.meta.url), 'utf-8')) as EventJson
 
-const snapshots = JSON.parse(
-  readFileSync(new URL("./snapshots/events.json", import.meta.url), "utf-8"),
-) as Record<string, Results<AnyDocument>>;
+const snapshots = JSON.parse(readFileSync(new URL('./snapshots/events.json', import.meta.url), 'utf-8')) as Record<
+  string,
+  Results<AnyDocument>
+>
 
 type EventJson = {
   result: {
     events: {
-      date: string;
-      description: string;
-      granularity: string;
-      category1: string;
-      category2: string;
-    }[];
-  };
-};
+      date: string
+      description: string
+      granularity: string
+      category1: string
+      category2: string
+    }[]
+  }
+}
 
-function removeVariadicData(
-  res: Results<AnyDocument>,
-): Omit<Results<AnyDocument>, "elapsed"> {
+function removeVariadicData(res: Results<AnyDocument>): Omit<Results<AnyDocument>, 'elapsed'> {
   const hits = res.hits.map((h) => {
-    h.id = "";
-    return h;
-  });
+    h.id = ''
+    return h
+  })
 
   return {
     count: res.count,
-    hits,
-  };
+    hits
+  }
 }
 
-t.test("orama.dataset", async (t) => {
+t.test('orama.dataset', async (t) => {
   const db = await create({
     schema: {
-      date: "string",
-      description: "string",
-      granularity: "string",
+      date: 'string',
+      description: 'string',
+      granularity: 'string',
       categories: {
-        first: "string",
-        second: "string",
-      },
+        first: 'string',
+        second: 'string'
+      }
     } as const,
     sort: {
-      enabled: false,
+      enabled: false
     },
     components: {
       tokenizer: {
         stemming: true,
-        stopWords: englishStopwords,
-      },
-    },
-  });
+        stopWords: englishStopwords
+      }
+    }
+  })
 
   const events = (dataset as EventJson).result.events.map((ev) => ({
     date: ev.date,
     description: ev.description,
     granularity: ev.granularity,
     categories: {
-      first: ev.category1 ?? "",
-      second: ev.category2 ?? "",
-    },
-  }));
+      first: ev.category1 ?? '',
+      second: ev.category2 ?? ''
+    }
+  }))
 
-  await insertMultiple(db, events);
+  await insertMultiple(db, events)
 
-  t.test("should correctly populate the database with a large dataset", async (t) => {
+  t.test('should correctly populate the database with a large dataset', async (t) => {
     const s1 = await search(db, {
-      term: "august",
+      term: 'august',
       exact: true,
-      properties: ["categories.first"],
+      properties: ['categories.first'],
       limit: 10,
-      offset: 0,
-    });
+      offset: 0
+    })
 
     const s2 = await search(db, {
-      term: "january, june",
+      term: 'january, june',
       exact: true,
-      properties: ["categories.first"],
+      properties: ['categories.first'],
       limit: 10,
-      offset: 0,
-    });
+      offset: 0
+    })
 
     const s3 = await search(db, {
-      term: "january/june",
+      term: 'january/june',
       exact: true,
-      properties: ["categories.first"],
+      properties: ['categories.first'],
       limit: 10,
-      offset: 0,
-    });
+      offset: 0
+    })
 
-    t.equal(
-      Object.keys((db.data.docs as DocumentsStore).docs).length,
-      (dataset as EventJson).result.events.length,
-    );
+    t.equal(Object.keys((db.data.docs as DocumentsStore).docs).length, (dataset as EventJson).result.events.length)
     // Note: counts changed after adding case-sensitive exact matching in issue #866
-    t.equal(s1.count, 0); // "War" (capitalized) doesn't match "war" (lowercase) with exact: true
-    t.equal(s2.count, 0); // Same reason
-    t.equal(s3.count, 0); // Same reason
+    t.equal(s1.count, 0) // "War" (capitalized) doesn't match "war" (lowercase) with exact: true
+    t.equal(s2.count, 0) // Same reason
+    t.equal(s3.count, 0) // Same reason
 
-    t.end();
-  });
+    t.end()
+  })
 
   //  Tests for https://github.com/oramasearch/orama/issues/159
-  t.test("should correctly search long strings", async (t) => {
+  t.test('should correctly search long strings', async (t) => {
     const s1 = await search(db, {
-      term: "e into the",
-      properties: ["description"],
-    });
+      term: 'e into the',
+      properties: ['description']
+    })
 
     const s2 = await search(db, {
-      term: "The Roman armies",
-      properties: ["description"],
-    });
+      term: 'The Roman armies',
+      properties: ['description']
+    })
 
     const s3 = await search(db, {
-      term: "the King of Epirus, is taken",
-      properties: ["description"],
-    });
+      term: 'the King of Epirus, is taken',
+      properties: ['description']
+    })
 
-    t.equal(s1.count, 14979);
-    t.equal(s2.count, 2926);
-    t.equal(s3.count, 3332);
+    t.equal(s1.count, 14979)
+    t.equal(s2.count, 2926)
+    t.equal(s3.count, 3332)
 
-    t.end();
-  });
+    t.end()
+  })
 
-  t.test("should perform paginate search", async (t) => {
+  t.test('should perform paginate search', async (t) => {
     const s1 = removeVariadicData(
       await search(db, {
-        term: "war",
+        term: 'war',
         exact: true,
         // eslint-disable-next-line
         // @ts-ignore
-        properties: ["description"],
+        properties: ['description'],
         limit: 10,
-        offset: 0,
-      }),
-    );
+        offset: 0
+      })
+    )
 
     const s2 = removeVariadicData(
       await search(db, {
-        term: "war",
+        term: 'war',
         exact: true,
-        properties: ["description"],
+        properties: ['description'],
         limit: 10,
-        offset: 10,
-      }),
-    );
+        offset: 10
+      })
+    )
 
     const s3 = removeVariadicData(
       await search(db, {
-        term: "war",
+        term: 'war',
         exact: true,
-        properties: ["description"],
+        properties: ['description'],
         limit: 10,
-        offset: 20,
-      }),
-    );
+        offset: 20
+      })
+    )
 
     const s4 = await search(db, {
-      term: "war",
+      term: 'war',
       exact: true,
-      properties: ["description"],
+      properties: ['description'],
       limit: 2240,
-      offset: 0,
-    });
+      offset: 0
+    })
 
     const s5 = await search(db, {
-      term: "war",
+      term: 'war',
       exact: true,
-      properties: ["description"],
+      properties: ['description'],
       limit: 10,
-      offset: 2239,
-    });
+      offset: 2239
+    })
 
-    if (typeof process !== "undefined" && process.env.GENERATE_SNAPSHOTS) {
-      const { writeFile } = await import("node:fs/promises");
-      const { fileURLToPath } = await import("node:url");
+    if (typeof process !== 'undefined' && process.env.GENERATE_SNAPSHOTS) {
+      const { writeFile } = await import('node:fs/promises')
+      const { fileURLToPath } = await import('node:url')
       await writeFile(
-        fileURLToPath(new URL("./snapshots/events.json", import.meta.url)),
+        fileURLToPath(new URL('./snapshots/events.json', import.meta.url)),
         JSON.stringify(
           {
             [`${t.name}-page-1`]: s1,
             [`${t.name}-page-2`]: s2,
-            [`${t.name}-page-3`]: s3,
+            [`${t.name}-page-3`]: s3
           },
           null,
-          2,
+          2
         ),
-        "utf-8",
-      );
+        'utf-8'
+      )
 
-      t.ok(s1);
-      t.ok(s2);
-      t.ok(s3);
+      t.ok(s1)
+      t.ok(s2)
+      t.ok(s3)
     } else {
-      t.strictSame(s1, snapshots[`${t.name}-page-1`]);
-      t.strictSame(s2, snapshots[`${t.name}-page-2`]);
-      t.strictSame(s3, snapshots[`${t.name}-page-3`]);
+      t.strictSame(s1, snapshots[`${t.name}-page-1`])
+      t.strictSame(s2, snapshots[`${t.name}-page-2`])
+      t.strictSame(s3, snapshots[`${t.name}-page-3`])
     }
 
     // Note: counts changed after adding case-sensitive exact matching in issue #866
-    t.equal(s4.count, 679); // Only lowercase "war" matches, not "War"
-    t.equal(s5.hits.length, 0); // No results at offset 2239 with only 679 total results
+    t.equal(s4.count, 679) // Only lowercase "war" matches, not "War"
+    t.equal(s5.hits.length, 0) // No results at offset 2239 with only 679 total results
 
-    t.end();
-  });
+    t.end()
+  })
 
-  t.test("should correctly delete documents", async (t) => {
+  t.test('should correctly delete documents', async (t) => {
     const documentsToDelete = await search(db, {
-      term: "war",
+      term: 'war',
       exact: true,
-      properties: ["description"],
+      properties: ['description'],
       limit: 10,
-      offset: 0,
-    });
+      offset: 0
+    })
 
     for (const doc of documentsToDelete.hits) {
-      await remove(db, doc.id);
+      await remove(db, doc.id)
     }
 
     const newSearch = await search(db, {
-      term: "war",
+      term: 'war',
       exact: true,
-      properties: ["description"],
+      properties: ['description'],
       limit: 10,
-      offset: 0,
-    });
+      offset: 0
+    })
 
     // Note: counts changed after adding case-sensitive exact matching in issue #866
-    t.equal(newSearch.count, 669); // Only lowercase "war" matches, not "War", and after deleting 10 docs
+    t.equal(newSearch.count, 669) // Only lowercase "war" matches, not "War", and after deleting 10 docs
 
-    t.end();
-  });
+    t.end()
+  })
 
-  t.end();
-});
+  t.end()
+})

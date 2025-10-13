@@ -1,16 +1,15 @@
-import { AnyIndexStore, AnyOrama, SearchableType, Tokenizer } from "@orama/orama"
+import { AnyIndexStore, AnyOrama, SearchableType, Tokenizer } from '@orama/orama'
 import { avl, bkd, flat, bool, vector } from '@orama/orama/trees'
-import {
-  getVectorSize, internalDocumentIDStore, isVectorType } from '@orama/orama/components'
+import { getVectorSize, internalDocumentIDStore, isVectorType } from '@orama/orama/components'
 
-type InternalDocumentID = internalDocumentIDStore.InternalDocumentID;
+type InternalDocumentID = internalDocumentIDStore.InternalDocumentID
 
-export type TreeType = 'AVL' | 'Radix' | 'Bool' | 'Flat' | 'BKD';
+export type TreeType = 'AVL' | 'Radix' | 'Bool' | 'Flat' | 'BKD'
 export type TTree<T = TreeType, N = unknown> = {
-    type: T;
-    node: N;
-    isArray: boolean;
-};
+  type: T
+  node: N
+  isArray: boolean
+}
 export type Tree =
   // We don't store strings inside a tree
   // | TTree<'Radix', radix.RadixNode>
@@ -18,7 +17,7 @@ export type Tree =
   | TTree<'AVL', avl.AVLTree<number, InternalDocumentID[]>>
   | TTree<'Bool', bool.BoolNode>
   | TTree<'Flat', flat.FlatTree>
-  | TTree<'BKD', bkd.BKDTree>;
+  | TTree<'BKD', bkd.BKDTree>
 
 const MAX_POSITION = 15
 export type PositionStorage = Record<string, number[]>
@@ -38,7 +37,7 @@ export type PositionsStorage = [
   PositionStorage,
   PositionStorage,
   PositionStorage,
-  PositionStorage,
+  PositionStorage
 ]
 
 export interface PT15IndexStore extends AnyIndexStore {
@@ -52,7 +51,11 @@ function create_obj() {
   return Object.create(null)
 }
 
-export function recursiveCreate<T extends AnyOrama>(indexDatastore: PT15IndexStore, schema: T['schema'], prefix: string) {
+export function recursiveCreate<T extends AnyOrama>(
+  indexDatastore: PT15IndexStore,
+  schema: T['schema'],
+  prefix: string
+) {
   for (const [prop, type] of Object.entries<SearchableType>(schema)) {
     const path = `${prefix}${prefix ? '.' : ''}${prop}`
 
@@ -68,7 +71,7 @@ export function recursiveCreate<T extends AnyOrama>(indexDatastore: PT15IndexSto
       indexDatastore.vectorIndexes[path] = {
         type: 'Vector',
         node: new vector.VectorIndex(getVectorSize(type)),
-        isArray: false,
+        isArray: false
       }
     } else {
       const isArray = /\[/.test(type as string)
@@ -79,27 +82,35 @@ export function recursiveCreate<T extends AnyOrama>(indexDatastore: PT15IndexSto
           break
         case 'number':
         case 'number[]':
-          indexDatastore.indexes[path] = { type: 'AVL', node: new avl.AVLTree<number, InternalDocumentID[]>(0, []), isArray }
+          indexDatastore.indexes[path] = {
+            type: 'AVL',
+            node: new avl.AVLTree<number, InternalDocumentID[]>(0, []),
+            isArray
+          }
           break
         case 'string':
         case 'string[]':
-          indexDatastore.indexes[path] = { type: 'Position', node: [
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-            create_obj(),
-          ], isArray }
+          indexDatastore.indexes[path] = {
+            type: 'Position',
+            node: [
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj(),
+              create_obj()
+            ],
+            isArray
+          }
           break
         case 'enum':
         case 'enum[]':
@@ -124,7 +135,7 @@ export function insertString(
   prop: string,
   internalId: InternalDocumentID,
   language: string | undefined,
-  tokenizer: Tokenizer,
+  tokenizer: Tokenizer
 ) {
   const tokens = tokenizer.tokenize(value, language, prop)
   const tokensLength = tokens.length
@@ -148,7 +159,7 @@ export function get_position(n: number, totalLength: number) {
     return n
   }
   // Scale
-  return Math.floor(n * MAX_POSITION / totalLength) 
+  return Math.floor((n * MAX_POSITION) / totalLength)
 }
 
 export function searchString(
@@ -156,7 +167,7 @@ export function searchString(
   term: string,
   positionsStorage: PositionsStorage,
   boostPerProp: number,
-  whereFiltersIDs: Set<InternalDocumentID> | undefined,
+  whereFiltersIDs: Set<InternalDocumentID> | undefined
 ) {
   const tokens = tokenizer.tokenize(term)
 
@@ -193,7 +204,7 @@ export function removeString(
   prop: string,
   internalId: InternalDocumentID,
   tokenizer: Tokenizer,
-  language: string | undefined,
+  language: string | undefined
 ) {
   const tokens = tokenizer.tokenize(value, language, prop)
   const tokensLength = tokens.length
@@ -215,5 +226,4 @@ export function removeString(
       }
     }
   }
-
 }

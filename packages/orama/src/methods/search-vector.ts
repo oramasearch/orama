@@ -25,7 +25,7 @@ export function innerVectorSearch<T extends AnyOrama, ResultDocument = TypedDocu
   if (!vectorIndex) {
     throw createError('UNKNOWN_VECTOR_PROPERTY', vector!.property)
   }
-  
+
   const vectorSize = vectorIndex.node.size
 
   if (vector?.value.length !== vectorSize) {
@@ -53,8 +53,7 @@ export function searchVector<T extends AnyOrama, ResultDocument = TypedDocument<
   const timeStart = getNanosecondsTime()
 
   function performSearchLogic(): Results<ResultDocument> {
-    let results = innerVectorSearch(orama, params, language)
-      .sort(sortTokenScorePredicate)
+    let results = innerVectorSearch(orama, params, language).sort(sortTokenScorePredicate)
 
     // Apply pinning rules after sorting but before pagination
     results = applyPinningRules(orama, orama.data.pinning, results, undefined)

@@ -48,7 +48,7 @@ async function compile(lang, jsExtension, tsExtension, moduleType) {
     jsc: { target: 'es2022' }
   })
 
-  const minified = await minify(compiled.code, { sourceMap: true, module: moduleType !== "commonjs" })
+  const minified = await minify(compiled.code, { sourceMap: true, module: moduleType !== 'commonjs' })
 
   await writeFile(resolve(destinationDir, `${lang}.${jsExtension}`), minified.code, 'utf-8')
   await writeFile(resolve(destinationDir, `${lang}.${jsExtension}.map`), minified.map, 'utf-8')

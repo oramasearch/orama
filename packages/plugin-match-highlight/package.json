@@ -2,13 +2,7 @@
   "name": "@orama/plugin-match-highlight",
   "version": "3.1.16",
   "description": "Orama plugin for search match highlighting",
-  "keywords": [
-    "full-text search",
-    "search",
-    "fuzzy search",
-    "typo-tolerant search",
-    "full-text"
-  ],
+  "keywords": ["full-text search", "search", "fuzzy search", "typo-tolerant search", "full-text"],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -29,9 +23,7 @@
     }
   },
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "tsup --config tsup.lib.js",
     "lint": "exit 0",
