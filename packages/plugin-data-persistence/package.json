@@ -1,6 +1,6 @@
 {
   "name": "@orama/plugin-data-persistence",
-  "version": "3.1.16",
+  "version": "3.1.17",
   "description": "Data persistence plugin for Orama",
   "type": "module",
   "sideEffects": false,
@@ -20,7 +20,9 @@
     }
   },
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "swc --delete-dir-on-start -s -w --extensions .ts,.cts -d dist src",
     "build": "swc --delete-dir-on-start --extensions .ts,.cts -d dist src",
@@ -28,7 +30,11 @@
     "test": "c8 -c test/config/c8.json tap test/*.test.ts",
     "benchmark": "tsx benchmark/index.ts"
   },
-  "keywords": ["orama", "disk persistence", "full-text search"],
+  "keywords": [
+    "orama",
+    "disk persistence",
+    "full-text search"
+  ],
   "author": {
     "email": "michele@orama.com",
     "name": "Michele Riva",
