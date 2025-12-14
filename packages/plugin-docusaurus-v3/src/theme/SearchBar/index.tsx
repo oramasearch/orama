@@ -72,6 +72,18 @@ export function OramaSearchNoDocs() {
   )
 }
 
+function getVersionName(version: string | { name: string } | null): string | undefined {
+  if (!version) {
+    return undefined
+  }
+
+  if (typeof version === 'string') {
+    return version
+  }
+
+  return version.name
+}
+
 export function OramaSearchWithDocs({ pluginId }: { pluginId: string }) {
   const colorMode = getColorMode()
   const { searchBoxConfig, searchBtnConfig } = useOrama()
@@ -79,7 +91,7 @@ export function OramaSearchWithDocs({ pluginId }: { pluginId: string }) {
   const versions = useVersions(pluginId)
   const activeVersion = useActiveVersion(pluginId)
   const preferredVersion = getPreferredVersion(searchBoxConfig.basic.clientInstance)
-  const currentVersion = activeVersion || preferredVersion || versions[0]
+  const currentVersion = getVersionName(activeVersion) || getVersionName(preferredVersion) || getVersionName(versions[0]);
 
   const searchParams = {
     ...(currentVersion && {
