@@ -285,3 +285,5 @@ Write your own plugin: [https://docs.orama.com/docs/orama-js/plugins/writing-you
 # License
 
 Orama is licensed under the [Apache 2.0](/LICENSE.md) license.
+
+<img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=16782f89-15fb-4e03-8e9c-2a06106542f7" />

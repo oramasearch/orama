@@ -139,6 +139,7 @@
     "@orama/stopwords": "workspace:*",
     "@oramacloud/client": "1.3.14",
     "@playwright/test": "^1.29.2",
+    "@scarf/scarf": "^1.4.0",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.27",
     "@types/node": "^20.9.0",
