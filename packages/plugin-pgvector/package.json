@@ -1,0 +1,64 @@
+{
+  "name": "@orama/plugin-pgvector",
+  "version": "1.0.0",
+  "description": "Orama plugin for using pgvector (PostgreSQL) as a vector database backend with full document persistence",
+  "keywords": [
+    "orama",
+    "pgvector",
+    "postgresql",
+    "vector database",
+    "vector search",
+    "embeddings"
+  ],
+  "license": "Apache-2.0",
+  "main": "./dist/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.global.js"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/oramasearch/orama/issues"
+  },
+  "homepage": "https://github.com/oramasearch/orama#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oramasearch/orama.git"
+  },
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup --config tsup.lib.js",
+    "lint": "exit 0",
+    "test": "node test/pgvector-test.js",
+    "test:quick": "node test/quick-test.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@orama/orama": "workspace:*",
+    "@types/node": "^20.9.0",
+    "@types/pg": "^8.10.0",
+    "dotenv": "^16.3.0",
+    "tap": "^18.0.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "pg": "^8.11.0",
+    "pgvector": "^0.1.0"
+  },
+  "engines": {
+    "node": ">= 20.0.0"
+  }
+}
