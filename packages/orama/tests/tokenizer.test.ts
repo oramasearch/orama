@@ -14,6 +14,7 @@ import { stemmer as spanishStemmer, language as spanishLanguage } from '@orama/s
 import { stemmer as swedishStemmer, language as swedishLanguage } from '@orama/stemmers/swedish'
 import { stemmer as ukrainianStemmer, language as ukrainianLanguage } from '@orama/stemmers/ukrainian'
 import { stemmer as tamilStemmer, language as tamilLanguage } from '@orama/stemmers/tamil'
+import { stemmer as vietnameseStemmer, language as vietnameseLanguage } from '@orama/stemmers/vietnamese'
 
 import { stopwords as danishStopwords } from '@orama/stopwords/danish'
 import { stopwords as dutchStopwords } from '@orama/stopwords/dutch'
@@ -29,6 +30,7 @@ import { stopwords as spanishStopwords } from '@orama/stopwords/spanish'
 import { stopwords as swedishStopwords } from '@orama/stopwords/swedish'
 import { stopwords as ukrainianStopwords } from '@orama/stopwords/ukrainian'
 import { stopwords as tamilStopwords } from '@orama/stopwords/tamil'
+import { stopwords as vietnameseStopwords } from '@orama/stopwords/vietnamese'
 
 import { createTokenizer } from '../src/components/tokenizer/index.js'
 
@@ -334,6 +336,23 @@ t.test('Tokenizer', async (t) => {
 
     t.strictSame(O1, ['тест', 'не', 'проход', 'спат', 'важк'])
     t.strictSame(O2, ['я', 'приготувал', 'тістечк'])
+  })
+
+  t.test('should tokenize and stem correctly in vietnamese', async (t) => {
+    const tokenizer = await createTokenizer({
+      language: vietnameseLanguage,
+      stemmer: vietnameseStemmer,
+      stopWords: vietnameseStopwords
+    })
+
+    const I1 = 'Tìm kiếm tài liệu trong thư viện'
+    const I2 = 'Học lập trình là một việc thú vị'
+
+    const O1 = tokenizer.tokenize(I1)
+    const O2 = tokenizer.tokenize(I2)
+
+    t.strictSame(O1, ['tìm', 'kiếm', 'tài', 'liệu', 'thư', 'viện'])
+    t.strictSame(O2, ['học', 'lập', 'trình', 'thú', 'vị'])
   })
 
   t.test('should tokenize and stem correctly in bulgarian', async (t) => {

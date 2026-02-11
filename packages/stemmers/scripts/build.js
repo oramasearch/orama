@@ -40,6 +40,7 @@ const stemmers = {
   tamil: 'ta',
   turkish: 'tr',
   ukrainian: 'uk',
+  vietnamese: 'vi',
   sanskrit: 'sk'
 }
 
