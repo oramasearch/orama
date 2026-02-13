@@ -35,7 +35,7 @@
     "@orama/searchbox": "1.0.0-beta.13",
     "@vitejs/plugin-vue": "^4.5.1",
     "jsdom": "^23.0.1",
-    "markdown-it": "^13.0.2",
+    "markdown-it": "^14.1.1",
     "slugify": "^1.6.6",
     "vite": "^4.5.14"
   },
