@@ -25,6 +25,16 @@
         "default": "./dist/commonjs/mandarin.js"
       }
     },
+    "./korean": {
+      "import": {
+        "types": "./dist/esm/korean.d.ts",
+        "default": "./dist/esm/korean.js"
+      },
+      "require": {
+        "types": "./dist/commonjs/korean.d.ts",
+        "default": "./dist/commonjs/korean.js"
+      }
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {
@@ -42,7 +52,7 @@
   },
   "scripts": {
     "build": "tshy",
-    "test": "tsx ./tests/japanese.test.ts && tsx ./tests/mandarin.test.ts"
+    "test": "tsx ./tests/japanese.test.ts && tsx ./tests/mandarin.test.ts && tsx ./tests/korean.test.ts"
   },
   "keywords": [
     "full-text search",
@@ -54,7 +64,8 @@
     "stemming",
     "tokenizers",
     "mandarin",
-    "chinese"
+    "chinese",
+    "korean"
   ],
   "author": {
     "name": "Michele Riva",
@@ -74,6 +85,7 @@
     "exports": {
       "./japanese": "./src/japanese.ts",
       "./mandarin": "./src/mandarin.ts",
+      "./korean": "./src/korean.ts",
       "./package.json": "./package.json"
     }
   },
