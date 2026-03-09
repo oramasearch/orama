@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content'
+import { getCollection, render } from 'astro:content'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -8,7 +8,7 @@ export async function getStaticPaths() {
     return {
       params: {
         blog: 'blog',
-        inner: 'inner-path/' + post.slug
+        inner: 'inner-path/' + post.id
       },
       props: { post }
     }
@@ -16,8 +16,9 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props
+const { Content } = await render(post)
 ---
 
 <div class="content">
-  {post.body}
+  <Content />
 </div>

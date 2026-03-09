@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@orama/plugin-astro": "^@VERSION@",
-    "astro": "^2.0.2"
+    "astro": "^5.0.0"
   },
   "pnpm": {
     "overrides": {

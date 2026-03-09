@@ -1,6 +1,6 @@
 import type { AnyOrama, Orama, SearchParams } from '@orama/orama'
 import { create as createOramaDB, insert as insertIntoOramaDB, save as saveOramaDB } from '@orama/orama'
-import type { AstroIntegration, RouteData } from 'astro'
+import type { AstroIntegration } from 'astro'
 import { compile } from 'html-to-text'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -47,7 +47,7 @@ const h1Converter = compile({
 async function prepareOramaDb(
   dbConfig: OramaOptions,
   pages: AstroPage[],
-  routes: RouteData[],
+  assets: Map<string, (URL | string)[]>,
   dir: URL
 ): Promise<Orama<PageIndexSchema, any, any, any>> {
   const contentConverter = compile({
@@ -58,18 +58,17 @@ async function prepareOramaDb(
 
   // All routes are in the same folder, we can use the first one to get the basePath
   const basePath = dir.pathname.slice(isWindows ? 1 : 0)
-  // Create a dist urls
-  const distUrls = routes.flatMap((r) => r.distURL)
+  // Collect all asset file paths from the assets map (values may be URL objects or strings)
+  const assetPaths = [...assets.values()].flat().map((p) => (typeof p === 'string' ? p : p.pathname))
   const pathsToBeIndexed = pages
-    .filter(({ pathname }) => dbConfig.pathMatcher.test(pathname))
+    .filter(({ pathname }) => dbConfig.pathMatcher.test(`/${pathname}`))
     .map(({ pathname }) => {
       // Some pages like 404 are generated as 404.html while others are usually pageName/index.html
-      const matchingPathname = distUrls
-        .find((url) => url?.pathname.endsWith(pathname.replace(/\/$/, '') + '.html'))
-        ?.pathname?.slice(isWindows ? 1 : 0)
+      const matchingPath = assetPaths
+        .find((p) => p.endsWith(pathname.replace(/\/$/, '') + '.html'))
       return {
         pathname,
-        generatedFilePath: matchingPathname ?? `${basePath}${pathname.replace(/\/+$/, '')}/index.html`
+        generatedFilePath: matchingPath ?? `${basePath}${pathname.replace(/\/+$/, '')}/index.html`
       }
     })
     .filter(({ generatedFilePath }) => !!generatedFilePath)
@@ -105,16 +104,16 @@ export function createPlugin(options: Record<string, OramaOptions>): AstroIntegr
   return {
     name: PKG_NAME,
     hooks: {
-      'astro:build:done': async function ({ pages, routes, dir }): Promise<void> {
+      'astro:build:done': async function ({ pages, assets, dir }): Promise<void> {
         const assetsDir = joinPath(dir.pathname, 'assets').slice(isWindows ? 1 : 0)
         if (!existsSync(assetsDir)) {
           mkdirSync(assetsDir)
         }
 
         for (const [dbName, dbConfig] of Object.entries(options)) {
-          const namedDb = await prepareOramaDb(dbConfig, pages, routes, dir)
+          const namedDb = await prepareOramaDb(dbConfig, pages, assets, dir)
 
-          writeFileSync(joinPath(assetsDir, `oramaDB_${dbName}.json`), JSON.stringify(await saveOramaDB(namedDb)), {
+          writeFileSync(joinPath(assetsDir, `oramaDB_${dbName}.json`), JSON.stringify(saveOramaDB(namedDb)), {
             encoding: 'utf8'
           })
         }
