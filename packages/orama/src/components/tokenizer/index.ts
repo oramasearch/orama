@@ -2,7 +2,7 @@ import type { Optional } from '../../types.js'
 import { createError } from '../../errors.js'
 import { Stemmer, Tokenizer, DefaultTokenizerConfig } from '../../types.js'
 import { replaceDiacritics } from './diacritics.js'
-import { Language, SPLITTERS, SUPPORTED_LANGUAGES } from './languages.js'
+import { Language, SPLITTERS, SUPPORTED_LANGUAGES, LANGUAGES_WITH_SIGNIFICANT_DIACRITICS } from './languages.js'
 import { stemmer as english } from './english-stemmer.js'
 
 export interface DefaultTokenizer extends Tokenizer {
@@ -36,7 +36,9 @@ export function normalizeToken(this: DefaultTokenizer, prop: string, token: stri
     token = this.stemmer(token)
   }
 
-  token = replaceDiacritics(token)
+  if (!LANGUAGES_WITH_SIGNIFICANT_DIACRITICS.has(this.language)) {
+    token = replaceDiacritics(token)
+  }
   if (withCache) {
     this.normalizationCache.set(key, token)
   }

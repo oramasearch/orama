@@ -73,3 +73,8 @@ export function getLocale(language: string | undefined) {
 }
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]
+
+// Languages whose diacritics are semantically significant (e.g. Vietnamese tone marks).
+// Their tokens must not be folded to ASCII during tokenization, otherwise distinct
+// words collapse together (e.g. "tài" -> "tai") and search quality breaks.
+export const LANGUAGES_WITH_SIGNIFICANT_DIACRITICS = new Set<Language>(['vietnamese'])
