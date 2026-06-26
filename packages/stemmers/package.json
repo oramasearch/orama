@@ -142,6 +142,11 @@
       "import": "./dist/uk.js",
       "require": "./dist/uk.cjs"
     },
+    "./vietnamese": {
+      "types": "./dist/vi.d.ts",
+      "import": "./dist/vi.js",
+      "require": "./dist/vi.cjs"
+    },
     "./sanskrit": {
       "types": "./dist/sk.d.ts",
       "import": "./dist/sk.js",
