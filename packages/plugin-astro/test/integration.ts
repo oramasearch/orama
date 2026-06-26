@@ -81,6 +81,7 @@ await test('plugin is able to generate orama DB at build time', async () => {
   assert.ok(existsSync(resolve(sandbox, 'dist', 'assets', 'oramaDB_animals.json')))
   assert.ok(existsSync(resolve(sandbox, 'dist', 'assets', 'oramaDB_games.json')))
   assert.ok(existsSync(resolve(sandbox, 'dist', 'assets', 'oramaDB_dynamic.json')))
+  assert.ok(existsSync(resolve(sandbox, 'dist', 'assets', 'oramaDB_leadingSlash.json')))
 })
 
 await test('generated DBs have indexed pages content', async () => {
@@ -108,6 +109,12 @@ await test('generated DBs have indexed pages content', async () => {
   const allSiteDB = await createOramaDB({ schema: { _: 'string' } })
   await loadOramaDB(allSiteDB, allSiteData as any)
 
+  // Loading "leadingSlash DB"
+  const rawLeadingSlashData = await readFile(resolve(sandbox, 'dist/assets/oramaDB_leadingSlash.json'), 'utf8')
+  const leadingSlashData = JSON.parse(rawLeadingSlashData)
+  const leadingSlashDB = await createOramaDB({ schema: { _: 'string' } })
+  await loadOramaDB(leadingSlashDB, leadingSlashData as any)
+
   // Search results seem reasonable
   const catSearchResult = await search(animalsDB, { term: 'cat' })
   assert.ok(catSearchResult.count === 1)
@@ -131,6 +138,17 @@ await test('generated DBs have indexed pages content', async () => {
   // pathMatcher works on dynamic pages
   const dynamicTestMissingSearchResult = await search(dynamicDB, { term: 'ninja' })
   assert.ok(dynamicTestMissingSearchResult.count === 0)
+
+  // The leading-slash-anchored matcher (/^\/animals_cat\//) matches because since
+  // Astro 5 the plugin tests pathMatcher against `/${pathname}`. Only the
+  // /animals_cat/ page is collected into this DB.
+  const leadingSlashCatResult = await search(leadingSlashDB, { term: 'cat' })
+  assert.ok(leadingSlashCatResult.count === 1)
+  assert.ok((leadingSlashCatResult.hits[0].document as unknown as { path: string }).path === '/animals_cat/')
+
+  // No other page is indexed by the anchored matcher
+  const leadingSlashDogResult = await search(leadingSlashDB, { term: 'dog' })
+  assert.ok(leadingSlashDogResult.count === 0)
 })
 
 if (!process.env.KEEP_SANDBOX_ASTRO) {
