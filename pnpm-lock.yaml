@@ -155,7 +155,7 @@ importers:
         version: 17.0.1
       tap:
         specifier: ^18.7.1
-        version: 18.8.0(@swc/core@1.13.3)(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)(typescript@5.9.2)
+        version: 18.8.0(@swc/core@1.13.3)(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)(typescript@5.9.2)
       tap-mocha-reporter:
         specifier: ^5.0.3
         version: 5.0.4
@@ -474,15 +474,6 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
-      next:
-        specifier: ^14.2.30
-        version: 14.2.32(@playwright/test@1.54.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
     devDependencies:
       '@swc/cli':
         specifier: ^0.1.59
@@ -490,6 +481,21 @@ importers:
       '@swc/core':
         specifier: ^1.3.27
         version: 1.13.3
+      '@types/react':
+        specifier: ^19.2.0
+        version: 19.2.2
+      '@types/react-dom':
+        specifier: ^19.2.0
+        version: 19.2.3(@types/react@19.2.2)
+      next:
+        specifier: ^16.1.5
+        version: 16.2.9(@playwright/test@1.54.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.0(react@19.2.0)
       typescript:
         specifier: ^5.0.0
         version: 5.9.2
@@ -785,13 +791,13 @@ importers:
     dependencies:
       '@docusaurus/core':
         specifier: 3.9.1
-        version: 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+        version: 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/preset-classic':
         specifier: 3.9.1
-        version: 3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)
+        version: 3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)
       '@docusaurus/utils':
         specifier: ^3.9.1
-        version: 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        version: 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@mdx-js/react':
         specifier: ^3.0.0
         version: 3.1.0(@types/react@19.2.2)(react@19.2.0)
@@ -3600,59 +3606,53 @@ packages:
     resolution: {integrity: sha512-xJIPs+bYuc9ASBl+cvGsKbGrJmS6fAKaSZCnT0lhahT5rhA2VVy9/EcIgd2JhtEuFOJNx7UHNn/qiTPTY4nrQw==}
     engines: {node: '>= 10'}
 
-  '@next/env@14.2.32':
-    resolution: {integrity: sha512-n9mQdigI6iZ/DF6pCTwMKeWgF2e8lg7qgt5M7HXMLtyhZYMnf/u905M18sSpPmHL9MKp9JHo56C6jrD2EvWxng==}
+  '@next/env@16.2.9':
+    resolution: {integrity: sha512-ki5VxxXfzD/9TDe13wyeTKIjQTAwBVpnr8KhRDUr8ltMUq1/NBpWNT5tiPoxiGl+PHM4X2ahSOiPk6iAimIzPg==}
 
-  '@next/swc-darwin-arm64@14.2.32':
-    resolution: {integrity: sha512-osHXveM70zC+ilfuFa/2W6a1XQxJTvEhzEycnjUaVE8kpUS09lDpiDDX2YLdyFCzoUbvbo5r0X1Kp4MllIOShw==}
+  '@next/swc-darwin-arm64@16.2.9':
+    resolution: {integrity: sha512-HkfxNYUCmcct0Xsqib5KxqMSHV4AHJq857BNRchyBDs4YS19aHzVfn1kDuBYKqLLQBjXgnkIsjV2Kd4d2wzYhw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@14.2.32':
-    resolution: {integrity: sha512-P9NpCAJuOiaHHpqtrCNncjqtSBi1f6QUdHK/+dNabBIXB2RUFWL19TY1Hkhu74OvyNQEYEzzMJCMQk5agjw1Qg==}
+  '@next/swc-darwin-x64@16.2.9':
+    resolution: {integrity: sha512-7IAtK4MeybpqRV9GRABWEhJ62mOS+rzWOzOTFie4cSEtm12xsoOMJRcECoZx3FHPzFAqN/IJtHqWAFOLfl152w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@14.2.32':
-    resolution: {integrity: sha512-v7JaO0oXXt6d+cFjrrKqYnR2ubrD+JYP7nQVRZgeo5uNE5hkCpWnHmXm9vy3g6foMO8SPwL0P3MPw1c+BjbAzA==}
+  '@next/swc-linux-arm64-gnu@16.2.9':
+    resolution: {integrity: sha512-hBD75iWpUtkL9SmQmcRhmLomn9jgkPzCEkbOcLgHymPEKzv+6ONy13RRiIEz/iEObjkS2Jlb5gYS2XGoS3X4rw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-musl@14.2.32':
-    resolution: {integrity: sha512-tA6sIKShXtSJBTH88i0DRd6I9n3ZTirmwpwAqH5zdJoQF7/wlJXR8DkPmKwYl5mFWhEKr5IIa3LfpMW9RRwKmQ==}
+  '@next/swc-linux-arm64-musl@16.2.9':
+    resolution: {integrity: sha512-qZTI3pf9SGc/obr8NkQAekBxmp1QK+kVm+VAf3BALLfFAj+1kUhkTxmrWpVos9R/UYIA8AWX2p6cGI5WdwzVUA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-x64-gnu@14.2.32':
-    resolution: {integrity: sha512-7S1GY4TdnlGVIdeXXKQdDkfDysoIVFMD0lJuVVMeb3eoVjrknQ0JNN7wFlhCvea0hEk0Sd4D1hedVChDKfV2jw==}
+  '@next/swc-linux-x64-gnu@16.2.9':
+    resolution: {integrity: sha512-xm0HfRNX+UkH4R3c18ynswjj5o5uEj/7iI9p9omdtTSIsRCzQqkGMA+10nzJ4EHnYC3as65IMhbbl5fWRUWHYg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-musl@14.2.32':
-    resolution: {integrity: sha512-OHHC81P4tirVa6Awk6eCQ6RBfWl8HpFsZtfEkMpJ5GjPsJ3nhPe6wKAJUZ/piC8sszUkAgv3fLflgzPStIwfWg==}
+  '@next/swc-linux-x64-musl@16.2.9':
+    resolution: {integrity: sha512-QumimHkGEG6vM3PfEDWKyKen03NcqLOkeKB1EfcPe7VxzmEiCa4jNnMyBn/US5zcd/VE1CI+O8Ovb3lfjVHfGw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-win32-arm64-msvc@14.2.32':
-    resolution: {integrity: sha512-rORQjXsAFeX6TLYJrCG5yoIDj+NKq31Rqwn8Wpn/bkPNy5rTHvOXkW8mLFonItS7QC6M+1JIIcLe+vOCTOYpvg==}
+  '@next/swc-win32-arm64-msvc@16.2.9':
+    resolution: {integrity: sha512-hzQpKZvw8rAwI6A2uQh6SacCSvNAXaIkPNsWwzqqfRiIMiXMfH936skDhz1OO6KpvdKkJrgHHtqQOq5PIXOvdQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-ia32-msvc@14.2.32':
-    resolution: {integrity: sha512-jHUeDPVHrgFltqoAqDB6g6OStNnFxnc7Aks3p0KE0FbwAvRg6qWKYF5mSTdCTxA3axoSAUwxYdILzXJfUwlHhA==}
-    engines: {node: '>= 10'}
-    cpu: [ia32]
-    os: [win32]
-
-  '@next/swc-win32-x64-msvc@14.2.32':
-    resolution: {integrity: sha512-2N0lSoU4GjfLSO50wvKpMQgKd4HdI2UHEhQPPPnlgfBJlOgJxkjpkYBqzk08f1gItBB6xF/n+ykso2hgxuydsA==}
+  '@next/swc-win32-x64-msvc@16.2.9':
+    resolution: {integrity: sha512-qr2VL3Ce5QrwgO2yh1ujSBawrimjVKX8FGF/cOynmdYKJY0BdHpGVNIRK1tqONB10Vkm25Ub1BD2bkjWs4+96w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -4375,8 +4375,8 @@ packages:
   '@swc/counter@0.1.3':
     resolution: {integrity: sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ==}
 
-  '@swc/helpers@0.5.5':
-    resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
+  '@swc/helpers@0.5.15':
+    resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
   '@swc/types@0.1.24':
     resolution: {integrity: sha512-tjTMh3V4vAORHtdTprLlfoMptu1WfTZG9Rsca6yOKyNYsRr+MUXutKmliB17orgSZk5DpnDxs8GUdd/qwYxOng==}
@@ -4912,6 +4912,11 @@ packages:
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
+  '@types/react-dom@19.2.3':
+    resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
+    peerDependencies:
+      '@types/react': ^19.2.0
+
   '@types/react-router-config@5.0.11':
     resolution: {integrity: sha512-WmSAg7WgqW7m4x8Mt4N6ZyKz0BubSj/2tVUMsAHp+Yd2AMwcSbeFq9WympT19p5heCFmF97R9eD5uUR/t4HEqw==}
 
@@ -4923,9 +4928,6 @@ packages:
 
   '@types/react@18.3.20':
     resolution: {integrity: sha512-IPaCZN7PShZK/3t6Q87pfTkRm6oLTd4vztyoj+cbHUF1g3FfVb2tFIL79uCRKEfv16AhqDMBywP2VW3KIZUvcg==}
-
-  '@types/react@19.1.10':
-    resolution: {integrity: sha512-EhBeSYX0Y6ye8pNebpKrwFJq7BoQ8J5SO6NlvNwwHjSj6adXJViPQrKlsyPw7hLBLvckEMO1yxeGdR82YBBlDg==}
 
   '@types/react@19.2.2':
     resolution: {integrity: sha512-6mDvHUFSjyT2B2yeNx2nUgMxh9LtOWvkhIU3uePn2I2oyNymUAX1NIsdgviM4CH+JSrp2D2hsMvJOkxY+0wNRA==}
@@ -5637,6 +5639,11 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
+  baseline-browser-mapping@2.10.40:
+    resolution: {integrity: sha512-BSSLZ9/Cjjv7Gtj5B68ZzXcXUg8iOf3fme+FCuh8rC/Go+Kmh8cox7M3A8dolou16s64QjLPOSdngh7GxXvkSw==}
+    engines: {node: '>=6.0.0'}
+    hasBin: true
+
   batch@0.6.1:
     resolution: {integrity: sha512-x+VAiMRL6UPkx+kudNvxTl6hB2XNNCG2r+7wixVfIYwu/2HKRXimwQyaumLjMveWvT2Hkd/cAJw+QBMfJ/EKVw==}
 
@@ -5747,10 +5754,6 @@ packages:
     peerDependencies:
       esbuild: '>=0.17'
 
-  busboy@1.6.0:
-    resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
-    engines: {node: '>=10.16.0'}
-
   bytes@3.0.0:
     resolution: {integrity: sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw==}
     engines: {node: '>= 0.8'}
@@ -5859,9 +5862,6 @@ packages:
 
   caniuse-lite@1.0.30001715:
     resolution: {integrity: sha512-7ptkFGMm2OAOgvZpwgA4yjQ5SQbrNVGdRjzH0pBdy1Fasvcr+KAeECmbCAECzTuDuoX0FCY8KzUxjf9+9kfZEw==}
-
-  caniuse-lite@1.0.30001723:
-    resolution: {integrity: sha512-1R/elMjtehrFejxwmexeXAtae5UO9iSyFn6G/I806CYC/BLyyBk1EPhrKBkWhy6wM6Xnm47dSJQec+tLJ39WHw==}
 
   caniuse-lite@1.0.30001735:
     resolution: {integrity: sha512-EV/laoX7Wq2J9TQlyIXRxTJqIw4sxfXS4OYgudGxBYRuTv0q7AM6yMEpU/Vo1I94thg9U6EZ2NfZx9GJq83u7w==}
@@ -9572,20 +9572,23 @@ packages:
     resolution: {integrity: sha512-Z4SmBUweYa09+o6pG+eASabEpP6QkQ70yHj351pQoEXIs8uHbaU2DWVmzBANKgflPa47A50PtB2+NgRpQvr7vA==}
     engines: {node: '>= 10'}
 
-  next@14.2.32:
-    resolution: {integrity: sha512-fg5g0GZ7/nFc09X8wLe6pNSU8cLWbLRG3TZzPJ1BJvi2s9m7eF991se67wliM9kR5yLHRkyGKU49MMx58s3LJg==}
-    engines: {node: '>=18.17.0'}
+  next@16.2.9:
+    resolution: {integrity: sha512-MEOJiq/UvuezAdqVSceHbqDgZt1kDw2tpGVOlsdIoJsQdbN2JY2hpVG4xnXGkbdJUOEWhnRfiu/O4Hpc9Juwww==}
+    engines: {node: '>=20.9.0'}
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
-      '@playwright/test': ^1.41.2
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      '@playwright/test': ^1.51.1
+      babel-plugin-react-compiler: '*'
+      react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+      react-dom: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
       sass: ^1.3.0
     peerDependenciesMeta:
       '@opentelemetry/api':
         optional: true
       '@playwright/test':
+        optional: true
+      babel-plugin-react-compiler:
         optional: true
       sass:
         optional: true
@@ -10987,11 +10990,6 @@ packages:
     peerDependencies:
       react: 17.0.2
 
-  react-dom@18.3.1:
-    resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
-    peerDependencies:
-      react: ^18.3.1
-
   react-dom@19.2.0:
     resolution: {integrity: sha512-UlbRu4cAiGaIewkPyiRGJk0imDN2T3JjieT6spoL2UeSf5od4n5LB/mQ4ejmxhCFT1tYe8IvaFulzynWovsEFQ==}
     peerDependencies:
@@ -11979,10 +11977,6 @@ packages:
     resolution: {integrity: sha512-eLoXW/DHyl62zxY4SCaIgnRhuMr6ri4juEYARS8E6sCEqzKpOiE521Ucofdx+KnDZl5xmvGYaaKCk5FEOxJCoQ==}
     engines: {node: '>= 0.4'}
 
-  streamsearch@1.1.0:
-    resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
-    engines: {node: '>=10.0.0'}
-
   streamx@2.23.0:
     resolution: {integrity: sha512-kn+e44esVfn2Fa/O0CPFcex27fjIL6MkVae0Mm6q+E6f0hWv578YCERbv+4m02cjxvDsPKLnmxral/rR6lBMAg==}
 
@@ -12112,13 +12106,13 @@ packages:
   style-to-object@1.0.8:
     resolution: {integrity: sha512-xT47I/Eo0rwJmaXC4oilDGDWLohVhR6o/xAQcPQN8q6QBuZVL8qMYL85kLmST5cPjAorwvqIA4qXTRQoYHaL6g==}
 
-  styled-jsx@5.1.1:
-    resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
+  styled-jsx@5.1.6:
+    resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
       '@babel/core': '*'
       babel-plugin-macros: '*'
-      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0'
+      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0 || ^19.0.0-0'
     peerDependenciesMeta:
       '@babel/core':
         optional: true
@@ -15983,7 +15977,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/babel@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/babel@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@babel/core': 7.28.3
       '@babel/generator': 7.28.3
@@ -15996,7 +15990,7 @@ snapshots:
       '@babel/runtime-corejs3': 7.27.0
       '@babel/traverse': 7.28.3
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       babel-plugin-dynamic-import-node: 2.3.3
       fs-extra: 11.3.0
       tslib: 2.8.1
@@ -16052,14 +16046,14 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/bundler@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/bundler@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
       '@babel/core': 7.28.3
-      '@docusaurus/babel': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/babel': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/cssnano-preset': 3.9.1
       '@docusaurus/logger': 3.9.1
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       babel-loader: 9.2.1(@babel/core@7.28.3)(webpack@5.99.7(@swc/core@1.13.3))
       clean-css: 5.3.3
       copy-webpack-plugin: 11.0.0(webpack@5.99.7(@swc/core@1.13.3))
@@ -16253,15 +16247,15 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@docusaurus/core@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/core@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/babel': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/bundler': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/babel': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/bundler': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@mdx-js/react': 3.1.0(@types/react@19.2.2)(react@19.2.0)
       boxen: 6.2.1
       chalk: 4.1.2
@@ -16419,11 +16413,11 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/mdx-loader@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/mdx-loader@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       '@slorber/remark-comment': 1.0.0
       escape-html: 1.0.3
@@ -16460,7 +16454,7 @@ snapshots:
       '@docusaurus/react-loadable': 5.5.2(react@17.0.2)
       '@docusaurus/types': 2.4.3(@swc/core@1.13.3)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/history': 4.7.11
-      '@types/react': 19.1.10
+      '@types/react': 19.2.2
       '@types/react-router-config': 5.0.11
       '@types/react-router-dom': 5.3.3
       react: 17.0.2
@@ -16478,7 +16472,7 @@ snapshots:
       '@docusaurus/react-loadable': 5.5.2(react@19.2.0)
       '@docusaurus/types': 3.0.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@types/history': 4.7.11
-      '@types/react': 19.1.10
+      '@types/react': 19.2.2
       '@types/react-router-config': 5.0.11
       '@types/react-router-dom': 5.3.3
       react: 19.2.0
@@ -16510,7 +16504,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/module-type-aliases@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/module-type-aliases@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@types/history': 4.7.11
@@ -16567,17 +16561,17 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-content-blog@3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-content-blog@3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       cheerio: 1.0.0-rc.12
       feed: 4.2.2
       fs-extra: 11.3.0
@@ -16688,17 +16682,17 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/module-type-aliases': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/module-type-aliases': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@types/react-router-config': 5.0.11
       combine-promises: 1.2.0
       fs-extra: 11.3.0
@@ -16759,13 +16753,13 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-content-pages@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-content-pages@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fs-extra: 11.3.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -16790,12 +16784,12 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@docusaurus/plugin-css-cascade-layers@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-css-cascade-layers@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       tslib: 2.8.1
     transitivePeerDependencies:
       - '@docusaurus/faster'
@@ -16848,11 +16842,11 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-debug@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-debug@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fs-extra: 11.3.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -16903,11 +16897,11 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-google-analytics@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-google-analytics@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
       tslib: 2.8.1
@@ -16956,11 +16950,11 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-google-gtag@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-google-gtag@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@types/gtag.js': 0.0.12
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -17010,11 +17004,11 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-google-tag-manager@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-google-tag-manager@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
       tslib: 2.8.1
@@ -17068,14 +17062,14 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/plugin-sitemap@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-sitemap@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/logger': 3.9.1
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fs-extra: 11.3.0
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -17100,12 +17094,12 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@docusaurus/plugin-svgr@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/plugin-svgr@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@svgr/core': 8.1.0(typescript@5.9.2)
       '@svgr/webpack': 8.1.0(typescript@5.9.2)
       react: 19.2.0
@@ -17170,22 +17164,22 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/preset-classic@3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)':
+  '@docusaurus/preset-classic@3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-content-blog': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-content-pages': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-css-cascade-layers': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-debug': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-google-analytics': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-google-gtag': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-google-tag-manager': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-sitemap': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-svgr': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/theme-classic': 3.9.1(@swc/core@1.13.3)(@types/react@19.2.2)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/theme-search-algolia': 3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-content-blog': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-content-pages': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-css-cascade-layers': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-debug': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-google-analytics': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-google-gtag': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-google-tag-manager': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-sitemap': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-svgr': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/theme-classic': 3.9.1(@swc/core@1.13.3)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/theme-search-algolia': 3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
@@ -17275,21 +17269,21 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/theme-classic@3.9.1(@swc/core@1.13.3)(@types/react@19.2.2)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
+  '@docusaurus/theme-classic@3.9.1(@swc/core@1.13.3)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)':
     dependencies:
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/module-type-aliases': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/plugin-content-blog': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/plugin-content-pages': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/module-type-aliases': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/plugin-content-blog': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/plugin-content-pages': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/theme-translations': 3.9.1
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@mdx-js/react': 3.1.0(@types/react@19.2.2)(react@19.2.0)
       clsx: 2.1.1
       infima: 0.2.0-alpha.45
@@ -17387,13 +17381,13 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/theme-common@3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/theme-common@3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
-      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/module-type-aliases': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/mdx-loader': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/module-type-aliases': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@types/history': 4.7.11
       '@types/react': 19.2.2
       '@types/react-router-config': 5.0.11
@@ -17454,16 +17448,16 @@ snapshots:
       - vue-template-compiler
       - webpack-cli
 
-  '@docusaurus/theme-search-algolia@3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)':
+  '@docusaurus/theme-search-algolia@3.9.1(@algolia/client-search@5.40.0)(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)(typescript@5.9.2)':
     dependencies:
       '@docsearch/react': 3.9.0(@algolia/client-search@5.40.0)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)
-      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/core': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
-      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/plugin-content-docs': 3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2)
+      '@docusaurus/theme-common': 3.9.1(@docusaurus/plugin-content-docs@3.9.1(@mdx-js/react@3.1.0(@types/react@19.2.2)(react@19.2.0))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.2))(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@docusaurus/theme-translations': 3.9.1
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-validation': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       algoliasearch: 5.40.0
       algoliasearch-helper: 3.26.0(algoliasearch@5.40.0)
       clsx: 2.1.1
@@ -17527,7 +17521,7 @@ snapshots:
   '@docusaurus/types@3.0.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.1.10
+      '@types/react': 19.2.2
       commander: 5.1.0
       joi: 17.13.3
       react: 19.2.0
@@ -17605,7 +17599,7 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/utils-common@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/utils-common@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       tslib: 2.8.1
@@ -17654,11 +17648,11 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/utils-validation@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/utils-validation@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@docusaurus/logger': 3.9.1
-      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       fs-extra: 11.3.0
       joi: 17.13.3
       js-yaml: 4.1.0
@@ -17734,11 +17728,11 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@docusaurus/utils@3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@docusaurus/utils@3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       '@docusaurus/logger': 3.9.1
       '@docusaurus/types': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(acorn@8.15.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@docusaurus/utils-common': 3.9.1(@swc/core@1.13.3)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       escape-string-regexp: 4.0.0
       execa: 5.1.1
       file-loader: 6.2.0(webpack@5.99.7(@swc/core@1.13.3))
@@ -18599,33 +18593,30 @@ snapshots:
       '@napi-rs/nice-win32-x64-msvc': 1.1.1
     optional: true
 
-  '@next/env@14.2.32': {}
+  '@next/env@16.2.9': {}
 
-  '@next/swc-darwin-arm64@14.2.32':
+  '@next/swc-darwin-arm64@16.2.9':
     optional: true
 
-  '@next/swc-darwin-x64@14.2.32':
+  '@next/swc-darwin-x64@16.2.9':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@14.2.32':
+  '@next/swc-linux-arm64-gnu@16.2.9':
     optional: true
 
-  '@next/swc-linux-arm64-musl@14.2.32':
+  '@next/swc-linux-arm64-musl@16.2.9':
     optional: true
 
-  '@next/swc-linux-x64-gnu@14.2.32':
+  '@next/swc-linux-x64-gnu@16.2.9':
     optional: true
 
-  '@next/swc-linux-x64-musl@14.2.32':
+  '@next/swc-linux-x64-musl@16.2.9':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@14.2.32':
+  '@next/swc-win32-arm64-msvc@16.2.9':
     optional: true
 
-  '@next/swc-win32-ia32-msvc@14.2.32':
-    optional: true
-
-  '@next/swc-win32-x64-msvc@14.2.32':
+  '@next/swc-win32-x64-msvc@16.2.9':
     optional: true
 
   '@noble/hashes@1.8.0': {}
@@ -19472,9 +19463,8 @@ snapshots:
 
   '@swc/counter@0.1.3': {}
 
-  '@swc/helpers@0.5.5':
+  '@swc/helpers@0.5.15':
     dependencies:
-      '@swc/counter': 0.1.3
       tslib: 2.8.1
 
   '@swc/types@0.1.24':
@@ -19493,9 +19483,9 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tapjs/after-each@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/after-each@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       function-loop: 4.0.0
 
   '@tapjs/after-each@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
@@ -19518,9 +19508,9 @@ snapshots:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       function-loop: 4.0.0
 
-  '@tapjs/after@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/after@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       is-actual-promise: 1.0.2
 
   '@tapjs/after@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
@@ -19543,12 +19533,12 @@ snapshots:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       is-actual-promise: 1.0.2
 
-  '@tapjs/asserts@1.2.0(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(react-dom@19.2.0(react@19.2.0))(react@18.3.1)':
+  '@tapjs/asserts@1.2.0(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(react-dom@19.2.0(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       '@tapjs/stack': 1.2.8
       is-actual-promise: 1.0.2
-      tcompare: 6.4.6(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      tcompare: 6.4.6(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       trivial-deferred: 2.0.0
     transitivePeerDependencies:
       - react
@@ -19598,9 +19588,9 @@ snapshots:
       - react
       - react-dom
 
-  '@tapjs/before-each@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/before-each@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       function-loop: 4.0.0
 
   '@tapjs/before-each@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
@@ -19623,9 +19613,9 @@ snapshots:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       function-loop: 4.0.0
 
-  '@tapjs/before@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/before@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       is-actual-promise: 1.0.2
 
   '@tapjs/before@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
@@ -19656,10 +19646,10 @@ snapshots:
     dependencies:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
-  '@tapjs/config@2.4.19(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/config@2.4.19(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       chalk: 5.6.0
       jackspeak: 2.3.6
       polite-json: 4.0.1
@@ -19706,11 +19696,11 @@ snapshots:
       tap-yaml: 4.0.0
       walk-up-path: 4.0.0
 
-  '@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)':
+  '@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tapjs/processinfo': 3.1.8
       '@tapjs/stack': 1.2.8
-      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       async-hook-domain: 4.0.1
       diff: 5.2.0
       is-actual-promise: 1.0.2
@@ -19718,7 +19708,7 @@ snapshots:
       signal-exit: 4.1.0
       tap-parser: 15.3.2
       tap-yaml: 2.2.2
-      tcompare: 6.4.6(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      tcompare: 6.4.6(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       trivial-deferred: 2.0.0
     transitivePeerDependencies:
       - '@swc/core'
@@ -19819,9 +19809,9 @@ snapshots:
     dependencies:
       minipass: 7.1.2
 
-  '@tapjs/filter@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/filter@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
 
   '@tapjs/filter@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
@@ -19839,9 +19829,9 @@ snapshots:
     dependencies:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
-  '@tapjs/fixture@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/fixture@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       mkdirp: 3.0.1
       rimraf: 5.0.10
 
@@ -19869,10 +19859,10 @@ snapshots:
       mkdirp: 3.0.1
       rimraf: 6.0.1
 
-  '@tapjs/intercept@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/intercept@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       '@tapjs/stack': 1.2.8
 
   '@tapjs/intercept@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
@@ -19899,10 +19889,10 @@ snapshots:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@tapjs/stack': 4.0.0
 
-  '@tapjs/mock@1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/mock@1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       '@tapjs/stack': 1.2.8
       resolve-import: 1.4.6
       walk-up-path: 3.0.1
@@ -19939,9 +19929,9 @@ snapshots:
       resolve-import: 2.0.0
       walk-up-path: 4.0.0
 
-  '@tapjs/node-serialize@1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/node-serialize@1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       '@tapjs/error-serdes': 1.2.2
       '@tapjs/stack': 1.2.8
       tap-parser: 15.3.2
@@ -19981,10 +19971,10 @@ snapshots:
       signal-exit: 4.1.0
       uuid: 8.3.2
 
-  '@tapjs/reporter@1.3.20(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))':
+  '@tapjs/reporter@1.3.20(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/react@19.2.2)(react-dom@19.2.0(react@18.3.1))':
     dependencies:
-      '@tapjs/config': 2.4.19(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/config': 2.4.19(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       '@tapjs/stack': 1.2.8
       chalk: 5.6.0
       ink: 4.4.1(@types/react@19.2.2)(react@18.3.1)
@@ -19996,7 +19986,7 @@ snapshots:
       string-length: 6.0.0
       tap-parser: 15.3.2
       tap-yaml: 2.2.2
-      tcompare: 6.4.6(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      tcompare: 6.4.6(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@tapjs/test'
       - '@types/react'
@@ -20101,17 +20091,17 @@ snapshots:
       - react-dom
       - utf-8-validate
 
-  '@tapjs/run@1.5.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)':
+  '@tapjs/run@1.5.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/before': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/config': 2.4.19(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/before': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/config': 2.4.19(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       '@tapjs/processinfo': 3.1.8
-      '@tapjs/reporter': 1.3.20(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))
-      '@tapjs/spawn': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/stdin': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/reporter': 1.3.20(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/react@19.2.2)(react-dom@19.2.0(react@18.3.1))
+      '@tapjs/spawn': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/stdin': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       c8: 8.0.1
       chalk: 5.4.1
       chokidar: 3.6.0
@@ -20127,7 +20117,7 @@ snapshots:
       signal-exit: 4.1.0
       tap-parser: 15.3.2
       tap-yaml: 2.2.2
-      tcompare: 6.4.6(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      tcompare: 6.4.6(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       trivial-deferred: 2.0.0
       which: 4.0.0
     transitivePeerDependencies:
@@ -20315,11 +20305,11 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@tapjs/snapshot@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(react-dom@19.2.0(react@19.2.0))(react@18.3.1)':
+  '@tapjs/snapshot@1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(react-dom@19.2.0(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       is-actual-promise: 1.0.2
-      tcompare: 6.4.6(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      tcompare: 6.4.6(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
       trivial-deferred: 2.0.0
     transitivePeerDependencies:
       - react
@@ -20365,9 +20355,9 @@ snapshots:
       - react
       - react-dom
 
-  '@tapjs/spawn@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/spawn@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
 
   '@tapjs/spawn@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
@@ -20389,9 +20379,9 @@ snapshots:
 
   '@tapjs/stack@4.0.0': {}
 
-  '@tapjs/stdin@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/stdin@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
 
   '@tapjs/stdin@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
@@ -20409,25 +20399,25 @@ snapshots:
     dependencies:
       '@tapjs/core': 4.0.1(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
 
-  '@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)':
+  '@tapjs/test@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@isaacs/ts-node-temp-fork-for-pr-2009': 10.9.7(@swc/core@1.13.3)(@types/node@20.19.11)(typescript@5.2.2)
-      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/after-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/asserts': 1.2.0(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/before': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/before-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/filter': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/fixture': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/intercept': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/mock': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/node-serialize': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/snapshot': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/spawn': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/stdin': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/typescript': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(typescript@5.2.2)
-      '@tapjs/worker': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
+      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/after-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/asserts': 1.2.0(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/before': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/before-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/filter': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/fixture': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/intercept': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/mock': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/node-serialize': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/snapshot': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/spawn': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/stdin': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/typescript': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(typescript@5.2.2)
+      '@tapjs/worker': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
       glob: 10.4.5
       jackspeak: 2.3.6
       mkdirp: 3.0.1
@@ -20590,20 +20580,20 @@ snapshots:
       - react
       - react-dom
 
-  '@tapjs/typescript@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(typescript@5.2.2)':
+  '@tapjs/typescript@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(typescript@5.2.2)':
     dependencies:
       '@isaacs/ts-node-temp-fork-for-pr-2009': 10.9.7(@swc/core@1.13.3)(@types/node@20.19.11)(typescript@5.2.2)
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
       - '@types/node'
       - typescript
 
-  '@tapjs/typescript@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(typescript@5.9.2)':
+  '@tapjs/typescript@1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(typescript@5.9.2)':
     dependencies:
       '@isaacs/ts-node-temp-fork-for-pr-2009': 10.9.7(@swc/core@1.13.3)(@types/node@20.19.11)(typescript@5.9.2)
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -20690,9 +20680,9 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@tapjs/worker@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))':
+  '@tapjs/worker@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))':
     dependencies:
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
 
   '@tapjs/worker@1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))':
     dependencies:
@@ -20994,6 +20984,10 @@ snapshots:
 
   '@types/range-parser@1.2.7': {}
 
+  '@types/react-dom@19.2.3(@types/react@19.2.2)':
+    dependencies:
+      '@types/react': 19.2.2
+
   '@types/react-router-config@5.0.11':
     dependencies:
       '@types/history': 4.7.11
@@ -21014,10 +21008,6 @@ snapshots:
   '@types/react@18.3.20':
     dependencies:
       '@types/prop-types': 15.7.14
-      csstype: 3.1.3
-
-  '@types/react@19.1.10':
-    dependencies:
       csstype: 3.1.3
 
   '@types/react@19.2.2':
@@ -22047,6 +22037,8 @@ snapshots:
 
   base64-js@1.5.1: {}
 
+  baseline-browser-mapping@2.10.40: {}
+
   batch@0.6.1: {}
 
   bcp-47-match@2.0.3: {}
@@ -22224,10 +22216,6 @@ snapshots:
       esbuild: 0.18.20
       load-tsconfig: 0.2.5
 
-  busboy@1.6.0:
-    dependencies:
-      streamsearch: 1.1.0
-
   bytes@3.0.0: {}
 
   bytes@3.1.2: {}
@@ -22377,8 +22365,6 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001715: {}
-
-  caniuse-lite@1.0.30001723: {}
 
   caniuse-lite@1.0.30001735: {}
 
@@ -27131,28 +27117,27 @@ snapshots:
 
   neotraverse@0.6.18: {}
 
-  next@14.2.32(@playwright/test@1.54.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@16.2.9(@playwright/test@1.54.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0):
     dependencies:
-      '@next/env': 14.2.32
-      '@swc/helpers': 0.5.5
-      busboy: 1.6.0
-      caniuse-lite: 1.0.30001723
-      graceful-fs: 4.2.11
+      '@next/env': 16.2.9
+      '@swc/helpers': 0.5.15
+      baseline-browser-mapping: 2.10.40
+      caniuse-lite: 1.0.30001735
       postcss: 8.4.31
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      react: 19.2.0
+      react-dom: 19.2.0(react@19.2.0)
+      styled-jsx: 5.1.6(react@19.2.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 14.2.32
-      '@next/swc-darwin-x64': 14.2.32
-      '@next/swc-linux-arm64-gnu': 14.2.32
-      '@next/swc-linux-arm64-musl': 14.2.32
-      '@next/swc-linux-x64-gnu': 14.2.32
-      '@next/swc-linux-x64-musl': 14.2.32
-      '@next/swc-win32-arm64-msvc': 14.2.32
-      '@next/swc-win32-ia32-msvc': 14.2.32
-      '@next/swc-win32-x64-msvc': 14.2.32
+      '@next/swc-darwin-arm64': 16.2.9
+      '@next/swc-darwin-x64': 16.2.9
+      '@next/swc-linux-arm64-gnu': 16.2.9
+      '@next/swc-linux-arm64-musl': 16.2.9
+      '@next/swc-linux-x64-gnu': 16.2.9
+      '@next/swc-linux-x64-musl': 16.2.9
+      '@next/swc-win32-arm64-msvc': 16.2.9
+      '@next/swc-win32-x64-msvc': 16.2.9
       '@playwright/test': 1.54.2
+      sharp: 0.34.5
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -28675,12 +28660,6 @@ snapshots:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
-
-  react-dom@18.3.1(react@18.3.1):
-    dependencies:
-      loose-envify: 1.4.0
-      react: 18.3.1
-      scheduler: 0.23.2
 
   react-dom@19.2.0(react@18.3.1):
     dependencies:
@@ -30209,8 +30188,6 @@ snapshots:
       es-errors: 1.3.0
       internal-slot: 1.1.0
 
-  streamsearch@1.1.0: {}
-
   streamx@2.23.0:
     dependencies:
       events-universal: 1.0.1
@@ -30370,10 +30347,10 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.4
 
-  styled-jsx@5.1.1(react@18.3.1):
+  styled-jsx@5.1.6(react@19.2.0):
     dependencies:
       client-only: 0.0.1
-      react: 18.3.1
+      react: 19.2.0
 
   stylehacks@5.1.1(postcss@8.5.3):
     dependencies:
@@ -30510,26 +30487,26 @@ snapshots:
       yaml: 2.7.1
       yaml-types: 0.4.0(yaml@2.7.1)
 
-  tap@18.8.0(@swc/core@1.13.3)(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)(typescript@5.9.2):
+  tap@18.8.0(@swc/core@1.13.3)(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)(typescript@5.9.2):
     dependencies:
-      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/after-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/asserts': 1.2.0(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/before': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/before-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/filter': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/fixture': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/intercept': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/mock': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/node-serialize': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/run': 1.5.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/snapshot': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/spawn': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/stdin': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
-      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1)
-      '@tapjs/typescript': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))(@types/node@20.19.11)(typescript@5.9.2)
-      '@tapjs/worker': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@19.2.0))(react@18.3.1))
+      '@tapjs/after': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/after-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/asserts': 1.2.0(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/before': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/before-each': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/core': 1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/filter': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/fixture': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/intercept': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/mock': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/node-serialize': 1.3.4(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/run': 1.5.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(@types/react@19.2.2)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/snapshot': 1.2.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/spawn': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/stdin': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
+      '@tapjs/test': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1)
+      '@tapjs/typescript': 1.4.4(@swc/core@1.13.3)(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))(@types/node@20.19.11)(typescript@5.9.2)
+      '@tapjs/worker': 1.1.22(@tapjs/core@1.5.4(@swc/core@1.13.3)(@types/node@20.19.11)(react-dom@19.2.0(react@18.3.1))(react@18.3.1))
       resolve-import: 1.4.6
     transitivePeerDependencies:
       - '@swc/core'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { listItem, resultText } from '../utils/classNames.js'
-import NextLink from 'next/link.js'
+import NextLink from 'next/link'
 import { HighlightedDocument } from './HighlightedDocument.js'
 import { Result, TypedDocument } from '@orama/orama'
 import { NextraOrama } from '../utils/index.js'
