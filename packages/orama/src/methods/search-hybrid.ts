@@ -10,7 +10,7 @@ import type {
 import { getNanosecondsTime, formatNanoseconds, removeVectorsFromHits } from '../utils.js'
 import { getFacets } from '../components/facets.js'
 import { getGroups } from '../components/groups.js'
-import { fetchDocuments } from './search.js'
+import { fetchDocuments } from './fetch-documents.js'
 import { innerFullTextSearch } from './search-fulltext.js'
 import { innerVectorSearch } from './search-vector.js'
 import { runAfterSearch, runBeforeSearch } from '../components/hooks.js'

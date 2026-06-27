@@ -18,7 +18,7 @@ import type {
 } from '../types.js'
 import { getNanosecondsTime, removeVectorsFromHits, sortTokenScorePredicate } from '../utils.js'
 import { count } from './docs.js'
-import { fetchDocuments, fetchDocumentsWithDistinct } from './search.js'
+import { fetchDocuments, fetchDocumentsWithDistinct } from './fetch-documents.js'
 
 export function innerFullTextSearch<T extends AnyOrama>(
   orama: T,
