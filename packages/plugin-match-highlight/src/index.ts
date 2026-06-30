@@ -71,20 +71,22 @@ async function recursivePositionInsertion<T extends AnyOrama, ResultDocument = T
     let regExResult: RegExpExecArray | null
     while ((regExResult = wordRegEx.exec(text)) !== null) {
       const word = regExResult[0].toLowerCase()
-      const key = `${orama.tokenizer.language}:${word}`
-      let token: string
-      if (orama.tokenizer.normalizationCache.has(key)) {
-        token = orama.tokenizer.normalizationCache.get(key)!
-      } else {
-        ;[token] = orama.tokenizer.tokenize(word)
-        orama.tokenizer.normalizationCache.set(key, token)
-      }
-      if (!Array.isArray(orama.data.positions[id][propName][token])) {
-        orama.data.positions[id][propName][token] = []
-      }
       const start = regExResult.index
       const length = regExResult[0].length
-      orama.data.positions[id][propName][token].push({ start, length })
+      // A matched word can yield more than one token: CJK text has no word
+      // spaces, so a whole run is one word here that the tokenizer splits into
+      // many. Record every token instead of only the first one, otherwise the
+      // other tokens have no position and cannot be highlighted even though
+      // search matches them. This mirrors searchWithHighlight, which already
+      // iterates the full token array.
+      const tokens = orama.tokenizer.tokenize(word)
+      for (const token of tokens) {
+        if (!token) continue
+        if (!Array.isArray(orama.data.positions[id][propName][token])) {
+          orama.data.positions[id][propName][token] = []
+        }
+        orama.data.positions[id][propName][token].push({ start, length })
+      }
     }
   }
 }

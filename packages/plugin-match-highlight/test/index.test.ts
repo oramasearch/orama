@@ -1,4 +1,4 @@
-import { create, insert } from '@orama/orama'
+import { create, insert, Tokenizer } from '@orama/orama'
 import t from 'tap'
 import {
   afterInsert,
@@ -142,4 +142,47 @@ t.test('should correctly save and load data with positions', async (t) => {
   t.same((newDB as OramaWithHighlight<typeof newDB>).data.positions[id], {
     text: { hello: [{ start: 0, length: 5 }], world: [{ start: 6, length: 5 }] }
   })
+})
+
+// A minimal word-granularity CJK tokenizer, equivalent to @orama/tokenizers/mandarin.
+// CJK text has no word spaces, so a whole run is matched as a single word by the
+// position indexer and the tokenizer splits it into several tokens.
+function createCjkTokenizer(): Tokenizer {
+  const segmenter = new Intl.Segmenter('zh-CN', { granularity: 'word' })
+  return {
+    language: 'mandarin',
+    normalizationCache: new Map(),
+    tokenize(input: string): string[] {
+      if (typeof input !== 'string') return [input]
+      const tokens: string[] = []
+      for (const segment of segmenter.segment(input)) {
+        if (segment.isWordLike) tokens.push(segment.segment)
+      }
+      return tokens
+    }
+  }
+}
+
+t.test('it should record a position for every token of a multi-token word (CJK)', async (t) => {
+  const tokenizer = createCjkTokenizer()
+  const db = create({
+    schema: { text: 'string' } as const,
+    components: { tokenizer },
+    plugins: [{ name: 'highlight', afterInsert }]
+  })
+
+  const text = '我喜欢编程'
+  const expected = new Set(tokenizer.tokenize(text))
+  t.ok(expected.size > 1, 'the tokenizer splits the run into multiple tokens')
+
+  const id = await insert(db, { text })
+  const recorded = (db as OramaWithHighlight<typeof db>).data.positions[id].text
+
+  t.same(new Set(Object.keys(recorded)), expected, 'every token has a recorded position')
+
+  // a token other than the first one is found by search and can be highlighted
+  const lastToken = [...expected][expected.size - 1]
+  const results = await searchWithHighlight(db, { term: lastToken })
+  t.ok(results.hits.length > 0, 'search finds the document')
+  t.ok(Array.isArray(results.hits[0].positions.text[lastToken]), 'a non-leading token is highlightable')
 })
