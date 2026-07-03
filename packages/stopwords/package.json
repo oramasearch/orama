@@ -22,6 +22,11 @@
       "import": "./dist/bg.js",
       "require": "./dist/bg.cjs"
     },
+    "./czech": {
+      "types": "./dist/cs.d.ts",
+      "import": "./dist/cs.js",
+      "require": "./dist/cs.cjs"
+    },
     "./danish": {
       "types": "./dist/dk.d.ts",
       "import": "./dist/dk.js",
@@ -128,9 +133,9 @@
       "require": "./dist/rs.cjs"
     },
     "./slovenian": {
-      "types": "./dist/ru.d.ts",
-      "import": "./dist/ru.js",
-      "require": "./dist/ru.cjs"
+      "types": "./dist/sl.d.ts",
+      "import": "./dist/sl.js",
+      "require": "./dist/sl.cjs"
     },
     "./spanish": {
       "types": "./dist/es.d.ts",

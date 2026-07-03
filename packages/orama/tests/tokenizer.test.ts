@@ -1,6 +1,7 @@
 import t from 'tap'
 
 import { stemmer as bulgarianStemmer, language as bulgarianLanguage } from '@orama/stemmers/bulgarian'
+import { stemmer as czechStemmer, language as czechLanguage } from '@orama/stemmers/czech'
 import { stemmer as danishStemmer, language as danishLanguage } from '@orama/stemmers/danish'
 import { stemmer as dutchStemmer, language as dutchLanguage } from '@orama/stemmers/dutch'
 import { stemmer as finnishStemmer, language as finnishLanguage } from '@orama/stemmers/finnish'
@@ -10,12 +11,14 @@ import { stemmer as italianStemmer, language as italianLanguage } from '@orama/s
 import { stemmer as norwegianStemmer, language as norwegianLanguage } from '@orama/stemmers/norwegian'
 import { stemmer as portugueseStemmer, language as portugueseLanguage } from '@orama/stemmers/portuguese'
 import { stemmer as russianStemmer, language as russianLanguage } from '@orama/stemmers/russian'
+import { stemmer as slovenianStemmer, language as slovenianLanguage } from '@orama/stemmers/slovenian'
 import { stemmer as spanishStemmer, language as spanishLanguage } from '@orama/stemmers/spanish'
 import { stemmer as swedishStemmer, language as swedishLanguage } from '@orama/stemmers/swedish'
 import { stemmer as ukrainianStemmer, language as ukrainianLanguage } from '@orama/stemmers/ukrainian'
 import { stemmer as tamilStemmer, language as tamilLanguage } from '@orama/stemmers/tamil'
 import { stemmer as vietnameseStemmer, language as vietnameseLanguage } from '@orama/stemmers/vietnamese'
 
+import { stopwords as czechStopwords } from '@orama/stopwords/czech'
 import { stopwords as danishStopwords } from '@orama/stopwords/danish'
 import { stopwords as dutchStopwords } from '@orama/stopwords/dutch'
 import { stopwords as englishStopwords } from '@orama/stopwords/english'
@@ -26,6 +29,7 @@ import { stopwords as italianStopwords } from '@orama/stopwords/italian'
 import { stopwords as norwegianStopwords } from '@orama/stopwords/norwegian'
 import { stopwords as portugueseStopwords } from '@orama/stopwords/portuguese'
 import { stopwords as russianStopwords } from '@orama/stopwords/russian'
+import { stopwords as slovenianStopwords } from '@orama/stopwords/slovenian'
 import { stopwords as spanishStopwords } from '@orama/stopwords/spanish'
 import { stopwords as swedishStopwords } from '@orama/stopwords/swedish'
 import { stopwords as ukrainianStopwords } from '@orama/stopwords/ukrainian'
@@ -368,6 +372,40 @@ t.test('Tokenizer', async (t) => {
     t.strictSame(O2, ['има', 'първ', 'вероятност', 'да', 'се', 'случ', 'нещ', 'неочакван', 'док', 'изпълняват', 'тест'])
   })
 
+  t.test('should tokenize and stem correctly in czech', async (t) => {
+    const tokenizer = await createTokenizer({
+      language: czechLanguage,
+      stemmer: czechStemmer,
+      stopWords: czechStopwords
+    })
+
+    const I1 = 'Upekla jsem nějaké koláče'
+    const I2 = 'žáci četli knihy ve škole'
+
+    const O1 = tokenizer.tokenize(I1)
+    const O2 = tokenizer.tokenize(I2)
+
+    t.strictSame(O1, ['upekl', 'nejak', 'kolak'])
+    t.strictSame(O2, ['zak', 'cetl', 'knih', 'skol'])
+  })
+
+  t.test('should tokenize and stem correctly in slovenian', async (t) => {
+    const tokenizer = await createTokenizer({
+      language: slovenianLanguage,
+      stemmer: slovenianStemmer,
+      stopWords: slovenianStopwords
+    })
+
+    const I1 = 'Spekla sem nekaj tort'
+    const I2 = 'otroci berejo knjige v mestih'
+
+    const O1 = tokenizer.tokenize(I1)
+    const O2 = tokenizer.tokenize(I2)
+
+    t.strictSame(O1, ['spekl', 'tort'])
+    t.strictSame(O2, ['otroc', 'ber', 'knjig', 'mest'])
+  })
+
   t.test('disable stemming', async (t) => {
     const tokenizer = await createTokenizer({ language: 'english', stemming: false, stopWords: englishStopwords })
 
@@ -390,6 +428,50 @@ t.test('Tokenizer', async (t) => {
     await t.rejects(() => createTokenizer({ language: 'english', stemmer: 'FOO' }), {
       code: 'INVALID_STEMMER_FUNCTION_TYPE'
     })
+  })
+})
+
+t.test('Czech and Slovenian stemming', async (t) => {
+  t.test('czech inflected forms collapse to a single stem', async (t) => {
+    for (const word of ['žák', 'žáci', 'žáky', 'žákům', 'žácích']) {
+      t.equal(czechStemmer(word), 'žák', `${word} stems to žák`)
+    }
+
+    for (const word of ['kniha', 'knihy', 'knihám', 'knihách']) {
+      t.equal(czechStemmer(word), 'knih', `${word} stems to knih`)
+    }
+
+    for (const word of ['malý', 'malá', 'malé', 'malému', 'malých']) {
+      t.equal(czechStemmer(word), 'mal', `${word} stems to mal`)
+    }
+  })
+
+  t.test('czech short words are left unchanged', async (t) => {
+    t.equal(czechStemmer('e'), 'e')
+    t.equal(czechStemmer('zi'), 'zi')
+  })
+
+  t.test('slovenian inflected forms collapse to a single stem', async (t) => {
+    for (const word of ['mesto', 'mesta', 'mestu', 'mestom', 'mest', 'mestih']) {
+      t.equal(slovenianStemmer(word), 'mest', `${word} stems to mest`)
+    }
+
+    for (const word of ['hiša', 'hiše', 'hiši', 'hišo']) {
+      t.equal(slovenianStemmer(word), 'hiš', `${word} stems to hiš`)
+    }
+
+    for (const word of ['velik', 'velika', 'veliko', 'velikega', 'velikih']) {
+      t.equal(slovenianStemmer(word), 'velik', `${word} stems to velik`)
+    }
+
+    for (const word of ['delati', 'delam', 'delaš', 'dela', 'delamo', 'delajo']) {
+      t.equal(slovenianStemmer(word), 'del', `${word} stems to del`)
+    }
+  })
+
+  t.test('slovenian stemming keeps distinct words distinct', async (t) => {
+    t.not(slovenianStemmer('mesto'), slovenianStemmer('meso'), 'mesto and meso must not collapse')
+    t.not(slovenianStemmer('letalo'), slovenianStemmer('leto'), 'letalo and leto must not collapse')
   })
 })
 

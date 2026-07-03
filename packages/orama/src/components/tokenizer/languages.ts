@@ -1,35 +1,42 @@
-export const STEMMERS: Record<string, string> = {
+// Maps each supported language to its BCP-47 locale tag.
+// The keys are the canonical language names accepted by Orama (they define
+// `SUPPORTED_LANGUAGES` and the `Language` type); the values are passed to
+// `String.prototype.localeCompare` for locale-aware string sorting (see `getLocale`).
+// Note: these locale tags are intentionally decoupled from the file-id codes used by
+// `@orama/stemmers` / `@orama/stopwords` (e.g. Danish stems live in `dk.js` but the
+// locale is `da`), so keep them as valid BCP-47 primary subtags.
+export const SUPPORTED_LANGUAGE_LOCALES: Record<string, string> = {
   arabic: 'ar',
-  armenian: 'am',
+  armenian: 'hy',
   bulgarian: 'bg',
-  czech: 'cz',
-  danish: 'dk',
+  czech: 'cs',
+  danish: 'da',
   dutch: 'nl',
   english: 'en',
   finnish: 'fi',
   french: 'fr',
   german: 'de',
-  greek: 'gr',
+  greek: 'el',
   hungarian: 'hu',
-  indian: 'in',
+  indian: 'hi',
   indonesian: 'id',
-  irish: 'ie',
+  irish: 'ga',
   italian: 'it',
   lithuanian: 'lt',
-  nepali: 'np',
+  nepali: 'ne',
   norwegian: 'no',
   portuguese: 'pt',
   romanian: 'ro',
   russian: 'ru',
-  serbian: 'rs',
-  slovenian: 'ru',
+  serbian: 'sr',
+  slovenian: 'sl',
   spanish: 'es',
-  swedish: 'se',
+  swedish: 'sv',
   tamil: 'ta',
   turkish: 'tr',
   ukrainian: 'uk',
   vietnamese: 'vi',
-  sanskrit: 'sk'
+  sanskrit: 'sa'
 }
 
 export const SPLITTERS: Record<Language, RegExp> = {
@@ -66,10 +73,12 @@ export const SPLITTERS: Record<Language, RegExp> = {
   czech: /[^A-Z0-9a-zěščřžýáíéúůóťďĚŠČŘŽÝÁÍÉÓÚŮŤĎ-]+/gim
 }
 
-export const SUPPORTED_LANGUAGES = Object.keys(STEMMERS)
+export const SUPPORTED_LANGUAGES = Object.keys(SUPPORTED_LANGUAGE_LOCALES)
 
 export function getLocale(language: string | undefined) {
-  return language !== undefined && SUPPORTED_LANGUAGES.includes(language) ? STEMMERS[language] : undefined
+  return language !== undefined && SUPPORTED_LANGUAGES.includes(language)
+    ? SUPPORTED_LANGUAGE_LOCALES[language]
+    : undefined
 }
 
 export type Language = (typeof SUPPORTED_LANGUAGES)[number]

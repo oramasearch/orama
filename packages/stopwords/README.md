@@ -1,11 +1,13 @@
 # Orama Stop-words
 
-This package provides support for stop-words removal in 30 languages:
+<!-- LANGUAGES:START -->
+This package provides support for stop-words removal in 33 languages:
 
 - Arabic
 - Armenian
 - Bulgarian
-- Chinese (Mandarin - stemmer not supported)
+- Chinese (Mandarin)
+- Czech
 - Danish
 - Dutch
 - English
@@ -18,6 +20,8 @@ This package provides support for stop-words removal in 30 languages:
 - Indonesian
 - Irish
 - Italian
+- Japanese
+- Lithuanian
 - Nepali
 - Norwegian
 - Portuguese
@@ -31,6 +35,8 @@ This package provides support for stop-words removal in 30 languages:
 - Tamil
 - Turkish
 - Ukrainian
+- Vietnamese
+<!-- LANGUAGES:END -->
 
 ```js
 import { create } from '@orama/orama'

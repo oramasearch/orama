@@ -2,12 +2,13 @@
 
 Orama can analyze the input and perform a `stemming` operation, which allows the engine to perform more optimized queries, as well as save indexing space.
 
-Right now, Orama supports 30 languages and stemmers out of the box:
+<!-- LANGUAGES:START -->
+Right now, Orama supports 31 languages and stemmers out of the box:
 
 - Arabic
 - Armenian
 - Bulgarian
-- Chinese (Mandarin - stemmer not supported)
+- Czech
 - Danish
 - Dutch
 - English
@@ -20,7 +21,7 @@ Right now, Orama supports 30 languages and stemmers out of the box:
 - Indonesian
 - Irish
 - Italian
-- Japanese
+- Lithuanian
 - Nepali
 - Norwegian
 - Portuguese
@@ -34,6 +35,10 @@ Right now, Orama supports 30 languages and stemmers out of the box:
 - Tamil
 - Turkish
 - Ukrainian
+- Vietnamese
+<!-- LANGUAGES:END -->
+
+Chinese (Mandarin) and Japanese are supported through dedicated tokenizers (`@orama/tokenizers`) and stop-word removal (`@orama/stopwords`), not through stemming.
 
 ```js
 import { create } from '@orama/orama'
