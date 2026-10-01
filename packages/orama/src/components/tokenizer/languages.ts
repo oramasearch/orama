@@ -57,7 +57,7 @@ export const SPLITTERS: Record<Language, RegExp> = {
   serbian: /[^a-z0-9čćžšđČĆŽŠĐ]+/gim,
   turkish: /[^a-z0-9çÇğĞıİöÖşŞüÜ]+/gim,
   lithuanian: /[^a-z0-9ąčęėįšųūžĄČĘĖĮŠŲŪŽ]+/gim,
-  arabic: /[^a-z0-9أ-ي]+/gim,
+  arabic: /[^\p{L}\p{N}\p{M}]+/gu,
   nepali: /[^a-z0-9अ-ह]+/gim,
   irish: /[^a-z0-9áéíóúÁÉÍÓÚ]+/gim,
   indian: /[^a-z0-9अ-ह]+/gim,
