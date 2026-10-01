@@ -36,6 +36,18 @@ export function normalizeToken(this: DefaultTokenizer, prop: string, token: stri
     token = this.stemmer(token)
   }
 
+  // Strip Arabic vowel marks and tatweel so vowelled and unvowelled forms meet.
+  // Range covers harakat and related marks plus superscript alef, plus tatweel.
+  // Written with code points (no unicode escapes) to keep the source ASCII-safe.
+  if (this.language === 'arabic') {
+    token = Array.from(token)
+      .filter((c) => {
+        const cp = c.codePointAt(0) ?? 0
+        return !(cp === 0x640 || (cp >= 0x64b && cp <= 0x65f) || cp === 0x670)
+      })
+      .join('')
+  }
+
   if (!LANGUAGES_WITH_SIGNIFICANT_DIACRITICS.has(this.language)) {
     token = replaceDiacritics(token)
   }

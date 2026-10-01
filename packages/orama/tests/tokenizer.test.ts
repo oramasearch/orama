@@ -406,6 +406,21 @@ t.test('Tokenizer', async (t) => {
     t.strictSame(O2, ['otroc', 'ber', 'knjig', 'mest'])
   })
 
+  t.test('should tokenize arabic without splitting at hamza, vowel marks or persian letters', async (t) => {
+    const tokenizer = await createTokenizer({ language: 'arabic', stopWords: false })
+    const tatweel = String.fromCharCode(0x640)
+
+    t.strictSame(tokenizer.tokenize('آخر', 'arabic'), ['آخر'])
+    t.strictSame(tokenizer.tokenize('ماء', 'arabic'), ['ماء'])
+    t.strictSame(tokenizer.tokenize('القرآن', 'arabic'), ['القرآن'])
+    t.strictSame(tokenizer.tokenize('گوشی', 'arabic'), ['گوشی'])
+    t.strictSame(tokenizer.tokenize('کتاب', 'arabic'), ['کتاب'])
+    t.strictSame(tokenizer.tokenize('كِتَابٌ', 'arabic'), ['كتاب'])
+    t.strictSame(tokenizer.tokenize('كتاب', 'arabic'), tokenizer.tokenize('كِتَابٌ', 'arabic'))
+    t.strictSame(tokenizer.tokenize('ك' + tatweel + 'تاب', 'arabic'), ['كتاب'])
+    t.strictSame(tokenizer.tokenize('سلام، دنیا؟', 'arabic'), ['سلام', 'دنیا'])
+  })
+
   t.test('disable stemming', async (t) => {
     const tokenizer = await createTokenizer({ language: 'english', stemming: false, stopWords: englishStopwords })
 
