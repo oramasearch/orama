@@ -21,7 +21,7 @@
     "@orama/plugin-docusaurus-v3": "workspace:*",
     "clsx": "^2.0.0",
     "jsdom": "^27.0.0",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^14.3.1",
     "pako": "^2.1.0",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.2.0",
