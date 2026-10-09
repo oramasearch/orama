@@ -216,12 +216,15 @@ t.test('Tokenizer', async (t) => {
     })
     const I1 = 'Jag lagade några kakor'
     const I2 = 'att sova är en svår sak när testerna misslyckas'
+    const I3 = 'en bra idé'
 
     const O1 = tokenizer.tokenize(I1)
     const O2 = tokenizer.tokenize(I2)
+    const O3 = tokenizer.tokenize(I3)
 
     t.strictSame(O1, ['lag', 'kak'])
     t.strictSame(O2, ['sov', 'svar', 'sak', 'test', 'misslyck'])
+    t.strictSame(O3, ['bra', 'ide'])
   })
 
   t.test('should tokenize and stem correctly in spanish', async (t) => {
