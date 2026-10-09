@@ -48,7 +48,7 @@ export const SPLITTERS: Record<Language, RegExp> = {
   portuguese: /[^a-z0-9à-úÀ-Ú]/gim,
   russian: /[^a-z0-9а-яА-ЯёЁ]+/gim,
   spanish: /[^a-z0-9A-Zá-úÁ-ÚñÑüÜ]+/gim,
-  swedish: /[^a-z0-9_åÅäÄöÖüÜ-]+/gim,
+  swedish: /[^a-z0-9_åÅäÄöÖüÜéÉ-]+/gim,
   german: /[^a-z0-9A-ZäöüÄÖÜß]+/gim,
   finnish: /[^a-z0-9äöÄÖ]+/gim,
   danish: /[^a-z0-9æøåÆØÅ]+/gim,
