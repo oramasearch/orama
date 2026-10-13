@@ -58,7 +58,7 @@ export function innerFullTextSearch<T extends AnyOrama>(
   const hasFilters = Object.keys(params.where ?? {}).length > 0
   let whereFiltersIDs: Set<number> | undefined
   if (hasFilters) {
-    whereFiltersIDs = orama.index.searchByWhereClause(index, orama.tokenizer, params.where!, language)
+    whereFiltersIDs = orama.index.searchByWhereClause(index, orama.tokenizer, params.where!, language, orama.data.docs)
   }
 
   let uniqueDocsIDs: TokenScore[]
