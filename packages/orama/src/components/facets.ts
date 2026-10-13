@@ -144,13 +144,10 @@ function calculateNumberFacetBuilder(
       }
 
       if (facetValue >= range.from && facetValue <= range.to) {
-        if (values[value] === undefined) {
-          values[value] = 1
-        } else {
-          values[value]++
+        values[value] = (values[value] ?? 0) + 1
 
-          alreadyInsertedValues?.add(value)
-        }
+        // A document is counted once per range, even if several of its array values fall in the same range
+        alreadyInsertedValues?.add(value)
       }
     }
   }
