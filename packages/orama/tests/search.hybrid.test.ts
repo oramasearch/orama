@@ -193,8 +193,78 @@ t.test('hybrid search', async (t) => {
     })
 
     t.equal(results.count, 2)
-    t.equal(results.hits[0].score, 0.5)
-    t.equal(results.hits[1].score, 0.5)
+    // With a text weight of 1 and a vector weight of 0 the score is the (normalized) text score only,
+    // which is 1 for both documents. 0.5 is what the default 0.5/0.5 weights would give.
+    t.equal(results.hits[0].score, 1)
+    t.equal(results.hits[1].score, 1)
+  })
+
+  t.test('hybridWeights with a weight of 0', async (t) => {
+    const schema = {
+      title: 'string',
+      embedding: 'vector[3]'
+    } as const
+
+    // "a" is the only text match for "apple" and has the vector farthest from the query,
+    // "c" is not a text match and has the vector identical to the query, "b" is in between.
+    const docs = [
+      { id: 'a', title: 'apple pie recipe', embedding: [1, 0, 0] },
+      { id: 'b', title: 'banana bread', embedding: [0.9, 0.1, 0] },
+      { id: 'c', title: 'cherry tart', embedding: [0, 1, 0] }
+    ]
+
+    async function hybridSearch(hybridWeights?: unknown) {
+      const db = create({ schema })
+      await insertMultiple(db, structuredClone(docs))
+
+      const results = await search(db, {
+        mode: 'hybrid',
+        term: 'apple',
+        vector: { value: [0, 1, 0], property: 'embedding' },
+        similarity: 0.1,
+        ...(hybridWeights === undefined ? {} : { hybridWeights: hybridWeights as { text: number; vector: number } })
+      })
+      return new Map(results.hits.map((hit) => [hit.id, hit.score]))
+    }
+
+    t.test('should use the default weights when hybridWeights is not provided', async (t) => {
+      const scores = await hybridSearch()
+
+      t.equal(scores.get('a'), 0.5)
+      t.equal(scores.get('c'), 0.5)
+    })
+
+    t.test('should only consider the vector when the text weight is 0', async (t) => {
+      const scores = await hybridSearch({ text: 0, vector: 1 })
+
+      t.same([...scores.keys()], ['c', 'b', 'a'], 'ranked by vector similarity only')
+      t.equal(scores.get('c'), 1)
+      t.equal(scores.get('a'), 0, 'the text match gets no text contribution')
+    })
+
+    t.test('should only consider the text when the vector weight is 0', async (t) => {
+      const scores = await hybridSearch({ text: 1, vector: 0 })
+
+      t.equal([...scores.keys()][0], 'a', 'the text match is ranked first')
+      t.equal(scores.get('a'), 1)
+      t.equal(scores.get('b'), 0, 'no vector contribution')
+      t.equal(scores.get('c'), 0, 'no vector contribution, even for the identical vector')
+    })
+
+    t.test('should still apply non-zero custom weights', async (t) => {
+      const scores = await hybridSearch({ text: 0.2, vector: 0.8 })
+
+      t.same([...scores.keys()].slice(0, 2), ['c', 'a'])
+      t.equal(scores.get('c'), 0.8)
+      t.equal(scores.get('a'), 0.2)
+    })
+
+    t.test('should fall back to the default weights when only one weight is provided', async (t) => {
+      const defaults = await hybridSearch()
+
+      t.same([...(await hybridSearch({ text: 1 })).entries()], [...defaults.entries()])
+      t.same([...(await hybridSearch({ vector: 1 })).entries()], [...defaults.entries()])
+    })
   })
 })
 
