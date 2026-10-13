@@ -1,4 +1,5 @@
 import type {
+  AnyDocumentStore,
   AnyIndexStore,
   AnyOrama,
   ArraySearchableType,
@@ -595,7 +596,8 @@ export function searchByWhereClause<T extends AnyOrama>(
   index: Index,
   tokenizer: Tokenizer,
   filters: Partial<WhereCondition<T['schema']>>,
-  language: string | undefined
+  language: string | undefined,
+  docs?: AnyDocumentStore
 ): Set<InternalDocumentID> {
   // Handle logical operators
   if ('and' in filters && filters.and && Array.isArray(filters.and)) {
@@ -604,7 +606,7 @@ export function searchByWhereClause<T extends AnyOrama>(
       return new Set()
     }
 
-    const results = andFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language))
+    const results = andFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language, docs))
     return setIntersection(...results)
   }
 
@@ -614,23 +616,30 @@ export function searchByWhereClause<T extends AnyOrama>(
       return new Set()
     }
 
-    const results = orFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language))
+    const results = orFilters.map((filter) => searchByWhereClause(index, tokenizer, filter, language, docs))
     // Use reduce to union all sets
     return results.reduce((acc, set) => setUnion(acc, set), new Set<InternalDocumentID>())
   }
 
   if ('not' in filters && filters.not) {
     const notFilter = filters.not
-    // Get all document IDs from the internal document store
     const allDocs = new Set<InternalDocumentID>()
 
-    // Get all document IDs from the internal document store
-    const docsStore = index.sharedInternalDocumentStore
-    for (let i = 1; i <= docsStore.internalIdToId.length; i++) {
-      allDocs.add(i)
+    if (docs) {
+      // The documents store only holds the documents that have not been removed
+      for (const internalId of Object.keys(docs.docs)) {
+        allDocs.add(Number(internalId))
+      }
+    } else {
+      // Without the documents store, fall back to every internal ID ever assigned.
+      // This also includes the IDs of removed documents.
+      const idStore = index.sharedInternalDocumentStore
+      for (let i = 1; i <= idStore.internalIdToId.length; i++) {
+        allDocs.add(i)
+      }
     }
 
-    const notResult = searchByWhereClause(index, tokenizer, notFilter, language)
+    const notResult = searchByWhereClause(index, tokenizer, notFilter, language, docs)
     return setDifference(allDocs, notResult)
   }
 

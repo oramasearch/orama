@@ -1005,7 +1005,8 @@ export interface IIndex<I extends AnyIndexStore> {
     index: AnyIndexStore,
     tokenizer: Tokenizer,
     filters: Partial<WhereCondition<T['schema']>>,
-    language: string | undefined
+    language: string | undefined,
+    docs?: AnyDocumentStore
   ): Set<InternalDocumentID>
 
   getSearchableProperties(index: I): string[]

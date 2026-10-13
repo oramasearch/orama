@@ -39,7 +39,7 @@ export function innerVectorSearch<T extends AnyOrama, ResultDocument = TypedDocu
   let whereFiltersIDs: Set<InternalDocumentID> | undefined
   const hasFilters = Object.keys(params.where ?? {}).length > 0
   if (hasFilters) {
-    whereFiltersIDs = orama.index.searchByWhereClause(index, orama.tokenizer, params.where!, language)
+    whereFiltersIDs = orama.index.searchByWhereClause(index, orama.tokenizer, params.where!, language, orama.data.docs)
   }
 
   return vectorIndex.node.find(vector.value as Float32Array, params.similarity ?? DEFAULT_SIMILARITY, whereFiltersIDs)
