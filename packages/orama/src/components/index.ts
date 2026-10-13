@@ -237,7 +237,9 @@ function insertScalarBuilder(
         const tokens = tokenizer.tokenize(value as string, language, prop, false)
         implementation.insertDocumentScoreParameters(index, prop, internalId, tokens, docsCount)
 
-        for (const token of tokens) {
+        // With allowDuplicates a token can appear several times in the document,
+        // but it has to be counted once per document (the term frequency is computed from all the tokens).
+        for (const token of new Set(tokens)) {
           implementation.insertTokenScoreParameters(index, prop, internalId, tokens, token)
 
           node.insert(token, internalId)
@@ -338,7 +340,8 @@ function removeScalar(
 
       implementation.removeDocumentScoreParameters(index, prop, id, docsCount)
 
-      for (const token of tokens) {
+      // Mirror the insertion: each distinct token is counted once per document
+      for (const token of new Set(tokens)) {
         implementation.removeTokenScoreParameters(index, prop, token)
         node.removeDocumentByWord(token, internalId)
       }
