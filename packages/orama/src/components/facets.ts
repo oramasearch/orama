@@ -119,11 +119,12 @@ export function getFacets<T extends AnyOrama>(
     if (properties[facet] === 'string') {
       const stringFacetDefinition = facetsConfig[facet] as StringFacetDefinition
       const sortingPredicate = sortingPredicateBuilder(stringFacetDefinition.sort)
+      const offset = stringFacetDefinition.offset ?? 0
 
       currentFacet.values = Object.fromEntries(
         Object.entries(currentFacet.values)
           .sort(sortingPredicate)
-          .slice(stringFacetDefinition.offset ?? 0, stringFacetDefinition.limit ?? 10)
+          .slice(offset, offset + (stringFacetDefinition.limit ?? 10))
       )
     }
   }
