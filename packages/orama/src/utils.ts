@@ -313,24 +313,43 @@ export function convertDistanceToMeters(distance: number, unit: GeosearchDistanc
   return distance * ratio
 }
 
+/**
+ * Returns a copy of `document` where every vector property is set to `null`.
+ *
+ * The document handed to this function usually is the very object kept in the documents store,
+ * so it must never be mutated: only the objects along each vector property path are copied.
+ */
+export function removeVectorsFromDocument<T extends AnyDocument>(document: T, vectorProperties: string[]): T {
+  const copy: AnyDocument = { ...(document as AnyDocument) }
+  // Objects created here, which can be safely mutated (they are not shared with the documents store)
+  const copies = new Set<object>([copy])
+
+  for (const prop of vectorProperties) {
+    const path = prop.split('.')
+    const lastKey = path.pop()!
+    let obj = copy
+    for (const key of path) {
+      const child: unknown = obj[key]
+      if (typeof child === 'object' && child !== null && copies.has(child)) {
+        obj = child as AnyDocument
+        continue
+      }
+      const next: AnyDocument = typeof child === 'object' && child !== null ? { ...child } : {}
+      copies.add(next)
+      obj[key] = next
+      obj = next
+    }
+    obj[lastKey] = null
+  }
+
+  return copy as T
+}
+
 export function removeVectorsFromHits(searchResult: Results<AnyDocument>, vectorProperties: string[]): void {
   searchResult.hits = searchResult.hits.map((result) => ({
     ...result,
-    document: {
-      ...result.document,
-      // Remove embeddings from the result
-      ...vectorProperties.reduce((acc, prop) => {
-        const path = prop.split('.')
-        const lastKey = path.pop()!
-        let obj = acc
-        for (const key of path) {
-          obj[key] = obj[key] ?? {}
-          obj = obj[key] as any
-        }
-        obj[lastKey] = null
-        return acc
-      }, result.document)
-    }
+    // Remove embeddings from the result, without touching the stored document
+    document: removeVectorsFromDocument(result.document, vectorProperties)
   }))
 }
 

@@ -1,6 +1,6 @@
 import type { AnyOrama, Results, SearchParamsVector, TypedDocument, Result } from '../types.js'
 import type { InternalDocumentID } from '../components/internal-document-id-store.js'
-import { getNanosecondsTime, formatNanoseconds, sortTokenScorePredicate } from '../utils.js'
+import { getNanosecondsTime, formatNanoseconds, removeVectorsFromDocument, sortTokenScorePredicate } from '../utils.js'
 import { getFacets } from '../components/facets.js'
 import { createError } from '../errors.js'
 import { getGroups } from '../components/groups.js'
@@ -80,14 +80,11 @@ export function searchVector<T extends AnyOrama, ResultDocument = TypedDocument<
       const doc = orama.data.docs.docs[result[0]]
 
       if (doc) {
-        if (!includeVectors) {
-          doc[vectorProperty] = null
-        }
-
         const newDoc: Result<ResultDocument> = {
           id: getDocumentIdFromInternalId(orama.internalDocumentIDStore, result[0]),
           score: result[1],
-          document: doc
+          // Never mutate the stored document: strip the vector from a copy
+          document: includeVectors ? doc : removeVectorsFromDocument(doc, [vectorProperty])
         }
         docs[i] = newDoc
       }
