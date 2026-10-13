@@ -203,10 +203,19 @@ function replaceChar(charCode: number): number {
   return CHARCODE_REPLACE_MAPPING[charCode - DIACRITICS_CHARCODE_START] || charCode
 }
 
+// Spreading a very large array into String.fromCharCode(...) throws a RangeError (the arguments
+// don't fit in the call stack), so long strings are converted in chunks.
+const REPLACE_CHUNK_SIZE = 8192
+
 export function replaceDiacritics(str: string): string {
-  const stringCharCode: number[] = []
-  for (let idx = 0; idx < str.length; idx++) {
-    stringCharCode[idx] = replaceChar(str.charCodeAt(idx))
+  let result = ''
+  for (let start = 0; start < str.length; start += REPLACE_CHUNK_SIZE) {
+    const end = Math.min(start + REPLACE_CHUNK_SIZE, str.length)
+    const stringCharCode: number[] = []
+    for (let idx = start; idx < end; idx++) {
+      stringCharCode.push(replaceChar(str.charCodeAt(idx)))
+    }
+    result += String.fromCharCode(...stringCharCode)
   }
-  return String.fromCharCode(...stringCharCode)
+  return result
 }
