@@ -131,7 +131,9 @@ function mergeAndRankResults(
   const maxTextScore = Math.max.apply(Math, textResults.map(extractScore))
   // eslint-disable-next-line prefer-spread
   const maxVectorScore = Math.max.apply(Math, vectorResults.map(extractScore))
-  const hasHybridWeights = hybridWeights && hybridWeights.text && hybridWeights.vector
+  // A weight of 0 is valid (e.g. { text: 1, vector: 0 } means "text only"), so check the type, not the truthiness.
+  // The default weights are used only when no (complete) weights are provided.
+  const hasHybridWeights = typeof hybridWeights?.text === 'number' && typeof hybridWeights?.vector === 'number'
 
   const { text: textWeight, vector: vectorWeight } = hasHybridWeights ? hybridWeights : getQueryWeights(query)
   const mergedResults = new Map()
