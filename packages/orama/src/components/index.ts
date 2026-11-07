@@ -509,7 +509,10 @@ export function search(
         tokenFoundMap.set(token, true)
       }
 
-      // Process each matching term
+      // Process each matching term. A token can match several indexed words
+      // (as a prefix or within the tolerance), so matches are collected per
+      // token and each document is counted at most once for this token.
+      const tokenMatchesMap = new Map<InternalDocumentID, Map<string, number>>()
       const termsFoundLength = termsFound.length
       for (let j = 0; j < termsFoundLength; j++) {
         const word = termsFound[j]
@@ -524,8 +527,17 @@ export function search(
           resultsMap,
           boostPerProperty,
           whereFiltersIDs,
-          keywordMatchesMap
+          tokenMatchesMap
         )
+      }
+
+      for (const internalId of tokenMatchesMap.keys()) {
+        let propertyMatches = keywordMatchesMap.get(internalId)
+        if (!propertyMatches) {
+          propertyMatches = new Map()
+          keywordMatchesMap.set(internalId, propertyMatches)
+        }
+        propertyMatches.set(prop, (propertyMatches.get(prop) || 0) + 1)
       }
     }
   }

@@ -202,3 +202,21 @@ t.test('should return results for words with same root if threshold is 0', async
     )
   }
 })
+
+// Related issue: https://github.com/oramasearch/orama/issues/1058
+t.test('should count each search term once when it matches several words if threshold is 0', async (t) => {
+  const db = create({
+    schema: {
+      title: 'string'
+    }
+  })
+
+  await insert(db, { id: '1', title: 'bet better' })
+  await insert(db, { id: '2', title: 'bet better cat' })
+  await insert(db, { id: '3', title: 'cat' })
+  await insert(db, { id: '4', title: 'bet cat' })
+
+  const result = await search(db, { term: 'bet cat', threshold: 0 })
+
+  t.same(result.hits.map((hit) => hit.id).sort(), ['2', '4'])
+})
