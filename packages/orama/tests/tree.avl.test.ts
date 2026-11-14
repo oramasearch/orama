@@ -91,4 +91,24 @@ t.test('AVL Tree', async (t) => {
 
     t.strictSame(tree.lessThan(10), new Set(['foo', 'bar', 'quux']))
   })
+
+  t.test('remove root with 0, 1, and 2 children', async (t) => {
+    const single = new AVLTree(0, ['a'])
+    single.remove(0)
+    t.strictSame(single.greaterThan(-1), new Set())
+
+    const oneChild = new AVLTree(0, ['a'])
+    oneChild.insertMultiple(2, ['b'])
+    oneChild.remove(0)
+    t.strictSame(oneChild.greaterThan(-5), new Set(['b']))
+    t.equal(oneChild.find(0), null)
+
+    const twoChildren = new AVLTree(3, ['d0'])
+    twoChildren.insertMultiple(1, ['d1'])
+    twoChildren.insertMultiple(1.5, ['d2'])
+    twoChildren.remove(1)
+    t.strictSame(twoChildren.greaterThan(-2), new Set(['d0', 'd2']))
+    t.strictSame(twoChildren.find(1.5), new Set(['d2']))
+    t.equal(twoChildren.find(1), null)
+  })
 })

@@ -328,10 +328,12 @@ export class AVLTree<K, V> {
       }
     } else {
       // Node with two children: Get the inorder successor
+      path.push(current)
       let successorParent = current
       let successor = current.r
 
       while (successor.l !== null) {
+        path.push(successor)
         successorParent = successor
         successor = successor.l
       }
@@ -346,12 +348,9 @@ export class AVLTree<K, V> {
       } else {
         successorParent.r = successor.r
       }
-
-      current = successorParent
     }
 
     // Update heights and rebalance
-    path.push(current)
     for (let i = path.length - 1; i >= 0; i--) {
       const currentNode = path[i]
       currentNode.updateHeight()
